@@ -266,6 +266,7 @@
         display: grid;
         place-items: center;
         aspect-ratio: 1.12 / 1;
+        padding: 10px;
         border-radius: 18px;
         border: 1px solid rgba(86, 57, 24, 0.1);
         background:
@@ -273,12 +274,41 @@
         overflow: hidden;
       }
 
-      .thumb img,
-      .detail-preview img {
+      .sprite-stage {
+        display: grid;
+        place-items: center;
         width: 100%;
         height: 100%;
-        object-fit: contain;
+        min-height: 150px;
+        border-radius: 18px;
+        background:
+          radial-gradient(circle at top, rgba(255, 255, 255, 0.72), transparent 58%),
+          linear-gradient(180deg, rgba(232, 239, 255, 0.94), rgba(227, 235, 248, 0.92));
+      }
+
+      .sprite-stage.detail {
+        min-height: 260px;
+        background:
+          radial-gradient(circle at top, rgba(255, 255, 255, 0.72), transparent 58%),
+          linear-gradient(180deg, rgba(229, 237, 255, 0.98), rgba(214, 228, 250, 0.94));
+      }
+
+      .sprite-player {
+        flex: none;
+        border-radius: 18px;
+        background-repeat: no-repeat;
+        background-position: 0 0;
+        background-size: cover;
+        filter: drop-shadow(0 20px 28px rgba(53, 68, 97, 0.14));
         image-rendering: auto;
+      }
+
+      .sprite-caption {
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 0.88rem;
+        line-height: 1.55;
+        text-align: center;
       }
 
       .pet-name {
@@ -329,14 +359,21 @@
       .detail-preview {
         display: grid;
         place-items: center;
-        aspect-ratio: 1 / 1;
         margin-bottom: 18px;
+        padding: 16px;
         border: 1px solid rgba(86, 57, 24, 0.1);
         border-radius: 22px;
         overflow: hidden;
         background:
           radial-gradient(circle at top, rgba(255, 255, 255, 0.6), transparent 60%),
           linear-gradient(180deg, rgba(255, 251, 245, 0.96), rgba(243, 229, 204, 0.93));
+      }
+
+      .detail-preview-copy {
+        margin-top: 14px;
+        color: var(--muted);
+        text-align: center;
+        line-height: 1.6;
       }
 
       .detail-header {
@@ -386,6 +423,74 @@
         color: var(--muted);
         text-transform: uppercase;
         letter-spacing: 0.08em;
+      }
+
+      .state-strip {
+        display: grid;
+        gap: 10px;
+        margin: 18px 0 8px;
+      }
+
+      .state-strip-title {
+        margin: 0;
+        font-size: 0.82rem;
+        color: var(--muted);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .state-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .state-card {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 10px;
+        align-items: center;
+        padding: 10px;
+        border: 1px solid rgba(86, 57, 24, 0.1);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.6);
+        color: inherit;
+        text-align: left;
+        cursor: pointer;
+        transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+      }
+
+      .state-card:hover,
+      .state-card:focus-visible,
+      .state-card.active {
+        border-color: rgba(176, 79, 29, 0.28);
+        background: rgba(255, 255, 255, 0.92);
+        transform: translateY(-1px);
+        outline: none;
+      }
+
+      .state-mini {
+        display: grid;
+        place-items: center;
+        width: 64px;
+        min-width: 64px;
+        height: 64px;
+        border-radius: 12px;
+        background:
+          radial-gradient(circle at top, rgba(255, 255, 255, 0.75), transparent 58%),
+          linear-gradient(180deg, rgba(229, 237, 255, 0.98), rgba(214, 228, 250, 0.94));
+      }
+
+      .state-name {
+        margin: 0;
+        font-size: 0.94rem;
+        font-weight: 700;
+      }
+
+      .state-meta {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 0.8rem;
       }
 
       .detail-links {
@@ -449,7 +554,8 @@
         }
 
         .stats,
-        .detail-grid {
+        .detail-grid,
+        .state-grid {
           grid-template-columns: 1fr;
         }
 
@@ -542,10 +648,153 @@
       let allPets = [];
       let visiblePets = [];
       let activeSlug = null;
+      let activePreviewKey = null;
+      let animationFrameId = null;
+
+      const FALLBACK_ATLAS = {
+        columns: 8,
+        rows: 9,
+        frameWidth: 192,
+        frameHeight: 208,
+        sheetWidth: 1536,
+        sheetHeight: 1872,
+      };
 
       function trimText(text, maxLength) {
         if (!text) return "No description available.";
         return text.length > maxLength ? `${text.slice(0, maxLength - 1)}...` : text;
+      }
+
+      function escapeHtml(text) {
+        return String(text ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+      }
+
+      function assetUrl(path) {
+        return encodeURI(path);
+      }
+
+      function getPetBySlug(slug) {
+        return allPets.find((pet) => pet.slug === slug) || null;
+      }
+
+      function getPreviewRows(pet) {
+        return Array.isArray(pet.previewRows) && pet.previewRows.length ? pet.previewRows : [];
+      }
+
+      function getActivePreviewRow(pet) {
+        const previewRows = getPreviewRows(pet);
+        return (
+          previewRows.find((row) => row.key === activePreviewKey) ||
+          previewRows.find((row) => row.key === pet.defaultPreviewRow) ||
+          previewRows[0] ||
+          null
+        );
+      }
+
+      function syncUrl(slug) {
+        const url = new URL(window.location.href);
+        if (slug) {
+          url.searchParams.set("pet", slug);
+          url.hash = slug;
+        } else {
+          url.searchParams.delete("pet");
+          url.hash = "";
+        }
+        window.history.replaceState({}, "", url);
+      }
+
+      function buildSpriteMarkup({ pet, row, scale, label, staticFrame = false, compact = false }) {
+        const atlas = pet.atlas || FALLBACK_ATLAS;
+        const classes = ["sprite-player"];
+        if (compact) classes.push("compact");
+        return `
+          <div
+            class="${classes.join(" ")}"
+            role="img"
+            aria-label="${escapeHtml(label)}"
+            data-sprite-url="${assetUrl(pet.spritesheetFile)}"
+            data-row-index="${row.rowIndex}"
+            data-frames="${row.frames}"
+            data-duration-ms="${row.durationMs}"
+            data-scale="${scale}"
+            data-frame-width="${atlas.frameWidth}"
+            data-frame-height="${atlas.frameHeight}"
+            data-sheet-width="${atlas.sheetWidth}"
+            data-sheet-height="${atlas.sheetHeight}"
+            data-static-frame="${staticFrame ? "true" : "false"}"
+          ></div>
+        `;
+      }
+
+      function selectPet(slug) {
+        const pet = getPetBySlug(slug);
+        activeSlug = pet?.slug ?? null;
+        activePreviewKey = pet ? pet.defaultPreviewRow || getPreviewRows(pet)[0]?.key || null : null;
+        syncUrl(activeSlug);
+        renderGallery();
+        renderDetail(getPetBySlug(activeSlug));
+      }
+
+      function selectPreviewRow(key) {
+        activePreviewKey = key;
+        renderDetail(getPetBySlug(activeSlug));
+      }
+
+      function hydrateSprites() {
+        const sprites = Array.from(document.querySelectorAll(".sprite-player"));
+        if (!sprites.length) return;
+
+        function sizeSprite(el) {
+          const scale = Number(el.dataset.scale || 1);
+          const frameWidth = Number(el.dataset.frameWidth || FALLBACK_ATLAS.frameWidth);
+          const frameHeight = Number(el.dataset.frameHeight || FALLBACK_ATLAS.frameHeight);
+          const sheetWidth = Number(el.dataset.sheetWidth || FALLBACK_ATLAS.sheetWidth);
+          const sheetHeight = Number(el.dataset.sheetHeight || FALLBACK_ATLAS.sheetHeight);
+          const spriteUrl = el.dataset.spriteUrl || "";
+          el.style.width = `${frameWidth * scale}px`;
+          el.style.height = `${frameHeight * scale}px`;
+          el.style.backgroundImage = `url("${spriteUrl}")`;
+          el.style.backgroundSize = `${sheetWidth * scale}px ${sheetHeight * scale}px`;
+        }
+
+        function paintSprite(el, frameIndex) {
+          const scale = Number(el.dataset.scale || 1);
+          const frameWidth = Number(el.dataset.frameWidth || FALLBACK_ATLAS.frameWidth);
+          const frameHeight = Number(el.dataset.frameHeight || FALLBACK_ATLAS.frameHeight);
+          const rowIndex = Number(el.dataset.rowIndex || 0);
+          el.style.backgroundPosition = `${frameIndex * frameWidth * scale * -1}px ${rowIndex * frameHeight * scale * -1}px`;
+        }
+
+        sprites.forEach((el) => {
+          sizeSprite(el);
+          paintSprite(el, 0);
+        });
+
+        if (animationFrameId) {
+          window.cancelAnimationFrame(animationFrameId);
+        }
+
+        const startTime = performance.now();
+        const tick = (now) => {
+          sprites.forEach((el) => {
+            if (el.dataset.staticFrame === "true") {
+              paintSprite(el, 0);
+              return;
+            }
+
+            const frames = Math.max(1, Number(el.dataset.frames || 1));
+            const durationMs = Math.max(1, Number(el.dataset.durationMs || 1000));
+            const elapsed = (now - startTime) % durationMs;
+            const frameIndex = Math.min(
+              frames - 1,
+              Math.floor((elapsed / durationMs) * frames)
+            );
+            paintSprite(el, frameIndex);
+          });
+          animationFrameId = window.requestAnimationFrame(tick);
+        };
+
+        animationFrameId = window.requestAnimationFrame(tick);
       }
 
       function renderDetail(pet) {
@@ -558,40 +807,96 @@
           return;
         }
 
+        const previewRows = getPreviewRows(pet);
+        const activeRow = getActivePreviewRow(pet) || previewRows[0];
+        const stateButtons = previewRows
+          .map(
+            (row) => `
+              <button
+                type="button"
+                class="state-card${row.key === activeRow?.key ? " active" : ""}"
+                data-preview-key="${row.key}"
+                aria-label="Preview ${escapeHtml(pet.displayName)} ${escapeHtml(row.label)}"
+              >
+                <div class="state-mini">
+                  ${buildSpriteMarkup({
+                    pet,
+                    row,
+                    scale: 0.26,
+                    label: `${pet.displayName} ${row.label}`,
+                    staticFrame: true,
+                    compact: true,
+                  })}
+                </div>
+                <div>
+                  <p class="state-name">${escapeHtml(row.label)}</p>
+                  <div class="state-meta">Row ${row.rowIndex} · ${row.frames} frames</div>
+                </div>
+              </button>
+            `
+          )
+          .join("");
+
         detailEl.className = "";
         detailEl.innerHTML = `
           <div class="detail-preview">
-            <img src="${pet.spritesheetFile}" alt="${pet.displayName} spritesheet preview" loading="eager" />
+            <div class="sprite-stage detail">
+              ${buildSpriteMarkup({
+                pet,
+                row: activeRow,
+                scale: 0.88,
+                label: `${pet.displayName} ${activeRow.label} animation`,
+              })}
+            </div>
+            <div class="sprite-caption">
+              <strong>${escapeHtml(activeRow.label)}</strong> · Row ${activeRow.rowIndex} ·
+              ${activeRow.frames} frames
+            </div>
+            <p class="detail-preview-copy">
+              ${escapeHtml(activeRow.notes || "This atlas row is available for preview from the packaged spritesheet.")}
+            </p>
           </div>
           <div class="detail-header">
             <div>
-              <h2 class="detail-name">${pet.displayName}</h2>
-              <div class="detail-id">${pet.id}</div>
+              <h2 class="detail-name">${escapeHtml(pet.displayName)}</h2>
+              <div class="detail-id">${escapeHtml(pet.id)}</div>
             </div>
             <div class="pill">${pet.stateCount} states</div>
           </div>
-          <p class="detail-copy">${pet.description || "No description available."}</p>
+          <p class="detail-copy">${escapeHtml(pet.description || "No description available.")}</p>
           <div class="detail-grid">
-            <div><strong>Folder</strong>${pet.slug}</div>
-            <div><strong>Runtime id</strong>${pet.id}</div>
-            <div><strong>Spritesheet</strong>${pet.spritesheetPath}</div>
-            <div><strong>States</strong>${pet.stateNames.join(", ") || "None listed"}</div>
+            <div><strong>Folder</strong>${escapeHtml(pet.slug)}</div>
+            <div><strong>Runtime id</strong>${escapeHtml(pet.id)}</div>
+            <div><strong>Spritesheet</strong>${escapeHtml(pet.spritesheetPath)}</div>
+            <div><strong>States</strong>${escapeHtml(pet.stateNames.join(", ") || "None listed")}</div>
+          </div>
+          <div class="state-strip">
+            <p class="state-strip-title">Atlas preview</p>
+            <div class="state-grid">${stateButtons}</div>
           </div>
           <div class="detail-links">
-            <a href="${pet.folder}/" target="_blank" rel="noreferrer">
+            <a href="${assetUrl(pet.folder)}/" target="_blank" rel="noreferrer">
               <span>Open pet folder</span>
               <span>↗</span>
             </a>
-            <a href="${pet.petJsonPath}" target="_blank" rel="noreferrer">
+            <a href="${assetUrl(pet.petJsonPath)}" target="_blank" rel="noreferrer">
               <span>Open pet.json</span>
               <span>↗</span>
             </a>
-            <a href="${pet.spritesheetFile}" target="_blank" rel="noreferrer">
+            <a href="${assetUrl(pet.spritesheetFile)}" target="_blank" rel="noreferrer">
               <span>Open spritesheet.webp</span>
               <span>↗</span>
             </a>
           </div>
         `;
+
+        detailEl.querySelectorAll("[data-preview-key]").forEach((button) => {
+          button.addEventListener("click", () => {
+            selectPreviewRow(button.dataset.previewKey);
+          });
+        });
+
+        hydrateSprites();
       }
 
       function renderGallery() {
@@ -613,16 +918,29 @@
                 aria-label="View details for ${pet.displayName}"
               >
                 <div class="thumb">
-                  <img src="${pet.spritesheetFile}" alt="${pet.displayName} spritesheet" loading="lazy" />
+                  <div class="sprite-stage">
+                    ${buildSpriteMarkup({
+                      pet,
+                      row: getPreviewRows(pet)[0] || {
+                        key: "idle",
+                        label: "Idle",
+                        rowIndex: 0,
+                        frames: 6,
+                        durationMs: 1100,
+                      },
+                      scale: 0.42,
+                      label: `${pet.displayName} idle animation`,
+                    })}
+                  </div>
                 </div>
                 <div>
-                  <h3 class="pet-name">${pet.displayName}</h3>
+                  <h3 class="pet-name">${escapeHtml(pet.displayName)}</h3>
                 </div>
                 <div class="pet-meta">
-                  <span>${pet.id}</span>
+                  <span>${escapeHtml(pet.id)}</span>
                   <span>${pet.stateCount} states</span>
                 </div>
-                <p class="pet-desc">${trimText(pet.description, 126)}</p>
+                <p class="pet-desc">${escapeHtml(trimText(pet.description, 126))}</p>
               </article>
             `
           )
@@ -631,9 +949,7 @@
         const cards = Array.from(document.querySelectorAll(".pet-card"));
         cards.forEach((card) => {
           card.addEventListener("click", () => {
-            activeSlug = card.dataset.slug;
-            renderGallery();
-            renderDetail(visiblePets.find((pet) => pet.slug === activeSlug));
+            selectPet(card.dataset.slug);
           });
           card.addEventListener("keydown", (event) => {
             if (event.key === "Enter" || event.key === " ") {
@@ -642,6 +958,8 @@
             }
           });
         });
+
+        hydrateSprites();
       }
 
       function applySearch() {
@@ -661,8 +979,12 @@
 
         if (!visiblePets.some((pet) => pet.slug === activeSlug)) {
           activeSlug = visiblePets[0]?.slug ?? null;
+          activePreviewKey = visiblePets[0]
+            ? visiblePets[0].defaultPreviewRow || getPreviewRows(visiblePets[0])[0]?.key || null
+            : null;
         }
 
+        syncUrl(activeSlug);
         renderGallery();
         renderDetail(visiblePets.find((pet) => pet.slug === activeSlug) || null);
       }
@@ -681,7 +1003,12 @@
                 })();
           allPets = (catalog.pets || []).sort((a, b) => a.displayName.localeCompare(b.displayName));
           visiblePets = [...allPets];
-          activeSlug = visiblePets[0]?.slug ?? null;
+          const requestedSlug =
+            new URL(window.location.href).searchParams.get("pet") ||
+            window.location.hash.replace(/^#/, "");
+          const requestedPet = visiblePets.find((pet) => pet.slug === requestedSlug);
+          activeSlug = requestedPet?.slug || visiblePets[0]?.slug || null;
+          activePreviewKey = getPetBySlug(activeSlug)?.defaultPreviewRow || null;
 
           petCountEl.textContent = String(catalog.count || allPets.length);
           stateCountEl.textContent = String(
@@ -690,7 +1017,7 @@
           summaryPillEl.textContent = `${catalog.count || allPets.length} pets indexed`;
 
           renderGallery();
-          renderDetail(visiblePets[0] || null);
+          renderDetail(getPetBySlug(activeSlug) || null);
         } catch (error) {
           console.error(error);
           galleryEl.innerHTML = `
@@ -710,6 +1037,12 @@
       }
 
       searchEl.addEventListener("input", applySearch);
+      window.addEventListener("hashchange", () => {
+        const slug = window.location.hash.replace(/^#/, "");
+        if (slug && slug !== activeSlug && getPetBySlug(slug)) {
+          selectPet(slug);
+        }
+      });
       boot();
     </script>
   </body>

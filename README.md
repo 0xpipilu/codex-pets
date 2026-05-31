@@ -46,6 +46,8 @@ After that, your gallery page will be available at a URL like:
 https://0xpipilu.github.io/codex-pets/
 ```
 
+If GitHub still shows a plain `404` page that says there is no Pages site, the repository has not been published yet. Open `Settings` -> `Pages`, choose branch `main`, folder `/ (root)`, and wait a few minutes for the first deploy.
+
 ## Update The Catalog
 
 When you add, remove, or rename pets, regenerate the catalog files:
@@ -55,6 +57,15 @@ python3 scripts/build_index.py
 ```
 
 The script scans `pets/*/pet.json` and rebuilds both `index.json` and `catalog.js`.
+
+## Share A Specific Pet
+
+The static preview supports direct links to a selected pet with a query parameter or hash:
+
+```text
+https://0xpipilu.github.io/codex-pets/?pet=bruno
+https://0xpipilu.github.io/codex-pets/#bruno
+```
 
 ## Publish Changes
 
