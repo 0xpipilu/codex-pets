@@ -19,7 +19,7 @@ def build_readme():
     # Sort alphabetically by displayName
     pets = sorted(pets, key=lambda p: p["displayName"].lower())
 
-    cols = 5
+    cols = 6
     markdown_table = []
     markdown_table.append("| " + " | ".join([""] * cols) + " |")
     markdown_table.append("|" + "|".join([":---:"] * cols) + "|")
@@ -30,17 +30,18 @@ def build_readme():
         name = pet["displayName"]
         # Use relative path so it renders correctly on both GitHub repository page and local check
         img_tag = f'<img src="pets/{slug}/base.png" width="80" alt="{name}" />'
-        cell = f"{img_tag}<br><small><code>{name}</code></small>"
-        current_row.append(cell)
+        current_row.append(img_tag)
         
         if len(current_row) == cols:
             markdown_table.append("| " + " | ".join(current_row) + " |")
             current_row = []
             
     if current_row:
-        # Pad the last row
+        # Pad the last row with transparent base64 spacer images of the same width (80px)
+        # to guarantee all column widths remain perfectly equal in all browsers.
+        spacer = '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="80" height="1" alt="spacer" />'
         while len(current_row) < cols:
-            current_row.append("")
+            current_row.append(spacer)
         markdown_table.append("| " + " | ".join(current_row) + " |")
 
     table_content = "\n".join(markdown_table)
