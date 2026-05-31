@@ -20,31 +20,28 @@ def build_readme():
     pets = sorted(pets, key=lambda p: p["displayName"].lower())
 
     cols = 6
-    markdown_table = []
-    markdown_table.append("| " + " | ".join([""] * cols) + " |")
-    markdown_table.append("|" + "|".join([":---:"] * cols) + "|")
+    html_lines = []
+    html_lines.append('<table width="100%">')
 
-    current_row = []
-    for pet in pets:
-        slug = pet["slug"]
-        name = pet["displayName"]
-        # Use relative path so it renders correctly on both GitHub repository page and local check
-        img_tag = f'<img src="pets/{slug}/base.png" width="80" alt="{name}" />'
-        current_row.append(img_tag)
+    for i in range(0, len(pets), cols):
+        chunk = pets[i : i + cols]
+        html_lines.append("  <tr>")
+        for pet in chunk:
+            slug = pet["slug"]
+            name = pet["displayName"]
+            # Use relative path so it renders correctly on both GitHub repository page and local check
+            img_tag = f'<img src="pets/{slug}/base.png" width="80" alt="{name}" />'
+            html_lines.append(f'    <td align="center" width="16.6%" style="padding: 24px 0;">{img_tag}</td>')
         
-        if len(current_row) == cols:
-            markdown_table.append("| " + " | ".join(current_row) + " |")
-            current_row = []
-            
-    if current_row:
-        # Pad the last row with transparent base64 spacer images of the same width (80px)
-        # to guarantee all column widths remain perfectly equal in all browsers.
-        spacer = '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="80" height="1" alt="spacer" />'
-        while len(current_row) < cols:
-            current_row.append(spacer)
-        markdown_table.append("| " + " | ".join(current_row) + " |")
-
-    table_content = "\n".join(markdown_table)
+        # Pad the last row with empty cells to maintain perfect alignment
+        if len(chunk) < cols:
+            for _ in range(cols - len(chunk)):
+                html_lines.append('    <td align="center" width="16.6%" style="padding: 24px 0;">&nbsp;</td>')
+        
+        html_lines.append("  </tr>")
+        
+    html_lines.append("</table>")
+    table_content = "\n".join(html_lines)
 
     readme_content = f"""# Copet - Interactive Pixel Companions / 像素桌面伴侣
 
