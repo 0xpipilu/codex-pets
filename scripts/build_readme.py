@@ -30,7 +30,7 @@ def build_readme():
         name = pet["displayName"]
         # Use relative path so it renders correctly on both GitHub repository page and local check
         img_tag = f'<img src="pets/{slug}/base.png" width="80" alt="{name}" />'
-        cell = f"{img_tag}<br>**{name}**"
+        cell = f"{img_tag}<br><small><code>{name}</code></small>"
         current_row.append(cell)
         
         if len(current_row) == cols:
