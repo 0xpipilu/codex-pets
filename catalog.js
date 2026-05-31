@@ -1,4 +1,4 @@
-{
+window.__CODEX_PETS__ = {
   "count": 84,
   "pets": [
     {
@@ -1205,4 +1205,4 @@
       "stateCount": 0
     }
   ]
-}
+};

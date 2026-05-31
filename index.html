@@ -1,0 +1,716 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Codex Pets Library</title>
+    <style>
+      :root {
+        --bg: #f4efe5;
+        --paper: rgba(255, 252, 246, 0.88);
+        --paper-strong: #fffaf1;
+        --ink: #1f1b18;
+        --muted: #756859;
+        --line: rgba(61, 42, 21, 0.14);
+        --accent: #b04f1d;
+        --accent-deep: #7d3410;
+        --accent-soft: rgba(176, 79, 29, 0.1);
+        --shadow: 0 24px 60px rgba(69, 40, 12, 0.12);
+        --radius-xl: 28px;
+        --radius-lg: 20px;
+        --radius-md: 14px;
+        --max-width: 1280px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--ink);
+        font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(255, 210, 160, 0.45), transparent 26%),
+          radial-gradient(circle at top right, rgba(255, 242, 211, 0.75), transparent 24%),
+          linear-gradient(180deg, #f8f2e7 0%, #efe6d7 100%);
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .shell {
+        width: min(calc(100% - 32px), var(--max-width));
+        margin: 0 auto;
+        padding: 28px 0 64px;
+      }
+
+      .hero {
+        position: relative;
+        overflow: hidden;
+        padding: 36px;
+        border: 1px solid rgba(122, 88, 40, 0.12);
+        border-radius: 32px;
+        background:
+          linear-gradient(135deg, rgba(255, 248, 238, 0.96), rgba(250, 237, 212, 0.85)),
+          var(--paper);
+        box-shadow: var(--shadow);
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        right: -48px;
+        top: -48px;
+        width: 240px;
+        height: 240px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(176, 79, 29, 0.2), transparent 65%);
+        pointer-events: none;
+      }
+
+      .eyeline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 22px;
+      }
+
+      .mark {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.55);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: linear-gradient(180deg, #df7b32, #983e13);
+        box-shadow: 0 0 0 5px rgba(176, 79, 29, 0.12);
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.95fr);
+        gap: 28px;
+        align-items: end;
+      }
+
+      h1 {
+        margin: 0;
+        max-width: 10ch;
+        font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+        font-size: clamp(3rem, 7vw, 5.8rem);
+        line-height: 0.95;
+        letter-spacing: -0.05em;
+      }
+
+      .lede {
+        max-width: 58ch;
+        margin: 18px 0 0;
+        color: var(--muted);
+        font-size: 1.03rem;
+        line-height: 1.7;
+      }
+
+      .hero-panel {
+        display: grid;
+        gap: 14px;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .stat {
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        background: rgba(255, 255, 255, 0.52);
+        backdrop-filter: blur(12px);
+      }
+
+      .stat-value {
+        display: block;
+        font-family: "Iowan Old Style", "Palatino Linotype", serif;
+        font-size: 2rem;
+        line-height: 1;
+        letter-spacing: -0.04em;
+      }
+
+      .stat-label {
+        display: block;
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+
+      .hero-note {
+        padding: 18px 18px 20px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        background: rgba(255, 255, 255, 0.5);
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      .controls {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 16px;
+        align-items: center;
+        margin-top: 28px;
+      }
+
+      .search {
+        width: 100%;
+        border: 1px solid rgba(86, 57, 24, 0.16);
+        border-radius: 999px;
+        padding: 16px 20px;
+        background: rgba(255, 255, 255, 0.84);
+        color: var(--ink);
+        font: inherit;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+      }
+
+      .search:focus {
+        outline: 2px solid rgba(176, 79, 29, 0.22);
+        border-color: rgba(176, 79, 29, 0.35);
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        white-space: nowrap;
+        padding: 14px 16px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent-deep);
+        font-size: 0.95rem;
+        font-weight: 700;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 360px;
+        gap: 22px;
+        margin-top: 28px;
+      }
+
+      .gallery-card,
+      .detail-card {
+        border: 1px solid var(--line);
+        border-radius: var(--radius-xl);
+        background: var(--paper);
+        backdrop-filter: blur(18px);
+        box-shadow: var(--shadow);
+      }
+
+      .gallery-card {
+        padding: 18px;
+      }
+
+      .detail-card {
+        position: sticky;
+        top: 18px;
+        padding: 20px;
+        min-height: 620px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 16px;
+      }
+
+      .pet-card {
+        display: grid;
+        gap: 14px;
+        padding: 14px;
+        border: 1px solid rgba(91, 63, 28, 0.12);
+        border-radius: var(--radius-lg);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.75), rgba(249, 242, 230, 0.85));
+        cursor: pointer;
+        transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+      }
+
+      .pet-card:hover,
+      .pet-card:focus-visible,
+      .pet-card.active {
+        transform: translateY(-2px);
+        border-color: rgba(176, 79, 29, 0.3);
+        box-shadow: 0 20px 36px rgba(76, 44, 17, 0.12);
+        outline: none;
+      }
+
+      .thumb {
+        display: grid;
+        place-items: center;
+        aspect-ratio: 1.12 / 1;
+        border-radius: 18px;
+        border: 1px solid rgba(86, 57, 24, 0.1);
+        background:
+          linear-gradient(135deg, rgba(255, 250, 244, 0.95), rgba(242, 228, 201, 0.92));
+        overflow: hidden;
+      }
+
+      .thumb img,
+      .detail-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        image-rendering: auto;
+      }
+
+      .pet-name {
+        margin: 0;
+        font-family: "Iowan Old Style", "Palatino Linotype", serif;
+        font-size: 1.32rem;
+        line-height: 1.05;
+      }
+
+      .pet-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .pet-meta span {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(92, 64, 31, 0.08);
+        color: var(--muted);
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+
+      .pet-desc {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.92rem;
+        line-height: 1.55;
+      }
+
+      .section-title {
+        margin: 0 0 14px;
+        font-family: "Iowan Old Style", "Palatino Linotype", serif;
+        font-size: 1.6rem;
+      }
+
+      .detail-empty {
+        display: grid;
+        align-content: center;
+        gap: 12px;
+        min-height: 100%;
+        color: var(--muted);
+      }
+
+      .detail-preview {
+        display: grid;
+        place-items: center;
+        aspect-ratio: 1 / 1;
+        margin-bottom: 18px;
+        border: 1px solid rgba(86, 57, 24, 0.1);
+        border-radius: 22px;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at top, rgba(255, 255, 255, 0.6), transparent 60%),
+          linear-gradient(180deg, rgba(255, 251, 245, 0.96), rgba(243, 229, 204, 0.93));
+      }
+
+      .detail-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .detail-name {
+        margin: 0;
+        font-family: "Iowan Old Style", "Palatino Linotype", serif;
+        font-size: 2rem;
+        line-height: 1;
+      }
+
+      .detail-id {
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .detail-copy {
+        margin: 18px 0;
+        color: var(--muted);
+        line-height: 1.72;
+      }
+
+      .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin: 18px 0;
+      }
+
+      .detail-grid div {
+        padding: 12px;
+        border: 1px solid rgba(86, 57, 24, 0.1);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.55);
+      }
+
+      .detail-grid strong {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 0.78rem;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .detail-links {
+        display: grid;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .detail-links a {
+        display: inline-flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 16px;
+        border: 1px solid rgba(86, 57, 24, 0.1);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.62);
+        text-decoration: none;
+        transition: background 180ms ease, border-color 180ms ease;
+      }
+
+      .detail-links a:hover {
+        background: rgba(255, 255, 255, 0.92);
+        border-color: rgba(176, 79, 29, 0.2);
+      }
+
+      .loading,
+      .empty-state {
+        padding: 42px 20px;
+        text-align: center;
+        color: var(--muted);
+      }
+
+      @media (max-width: 1080px) {
+        .hero-grid,
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .detail-card {
+          position: static;
+          min-height: auto;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .shell {
+          width: min(calc(100% - 20px), var(--max-width));
+          padding-top: 16px;
+        }
+
+        .hero {
+          padding: 24px;
+          border-radius: 26px;
+        }
+
+        .eyeline,
+        .controls {
+          grid-template-columns: 1fr;
+          display: grid;
+        }
+
+        .stats,
+        .detail-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        h1 {
+          max-width: none;
+          font-size: clamp(2.6rem, 14vw, 4rem);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <div class="eyeline">
+          <div class="mark"><span class="dot"></span> Codex Pets Library</div>
+          <div class="pill" id="summary-pill">Loading collection...</div>
+        </div>
+
+        <div class="hero-grid">
+          <div>
+            <h1>Collected pets, ready to browse.</h1>
+            <p class="lede">
+              A compact visual library of Codex pets, each packaged as a runtime-ready folder with
+              its own metadata and spritesheet. Search the collection, inspect each pet, and jump
+              straight to the source files.
+            </p>
+          </div>
+
+          <div class="hero-panel">
+            <div class="stats">
+              <div class="stat">
+                <span class="stat-value" id="pet-count">0</span>
+                <span class="stat-label">Pets indexed</span>
+              </div>
+              <div class="stat">
+                <span class="stat-value" id="state-count">0</span>
+                <span class="stat-label">Named states across the library</span>
+              </div>
+            </div>
+            <div class="hero-note">
+              Tip: enable GitHub Pages on this repository and this file becomes a lightweight pet
+              gallery without any build step.
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <input
+            id="search"
+            class="search"
+            type="search"
+            placeholder="Search by display name, id, folder, or description"
+            aria-label="Search pets"
+          />
+          <div class="pill" id="result-pill">0 visible</div>
+        </div>
+      </section>
+
+      <section class="layout" aria-live="polite">
+        <div class="gallery-card">
+          <h2 class="section-title">Collection</h2>
+          <div id="gallery" class="grid">
+            <div class="loading">Loading pets...</div>
+          </div>
+        </div>
+
+        <aside class="detail-card">
+          <div id="detail" class="detail-empty">
+            <h2 class="section-title">Pet details</h2>
+            <p>Select a pet to inspect its package, runtime id, state count, and source files.</p>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <script src="./catalog.js"></script>
+    <script>
+      const galleryEl = document.getElementById("gallery");
+      const detailEl = document.getElementById("detail");
+      const searchEl = document.getElementById("search");
+      const petCountEl = document.getElementById("pet-count");
+      const stateCountEl = document.getElementById("state-count");
+      const resultPillEl = document.getElementById("result-pill");
+      const summaryPillEl = document.getElementById("summary-pill");
+
+      let allPets = [];
+      let visiblePets = [];
+      let activeSlug = null;
+
+      function trimText(text, maxLength) {
+        if (!text) return "No description available.";
+        return text.length > maxLength ? `${text.slice(0, maxLength - 1)}...` : text;
+      }
+
+      function renderDetail(pet) {
+        if (!pet) {
+          detailEl.className = "detail-empty";
+          detailEl.innerHTML = `
+            <h2 class="section-title">Pet details</h2>
+            <p>Select a pet to inspect its package, runtime id, state count, and source files.</p>
+          `;
+          return;
+        }
+
+        detailEl.className = "";
+        detailEl.innerHTML = `
+          <div class="detail-preview">
+            <img src="${pet.spritesheetFile}" alt="${pet.displayName} spritesheet preview" loading="eager" />
+          </div>
+          <div class="detail-header">
+            <div>
+              <h2 class="detail-name">${pet.displayName}</h2>
+              <div class="detail-id">${pet.id}</div>
+            </div>
+            <div class="pill">${pet.stateCount} states</div>
+          </div>
+          <p class="detail-copy">${pet.description || "No description available."}</p>
+          <div class="detail-grid">
+            <div><strong>Folder</strong>${pet.slug}</div>
+            <div><strong>Runtime id</strong>${pet.id}</div>
+            <div><strong>Spritesheet</strong>${pet.spritesheetPath}</div>
+            <div><strong>States</strong>${pet.stateNames.join(", ") || "None listed"}</div>
+          </div>
+          <div class="detail-links">
+            <a href="${pet.folder}/" target="_blank" rel="noreferrer">
+              <span>Open pet folder</span>
+              <span>↗</span>
+            </a>
+            <a href="${pet.petJsonPath}" target="_blank" rel="noreferrer">
+              <span>Open pet.json</span>
+              <span>↗</span>
+            </a>
+            <a href="${pet.spritesheetFile}" target="_blank" rel="noreferrer">
+              <span>Open spritesheet.webp</span>
+              <span>↗</span>
+            </a>
+          </div>
+        `;
+      }
+
+      function renderGallery() {
+        if (!visiblePets.length) {
+          galleryEl.innerHTML = `<div class="empty-state">No pets match that search yet.</div>`;
+          renderDetail(null);
+          resultPillEl.textContent = "0 visible";
+          return;
+        }
+
+        resultPillEl.textContent = `${visiblePets.length} visible`;
+        galleryEl.innerHTML = visiblePets
+          .map(
+            (pet) => `
+              <article
+                class="pet-card${pet.slug === activeSlug ? " active" : ""}"
+                data-slug="${pet.slug}"
+                tabindex="0"
+                aria-label="View details for ${pet.displayName}"
+              >
+                <div class="thumb">
+                  <img src="${pet.spritesheetFile}" alt="${pet.displayName} spritesheet" loading="lazy" />
+                </div>
+                <div>
+                  <h3 class="pet-name">${pet.displayName}</h3>
+                </div>
+                <div class="pet-meta">
+                  <span>${pet.id}</span>
+                  <span>${pet.stateCount} states</span>
+                </div>
+                <p class="pet-desc">${trimText(pet.description, 126)}</p>
+              </article>
+            `
+          )
+          .join("");
+
+        const cards = Array.from(document.querySelectorAll(".pet-card"));
+        cards.forEach((card) => {
+          card.addEventListener("click", () => {
+            activeSlug = card.dataset.slug;
+            renderGallery();
+            renderDetail(visiblePets.find((pet) => pet.slug === activeSlug));
+          });
+          card.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              card.click();
+            }
+          });
+        });
+      }
+
+      function applySearch() {
+        const query = searchEl.value.trim().toLowerCase();
+        visiblePets = allPets.filter((pet) => {
+          const haystack = [
+            pet.displayName,
+            pet.id,
+            pet.slug,
+            pet.description,
+            ...(pet.stateNames || []),
+          ]
+            .join(" ")
+            .toLowerCase();
+          return haystack.includes(query);
+        });
+
+        if (!visiblePets.some((pet) => pet.slug === activeSlug)) {
+          activeSlug = visiblePets[0]?.slug ?? null;
+        }
+
+        renderGallery();
+        renderDetail(visiblePets.find((pet) => pet.slug === activeSlug) || null);
+      }
+
+      async function boot() {
+        try {
+          const catalog =
+            typeof window.__CODEX_PETS__ === "object" && window.__CODEX_PETS__
+              ? window.__CODEX_PETS__
+              : await (async () => {
+                  const response = await fetch("./index.json");
+                  if (!response.ok) {
+                    throw new Error(`Failed to load index.json (${response.status})`);
+                  }
+                  return response.json();
+                })();
+          allPets = (catalog.pets || []).sort((a, b) => a.displayName.localeCompare(b.displayName));
+          visiblePets = [...allPets];
+          activeSlug = visiblePets[0]?.slug ?? null;
+
+          petCountEl.textContent = String(catalog.count || allPets.length);
+          stateCountEl.textContent = String(
+            allPets.reduce((sum, pet) => sum + (pet.stateCount || 0), 0)
+          );
+          summaryPillEl.textContent = `${catalog.count || allPets.length} pets indexed`;
+
+          renderGallery();
+          renderDetail(visiblePets[0] || null);
+        } catch (error) {
+          console.error(error);
+          galleryEl.innerHTML = `
+            <div class="empty-state">
+              Could not load the generated catalog. Run
+              <code>python3 scripts/build_index.py</code> and make sure
+              <code>catalog.js</code> is present beside this file.
+            </div>
+          `;
+          detailEl.className = "detail-empty";
+          detailEl.innerHTML = `
+            <h2 class="section-title">Preview unavailable</h2>
+            <p>The gallery could not find its generated data source.</p>
+          `;
+          summaryPillEl.textContent = "Preview unavailable";
+        }
+      }
+
+      searchEl.addEventListener("input", applySearch);
+      boot();
+    </script>
+  </body>
+</html>
