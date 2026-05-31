@@ -43,7 +43,7 @@ def build_readme():
     html_lines.append("</table>")
     table_content = "\n".join(html_lines)
 
-    readme_content = f"""# Copet - Interactive Pixel Companions / 像素桌面伴侣
+    readme_content = f"""# Codpet - Interactive Pixel Companions / 像素桌面伴侣
 
 [English](#english) | [简体中文](#简体中文)
 
@@ -52,15 +52,15 @@ def build_readme():
 <a name="english"></a>
 ## English Description
 
-**Copet** (formerly Codex Pets) is a curated collection of beautiful animated pixel companions designed to live in your editor or developer environment.
+**Codpet** (formerly Codex Pets) is a curated collection of beautiful animated pixel companions designed to live in your editor or developer environment.
 
 This repository serves as:
 - **Asset Storage**: Every pet is neatly organized in its own folder containing its runtime metadata (`pet.json`) and spritesheet (`spritesheet.webp`).
-- **Interactive Showcase**: A high-performance, minimalist static web gallery deployed on GitHub Pages at [https://0xpipilu.github.io/copet/](https://0xpipilu.github.io/copet/) (formerly `codex-pets`).
+- **Interactive Showcase**: A high-performance, minimalist static web gallery deployed on GitHub Pages at [https://0xpipilu.github.io/codpet/](https://0xpipilu.github.io/codpet/) (formerly `codex-pets`).
 
 ### Live Preview & Showcase
 
-Browse the library online at: **[https://0xpipilu.github.io/copet/](https://0xpipilu.github.io/copet/)**
+Browse the library online at: **[https://0xpipilu.github.io/codpet/](https://0xpipilu.github.io/codpet/)**
 - **Hover to Preview**: Move your mouse over any pet to see its accelerated interactive animations.
 - **One-click Download**: Click `Download` on hover to grab a packaged `.zip` containing the pet's complete assets for easy installation.
 
@@ -97,15 +97,15 @@ python3 scripts/generate_thumbnails.py
 <a name="简体中文"></a>
 ## 简体中文说明
 
-**Copet**（原名 Codex Pets）是一个专为编辑器和开发环境设计的像素动画宠物精选库。
+**Codpet**（原名 Codex Pets）是一个专为编辑器和开发环境设计的像素动画宠物精选库。
 
 本仓库主要用途：
 - **资源存储**：每只宠物拥有独立目录，包含其运行时元数据 (`pet.json`) 及精灵图 (`spritesheet.webp`)。
-- **互动展示页**：部署于 GitHub Pages 的极简、高性能展示画廊，线上地址：[https://0xpipilu.github.io/copet/](https://0xpipilu.github.io/copet/)。
+- **互动展示页**：部署于 GitHub Pages 的极简、高性能展示画廊，线上地址：[https://0xpipilu.github.io/codpet/](https://0xpipilu.github.io/codpet/)。
 
 ### 线上互动预览
 
-在线浏览地址：**[https://0xpipilu.github.io/copet/](https://0xpipilu.github.io/copet/)**
+在线浏览地址：**[https://0xpipilu.github.io/codpet/](https://0xpipilu.github.io/codpet/)**
 - **悬停预览**：将鼠标悬停在任意宠物上，即可加速循环预览其所有状态的动态效果。
 - **一键下载**：悬浮时点击 `Download` 即可一键下载包含该宠物完整元数据与精灵图的 `.zip` 压缩包。
 
@@ -141,7 +141,7 @@ python3 scripts/generate_thumbnails.py
 
 ## Pets Gallery / 宠物画廊
 
-Here is a visual list of all the **{len(pets)}** interactive pixel pets available in Copet:
+Here is a visual list of all the **{len(pets)}** interactive pixel pets available in Codpet:
 
 {table_content}
 """
