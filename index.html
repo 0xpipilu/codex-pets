@@ -69,9 +69,26 @@
       }
 
       .logo {
-        font-size: 13px;
-        font-weight: 600;
-        letter-spacing: 0.04em;
+        display: flex;
+        align-items: center;
+        color: var(--ink);
+        transition: color 150ms ease, filter 150ms ease;
+      }
+
+      .logo:hover {
+        color: #56f264;
+        filter: drop-shadow(0 0 6px rgba(86, 242, 100, 0.5));
+      }
+
+      .logo svg {
+        height: 14px;
+        width: auto;
+        display: block;
+        transition: transform 150ms ease;
+      }
+
+      .logo:hover svg {
+        transform: scale(1.03);
       }
 
       /* — Gallery — */
@@ -207,7 +224,22 @@
   <body>
     <header class="header">
       <div class="shell header-inner">
-        <a href="./" class="logo" style="color: inherit; text-decoration: none;">codpet</a>
+        <a href="./" class="logo" aria-label="Codpet Home">
+          <svg viewBox="0 0 174 24" stroke="currentColor" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- C -->
+            <path d="M 21,6 V 3 H 3 V 21 H 21 V 18" stroke-width="6" stroke-linejoin="round" stroke-linecap="butt" />
+            <!-- O -->
+            <rect x="33" y="3" width="18" height="18" rx="2" ry="2" stroke-width="6" stroke-linejoin="round" />
+            <!-- D -->
+            <path d="M 63,3 H 72 A 9,9 0 0 1 81,12 A 9,9 0 0 1 72,21 H 63 Z" stroke-width="6" stroke-linejoin="round" />
+            <!-- P -->
+            <path d="M 93,21 V 3 H 111 V 12 H 93" stroke-width="6" stroke-linejoin="round" stroke-linecap="butt" />
+            <!-- E -->
+            <path d="M 141,3 H 123 V 21 H 141 M 123,12 H 135" stroke-width="6" stroke-linejoin="round" stroke-linecap="butt" />
+            <!-- T -->
+            <path d="M 153,3 H 171 M 162,3 V 21" stroke-width="6" stroke-linejoin="round" stroke-linecap="butt" />
+          </svg>
+        </a>
       </div>
     </header>
 
@@ -218,7 +250,22 @@
     </main>
 
     <footer class="footer">
-      <div class="shell">codpet</div>
+      <div class="shell" style="display: flex; justify-content: center;">
+        <svg viewBox="0 0 174 24" stroke="currentColor" fill="none" xmlns="http://www.w3.org/2000/svg" style="height: 10px; width: auto; opacity: 0.5;">
+          <!-- C -->
+          <path d="M 21,6 V 3 H 3 V 21 H 21 V 18" stroke-width="6" stroke-linejoin="round" stroke-linecap="butt" />
+          <!-- O -->
+          <rect x="33" y="3" width="18" height="18" rx="2" ry="2" stroke-width="6" stroke-linejoin="round" />
+          <!-- D -->
+          <path d="M 63,3 H 72 A 9,9 0 0 1 81,12 A 9,9 0 0 1 72,21 H 63 Z" stroke-width="6" stroke-linejoin="round" />
+          <!-- P -->
+          <path d="M 93,21 V 3 H 111 V 12 H 93" stroke-width="6" stroke-linejoin="round" stroke-linecap="butt" />
+          <!-- E -->
+          <path d="M 141,3 H 123 V 21 H 141 M 123,12 H 135" stroke-width="6" stroke-linejoin="round" stroke-linecap="butt" />
+          <!-- T -->
+          <path d="M 153,3 H 171 M 162,3 V 21" stroke-width="6" stroke-linejoin="round" stroke-linecap="butt" />
+        </svg>
+      </div>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
