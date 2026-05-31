@@ -211,7 +211,7 @@
 
       .layout {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) 360px;
+        grid-template-columns: 1fr;
         gap: 22px;
         margin-top: 28px;
       }
@@ -230,10 +230,10 @@
       }
 
       .detail-card {
-        position: sticky;
-        top: 18px;
-        padding: 20px;
-        min-height: 620px;
+        order: -1;
+        position: static;
+        padding: 26px;
+        min-height: auto;
       }
 
       .grid {
@@ -356,17 +356,49 @@
         color: var(--muted);
       }
 
+      .detail-shell {
+        display: grid;
+        grid-template-columns: minmax(320px, 1.08fr) minmax(0, 1fr);
+        gap: 24px;
+        align-items: start;
+      }
+
       .detail-preview {
         display: grid;
-        place-items: center;
-        margin-bottom: 18px;
-        padding: 16px;
+        gap: 12px;
+        margin-bottom: 0;
+        padding: 18px;
         border: 1px solid rgba(86, 57, 24, 0.1);
         border-radius: 22px;
         overflow: hidden;
         background:
           radial-gradient(circle at top, rgba(255, 255, 255, 0.6), transparent 60%),
           linear-gradient(180deg, rgba(255, 251, 245, 0.96), rgba(243, 229, 204, 0.93));
+      }
+
+      .detail-copy-panel {
+        display: grid;
+        gap: 16px;
+      }
+
+      .detail-kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--accent-deep);
+      }
+
+      .detail-kicker::before {
+        content: "";
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: linear-gradient(180deg, #5e78ff, #8aa1ff);
+        box-shadow: 0 0 0 5px rgba(94, 120, 255, 0.12);
       }
 
       .detail-preview-copy {
@@ -396,17 +428,40 @@
         font-size: 0.92rem;
       }
 
+      .detail-command {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        width: fit-content;
+        max-width: 100%;
+        padding: 14px 18px;
+        border: 1px solid rgba(94, 120, 255, 0.16);
+        border-radius: 18px;
+        background: linear-gradient(180deg, rgba(242, 246, 255, 0.98), rgba(229, 236, 255, 0.94));
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        color: #3047b0;
+        font-weight: 700;
+        overflow-x: auto;
+      }
+
+      .detail-command code {
+        font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, monospace;
+        font-size: 0.95rem;
+        color: #1d2e80;
+      }
+
       .detail-copy {
-        margin: 18px 0;
+        margin: 0;
         color: var(--muted);
         line-height: 1.72;
+        font-size: 1rem;
       }
 
       .detail-grid {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 10px;
-        margin: 18px 0;
+        margin: 0;
       }
 
       .detail-grid div {
@@ -428,7 +483,7 @@
       .state-strip {
         display: grid;
         gap: 10px;
-        margin: 18px 0 8px;
+        margin: 0;
       }
 
       .state-strip-title {
@@ -496,7 +551,8 @@
       .detail-links {
         display: grid;
         gap: 10px;
-        margin-top: 20px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin-top: 4px;
       }
 
       .detail-links a {
@@ -526,13 +582,9 @@
 
       @media (max-width: 1080px) {
         .hero-grid,
+        .detail-shell,
         .layout {
           grid-template-columns: 1fr;
-        }
-
-        .detail-card {
-          position: static;
-          min-height: auto;
         }
       }
 
@@ -555,7 +607,8 @@
 
         .stats,
         .detail-grid,
-        .state-grid {
+        .state-grid,
+        .detail-links {
           grid-template-columns: 1fr;
         }
 
@@ -703,6 +756,13 @@
         window.history.replaceState({}, "", url);
       }
 
+      function getShareUrl(slug) {
+        const url = new URL(window.location.href);
+        url.searchParams.set("pet", slug);
+        url.hash = slug;
+        return url.toString();
+      }
+
       function buildSpriteMarkup({ pet, row, scale, label, staticFrame = false, compact = false }) {
         const atlas = pet.atlas || FALLBACK_ATLAS;
         const classes = ["sprite-player"];
@@ -809,6 +869,7 @@
 
         const previewRows = getPreviewRows(pet);
         const activeRow = getActivePreviewRow(pet) || previewRows[0];
+        const shareUrl = getShareUrl(pet.slug);
         const stateButtons = previewRows
           .map(
             (row) => `
@@ -839,36 +900,59 @@
 
         detailEl.className = "";
         detailEl.innerHTML = `
-          <div class="detail-preview">
-            <div class="sprite-stage detail">
-              ${buildSpriteMarkup({
-                pet,
-                row: activeRow,
-                scale: 0.88,
-                label: `${pet.displayName} ${activeRow.label} animation`,
-              })}
+          <div class="detail-shell">
+            <div class="detail-preview">
+              <div class="sprite-stage detail">
+                ${buildSpriteMarkup({
+                  pet,
+                  row: activeRow,
+                  scale: 1.05,
+                  label: `${pet.displayName} ${activeRow.label} animation`,
+                })}
+              </div>
+              <div class="sprite-caption">
+                <strong>${escapeHtml(activeRow.label)}</strong> · Row ${activeRow.rowIndex} ·
+                ${activeRow.frames} frames
+              </div>
+              <p class="detail-preview-copy">
+                ${escapeHtml(activeRow.notes || "This atlas row is available for preview from the packaged spritesheet.")}
+              </p>
             </div>
-            <div class="sprite-caption">
-              <strong>${escapeHtml(activeRow.label)}</strong> · Row ${activeRow.rowIndex} ·
-              ${activeRow.frames} frames
+            <div class="detail-copy-panel">
+              <div class="detail-kicker">Featured pet preview</div>
+              <div class="detail-header">
+                <div>
+                  <h2 class="detail-name">${escapeHtml(pet.displayName)}</h2>
+                  <div class="detail-id">${escapeHtml(pet.id)}</div>
+                </div>
+                <div class="pill">${pet.stateCount} states</div>
+              </div>
+              <p class="detail-copy">${escapeHtml(pet.description || "No description available.")}</p>
+              <div class="detail-command">
+                <span>Direct link</span>
+                <code>${escapeHtml(shareUrl)}</code>
+              </div>
+              <div class="detail-grid">
+                <div><strong>Folder</strong>${escapeHtml(pet.slug)}</div>
+                <div><strong>Runtime id</strong>${escapeHtml(pet.id)}</div>
+                <div><strong>Spritesheet</strong>${escapeHtml(pet.spritesheetPath)}</div>
+                <div><strong>States</strong>${escapeHtml(pet.stateNames.join(", ") || "None listed")}</div>
+              </div>
+              <div class="detail-links">
+                <a href="${shareUrl}">
+                  <span>Open direct link</span>
+                  <span>↗</span>
+                </a>
+                <a href="${assetUrl(pet.petJsonPath)}" target="_blank" rel="noreferrer">
+                  <span>Open pet.json</span>
+                  <span>↗</span>
+                </a>
+                <a href="${assetUrl(pet.spritesheetFile)}" target="_blank" rel="noreferrer">
+                  <span>Open spritesheet.webp</span>
+                  <span>↗</span>
+                </a>
+              </div>
             </div>
-            <p class="detail-preview-copy">
-              ${escapeHtml(activeRow.notes || "This atlas row is available for preview from the packaged spritesheet.")}
-            </p>
-          </div>
-          <div class="detail-header">
-            <div>
-              <h2 class="detail-name">${escapeHtml(pet.displayName)}</h2>
-              <div class="detail-id">${escapeHtml(pet.id)}</div>
-            </div>
-            <div class="pill">${pet.stateCount} states</div>
-          </div>
-          <p class="detail-copy">${escapeHtml(pet.description || "No description available.")}</p>
-          <div class="detail-grid">
-            <div><strong>Folder</strong>${escapeHtml(pet.slug)}</div>
-            <div><strong>Runtime id</strong>${escapeHtml(pet.id)}</div>
-            <div><strong>Spritesheet</strong>${escapeHtml(pet.spritesheetPath)}</div>
-            <div><strong>States</strong>${escapeHtml(pet.stateNames.join(", ") || "None listed")}</div>
           </div>
           <div class="state-strip">
             <p class="state-strip-title">Atlas preview</p>
@@ -879,12 +963,12 @@
               <span>Open pet folder</span>
               <span>↗</span>
             </a>
-            <a href="${assetUrl(pet.petJsonPath)}" target="_blank" rel="noreferrer">
-              <span>Open pet.json</span>
+            <a href="${shareUrl}">
+              <span>Share selected pet</span>
               <span>↗</span>
             </a>
             <a href="${assetUrl(pet.spritesheetFile)}" target="_blank" rel="noreferrer">
-              <span>Open spritesheet.webp</span>
+              <span>Inspect atlas image</span>
               <span>↗</span>
             </a>
           </div>
