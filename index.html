@@ -10,6 +10,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
 
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RT5ZG7801R"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-RT5ZG7801R');
+    </script>
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://cod.pet/" />
@@ -653,6 +663,14 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
           // Increment local download count
           const extra = parseInt(localStorage.getItem(`dl_${pet.slug}`) || "0", 10) + 1;
           localStorage.setItem(`dl_${pet.slug}`, extra);
+
+          // Google Analytics Event Tracking for Download
+          if (typeof gtag === "function") {
+            gtag("event", "download_pet", {
+              "pet_name": pet.displayName,
+              "pet_slug": pet.slug
+            });
+          }
         } catch (e) {
           console.error("Download failed:", e);
         }
