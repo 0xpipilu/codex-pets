@@ -546,6 +546,13 @@
         return parseInt(localStorage.getItem(`dl_${slug}`) || "0", 10);
       }
 
+      function getDisplayDownloadCount(slug) {
+        if (window.globalStats && window.globalStats.downloads && typeof window.globalStats.downloads[slug] === "number") {
+          return window.globalStats.downloads[slug];
+        }
+        return getMockDownloadCount(slug);
+      }
+
       /* ---- Sprite engine ---- */
       function loadSprite(el) {
         const a = el._atlas;
@@ -717,6 +724,17 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
           const extra = parseInt(localStorage.getItem(`dl_${pet.slug}`) || "0", 10) + 1;
           localStorage.setItem(`dl_${pet.slug}`, extra);
 
+          // Increment global download count asynchronously
+          fetch(`https://countapi.mileshilliard.com/api/v1/hit/codpet_dl_${pet.slug}`)
+            .then(r => r.json())
+            .then(data => {
+              if (data && typeof data.value === "number") {
+                window.globalStats.downloads[pet.slug] = data.value;
+                btn.innerHTML = DL_ICON + " Download (" + data.value + ")";
+              }
+            })
+            .catch(err => console.error("Global increment failed:", err));
+
           // Google Analytics Event Tracking for Download
           if (typeof gtag === "function") {
             gtag("event", "download_pet", {
@@ -729,7 +747,7 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
         }
 
         btn.classList.remove("busy");
-        btn.innerHTML = DL_ICON + " Download (" + getMockDownloadCount(pet.slug) + ")";
+        btn.innerHTML = DL_ICON + " Download (" + getDisplayDownloadCount(pet.slug) + ")";
       }
 
       /* ---- Render ---- */
@@ -749,7 +767,7 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
               <div class="tile-label">
                 <div class="tile-name">${esc(pet.displayName)}</div>
                 <button type="button" class="tile-dl" data-slug="${pet.slug}">
-                  ${DL_ICON} Download (${getMockDownloadCount(pet.slug)})
+                  ${DL_ICON} Download (${getDisplayDownloadCount(pet.slug)})
                 </button>
               </div>
             </div>`;
@@ -799,6 +817,45 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
         });
       }
 
+      window.globalStats = {
+        downloads: {},
+        pageviews: 0
+      };
+
+      async function loadGlobalStats() {
+        // 1. Log / fetch global pageviews
+        try {
+          const res = await fetch("https://countapi.mileshilliard.com/api/v1/hit/codpet_global_pageviews");
+          if (res.ok) {
+            const data = await res.json();
+            window.globalStats.pageviews = data.value || 0;
+          }
+        } catch (e) {
+          console.error("Failed to fetch global pageviews:", e);
+        }
+
+        // 2. Load global downloads for all pets sequentially with a tiny delay
+        for (const pet of allPets) {
+          try {
+            const res = await fetch(`https://countapi.mileshilliard.com/api/v1/get/codpet_dl_${pet.slug}`);
+            if (res.ok) {
+              const data = await res.json();
+              window.globalStats.downloads[pet.slug] = data.value || 0;
+              
+              // Dynamically update the specific button count if rendered
+              const btn = document.querySelector(`.tile-dl[data-slug="${pet.slug}"]`);
+              if (btn) {
+                btn.innerHTML = DL_ICON + " Download (" + (data.value || 0) + ")";
+              }
+            }
+          } catch (e) {
+            console.error(`Failed to load global downloads for ${pet.slug}:`, e);
+          }
+          // 30ms delay to prevent rate limits and CPU spikes
+          await new Promise(r => setTimeout(r, 30));
+        }
+      }
+
       /* ---- Boot ---- */
       (async function boot() {
         try {
@@ -808,6 +865,7 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
 
           allPets = catalog.pets || [];
           renderGallery();
+          loadGlobalStats();
           
           // Page view tracking
           const views = parseInt(localStorage.getItem("page_views") || "0", 10) + 1;
@@ -825,24 +883,41 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
           function openAdminPanel() {
             statPageviews.textContent = localStorage.getItem("page_views") || "1";
             
-            let totalDls = 0;
+            // Set global pageviews
+            const statPageviewsGlobal = document.getElementById("statPageviewsGlobal");
+            if (statPageviewsGlobal) {
+              statPageviewsGlobal.textContent = window.globalStats.pageviews || "—";
+            }
+            
+            let totalDlsLocal = 0;
+            let totalDlsGlobal = 0;
             let listHtml = "";
             
             allPets.forEach(pet => {
-              const count = parseInt(localStorage.getItem(`dl_${pet.slug}`) || "0", 10);
-              totalDls += count;
+              const countLocal = parseInt(localStorage.getItem(`dl_${pet.slug}`) || "0", 10);
+              const countGlobal = window.globalStats.downloads[pet.slug] || 0;
               
-              if (count > 0) {
+              totalDlsLocal += countLocal;
+              totalDlsGlobal += countGlobal;
+              
+              if (countLocal > 0 || countGlobal > 0) {
                 listHtml += `
                   <div class="admin-list-item">
                     <span class="admin-list-name">${esc(pet.displayName)}</span>
-                    <span class="admin-list-val">${count} downloads</span>
+                    <span class="admin-list-val">
+                      ${countLocal} local / <strong style="color:#4CAF50;">${countGlobal} global</strong>
+                    </span>
                   </div>`;
               }
             });
             
-            statDownloads.textContent = totalDls;
-            adminDownloadsList.innerHTML = listHtml || `<div style="text-align:center; color:rgba(0,0,0,0.4); font-size:12px; padding:12px 0;">No downloads recorded on this browser yet.</div>`;
+            statDownloads.textContent = totalDlsLocal;
+            const statDownloadsGlobal = document.getElementById("statDownloadsGlobal");
+            if (statDownloadsGlobal) {
+              statDownloadsGlobal.textContent = totalDlsGlobal || "0";
+            }
+            
+            adminDownloadsList.innerHTML = listHtml || `<div style="text-align:center; color:rgba(0,0,0,0.4); font-size:12px; padding:12px 0;">No downloads recorded yet.</div>`;
             adminPanel.classList.add("active");
           }
 
@@ -899,23 +974,31 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
               <div class="admin-stat-lbl">Pageviews (Local)</div>
             </div>
             <div class="admin-stat-card">
+              <div id="statPageviewsGlobal" class="admin-stat-val">0</div>
+              <div class="admin-stat-lbl">Pageviews (Global)</div>
+            </div>
+            <div class="admin-stat-card">
               <div id="statDownloads" class="admin-stat-val">0</div>
               <div class="admin-stat-lbl">Downloads (Local)</div>
+            </div>
+            <div class="admin-stat-card">
+              <div id="statDownloadsGlobal" class="admin-stat-val">0</div>
+              <div class="admin-stat-lbl">Downloads (Global)</div>
             </div>
           </div>
           
           <div>
-            <div class="admin-section-title">Downloads by Pet (This Device)</div>
+            <div class="admin-section-title">Downloads by Pet (Local / Global)</div>
             <div id="adminDownloadsList" class="admin-list">
               <!-- Dynamically populated -->
             </div>
           </div>
           
           <div class="admin-info-card">
-            <strong>🌐 How to View Global Stats?</strong><br>
-            Because this is a static site hosted on GitHub Pages, global metrics are tracked via exterior integrations:<br>
-            • <strong>Pageviews & Clones:</strong> Check your GitHub repository -> <strong>Insights -> Traffic</strong> tab.<br>
-            • <strong>Analytics Panel:</strong> We can easily connect <strong>Google Analytics (GA4)</strong> or <strong>Microsoft Clarity</strong>.
+            <strong>🌐 Real-Time Global Stats Enabled!</strong><br>
+            Global metrics are aggregated dynamically across all browsers and devices in real-time:<br>
+            • <strong>Pageviews & Downloads:</strong> Live serverless counts mapped from global hits.<br>
+            • <strong>Local Stats:</strong> Tracked in your current browser's localStorage.
           </div>
           
           <div class="admin-actions">
