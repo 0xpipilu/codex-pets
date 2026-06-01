@@ -72,11 +72,22 @@ def main():
                 cropped.save(output_path, "PNG", optimize=True)
                 print(f"Created base.png for {slug}")
                 
+                # For animated.svg (6 frames)
+                idle_strip = img.crop((0, top, fw * 6, top + fh))
+                idle_datas = idle_strip.getdata()
+                idle_newData = []
+                for item in idle_datas:
+                    if item[0] > 230 and item[1] < 40 and item[2] > 230:
+                        idle_newData.append((0, 0, 0, 0))
+                    else:
+                        idle_newData.append(item)
+                idle_strip.putdata(idle_newData)
+                
                 # Generate 50% resized idle strip for ultra-lightweight embedded base64 animation
                 # NEAREST resampling preserves crisp pixel-art edges perfectly!
                 rw = 96
                 rh = 104
-                resized_strip = cropped.resize((rw * 6, rh), Image.Resampling.NEAREST)
+                resized_strip = idle_strip.resize((rw * 6, rh), Image.Resampling.NEAREST)
                 
                 # Compress highly using WebP quality 90 to keep it extremely small (~30KB)
                 import base64
