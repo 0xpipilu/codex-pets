@@ -118,123 +118,123 @@ Here is a visual list of all the **89** interactive pixel pets available in Codp
 
 <table align="center">
   <tr>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/battle-damaged-idle/base.png" width="80" alt="Battle-Damaged Idle" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/blackbird/base.png" width="80" alt="Blackbird" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/brass-reed/base.png" width="80" alt="Brass Reed" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/brassbun/base.png" width="80" alt="Brassbun" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/brassprout/base.png" width="80" alt="Brassprout" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/dusty/base.png" width="80" alt="Dusty" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/grit/base.png" width="80" alt="Grit" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/pinka/base.png" width="80" alt="Pinka" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/patch/base.png" width="80" alt="Patch" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/miso/base.png" width="80" alt="Miso" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/nib/base.png" width="80" alt="Nib" /></td>
+  </tr>
+  <tr>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/rook/base.png" width="80" alt="Rook" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/bruno/base.png" width="80" alt="Bruno" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/pebb/base.png" width="80" alt="Pebb" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/skipp/base.png" width="80" alt="Skipp" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/pip/base.png" width="80" alt="Pip" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/brew/base.png" width="80" alt="Brew" /></td>
   </tr>
   <tr>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/brigbeak/base.png" width="80" alt="Brigbeak" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/brine-star/base.png" width="80" alt="Brine Star" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/brinepaw/base.png" width="80" alt="Brinepaw" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/bruno/base.png" width="80" alt="Bruno" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/Budley-pet/base.png" width="80" alt="Budley" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/spike/base.png" width="80" alt="Spike" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/spot/base.png" width="80" alt="Spot" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/sunny/base.png" width="80" alt="Sunny" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/luna/base.png" width="80" alt="Luna" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/glint/base.png" width="80" alt="Glint" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/whisk/base.png" width="80" alt="Whisk" /></td>
+  </tr>
+  <tr>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/snoo/base.png" width="80" alt="Snoo" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/tomo/base.png" width="80" alt="Tomo" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/jem/base.png" width="80" alt="Jem" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/pinky/base.png" width="80" alt="Pinky" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/dart/base.png" width="80" alt="Dart" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/koi/base.png" width="80" alt="Koi" /></td>
+  </tr>
+  <tr>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/heron/base.png" width="80" alt="Heron" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/stilt/base.png" width="80" alt="Stilt" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/marten/base.png" width="80" alt="Marten" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/scarlet-ibis/base.png" width="80" alt="Scarlet Ibis" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/rosefinch/base.png" width="80" alt="Rosefinch" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/vermora/base.png" width="80" alt="Vermora" /></td>
+  </tr>
+  <tr>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/tsuru/base.png" width="80" alt="tsuru" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/velmour/base.png" width="80" alt="velmour" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/flamingo/base.png" width="80" alt="flamingo" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/white-eye/base.png" width="80" alt="White-Eye" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/turaco/base.png" width="80" alt="Turaco" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/cardinal/base.png" width="80" alt="Cardinal" /></td>
+  </tr>
+  <tr>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/honeybee/base.png" width="80" alt="Honeybee" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/blackbird/base.png" width="80" alt="Blackbird" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/redcheek/base.png" width="80" alt="Redcheek" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/droopy7/base.png" width="80" alt="Droopy-7" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/mechanical-maze-knight/base.png" width="80" alt="Mechanical Maze Knight" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/butch-dog/base.png" width="80" alt="Butch Dog" /></td>
   </tr>
   <tr>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/cardinal/base.png" width="80" alt="Cardinal" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/castle-guard/base.png" width="80" alt="Castle Guard" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/climber-stick/base.png" width="80" alt="Climber" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/rustango/base.png" width="80" alt="Rustango" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/rustveil/base.png" width="80" alt="Rustveil" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/rustbeak/base.png" width="80" alt="RustBeak" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/brassbun/base.png" width="80" alt="Brassbun" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/copper-cat-package/base.png" width="80" alt="Copper Cat" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/brassprout/base.png" width="80" alt="Brassprout" /></td>
+  </tr>
+  <tr>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/curlcap-pet/base.png" width="80" alt="Curlcap" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/tinward-pet/base.png" width="80" alt="Tinward" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/Budley-pet/base.png" width="80" alt="Budley" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/walle/base.png" width="80" alt="Scrapling" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/wheelbox/base.png" width="80" alt="Wheelbox" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/battle-damaged-idle/base.png" width="80" alt="Battle-Damaged Idle" /></td>
+  </tr>
+  <tr>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/split-chip/base.png" width="80" alt="Split Chip" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/rivet-puff/base.png" width="80" alt="Rivet Puff" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/moss-maw/base.png" width="80" alt="Moss Maw" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/tavern-lampbot/base.png" width="80" alt="Tavern Lampbot" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/mean guard/base.png" width="80" alt="Mean Guard" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/machi-foxy/base.png" width="80" alt="Machi Foxy" /></td>
+  </tr>
+  <tr>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/glowtail/base.png" width="80" alt="Glowtail" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/brine-star/base.png" width="80" alt="Brine Star" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/inkbit/base.png" width="80" alt="Inkbit" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/brinepaw/base.png" width="80" alt="Brinepaw" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/brigbeak/base.png" width="80" alt="Brigbeak" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/dandy-beak/base.png" width="80" alt="Dandy Beak" /></td>
   </tr>
   <tr>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/dart/base.png" width="80" alt="Dart" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/dog-creak/base.png" width="80" alt="Dog Creak" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/droopy7/base.png" width="80" alt="Droopy-7" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/dusty/base.png" width="80" alt="Dusty" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/fat-robot/base.png" width="80" alt="Fat Robot" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/flamingo/base.png" width="80" alt="flamingo" /></td>
-  </tr>
-  <tr>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/freddy-machi/base.png" width="80" alt="Freddy Machi" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/glint/base.png" width="80" alt="Glint" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/glowtail/base.png" width="80" alt="Glowtail" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/grit/base.png" width="80" alt="Grit" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/heron/base.png" width="80" alt="Heron" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/honeybee/base.png" width="80" alt="Honeybee" /></td>
-  </tr>
-  <tr>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/inkbit/base.png" width="80" alt="Inkbit" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/jem/base.png" width="80" alt="Jem" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/josef-bot/base.png" width="80" alt="Josef Bot" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/koi/base.png" width="80" alt="Koi" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/luna/base.png" width="80" alt="Luna" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/machi-cat/base.png" width="80" alt="Machi Cat" /></td>
-  </tr>
-  <tr>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/machi-chef/base.png" width="80" alt="Machi Chef" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/machi-dog/base.png" width="80" alt="Machi Dog" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/machi-foxy/base.png" width="80" alt="Machi Foxy" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/machi-owl/base.png" width="80" alt="Machi Owl" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/marten/base.png" width="80" alt="Marten" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/mean guard/base.png" width="80" alt="Mean Guard" /></td>
-  </tr>
-  <tr>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/mechanical-maze-knight/base.png" width="80" alt="Mechanical Maze Knight" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/miso/base.png" width="80" alt="Miso" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/moss-maw/base.png" width="80" alt="Moss Maw" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/nib/base.png" width="80" alt="Nib" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/patch/base.png" width="80" alt="Patch" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/pebb/base.png" width="80" alt="Pebb" /></td>
-  </tr>
-  <tr>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/pinka/base.png" width="80" alt="Pinka" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/pinky/base.png" width="80" alt="Pinky" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/pip/base.png" width="80" alt="Pip" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/pipe-wrench-robot/base.png" width="80" alt="Pipe Wrench Robot" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/pub-player/base.png" width="80" alt="Pub Player" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/redcheek/base.png" width="80" alt="Redcheek" /></td>
-  </tr>
-  <tr>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/rivet-puff/base.png" width="80" alt="Rivet Puff" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/rook/base.png" width="80" alt="Rook" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/rosefinch/base.png" width="80" alt="Rosefinch" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/flying robot/base.png" width="80" alt="Rotor Josef" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/rustango/base.png" width="80" alt="Rustango" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/rustbeak/base.png" width="80" alt="RustBeak" /></td>
-  </tr>
-  <tr>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/rustveil/base.png" width="80" alt="Rustveil" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/samorost-boxbot/base.png" width="80" alt="Samorost Boxbot" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/scarlet-ibis/base.png" width="80" alt="Scarlet Ibis" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/walle/base.png" width="80" alt="Scrapling" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/scrib-codex-pet/base.png" width="80" alt="Scrib" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/skipp/base.png" width="80" alt="Skipp" /></td>
-  </tr>
-  <tr>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/smoking-robot/base.png" width="80" alt="Smoking Robot" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/snoo/base.png" width="80" alt="Snoo" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/spike/base.png" width="80" alt="Spike" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/split-chip/base.png" width="80" alt="Split Chip" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/spot/base.png" width="80" alt="Spot" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/wreckling/base.png" width="80" alt="Wreckling" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/springtrap-machi/base.png" width="80" alt="Springtrap Machi" /></td>
-  </tr>
-  <tr>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/stilt/base.png" width="80" alt="Stilt" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/sunny/base.png" width="80" alt="Sunny" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/tavern-lampbot/base.png" width="80" alt="Tavern Lampbot" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/the-drummer/base.png" width="80" alt="The Drummer" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/tin-grin/base.png" width="80" alt="Tin Grin" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/tin-terrier/base.png" width="80" alt="Tin Terrier" /></td>
-  </tr>
-  <tr>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/tinward-pet/base.png" width="80" alt="Tinward" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/tomo/base.png" width="80" alt="Tomo" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/tsuru/base.png" width="80" alt="tsuru" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/turaco/base.png" width="80" alt="Turaco" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/velmour/base.png" width="80" alt="velmour" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/freddy-machi/base.png" width="80" alt="Freddy Machi" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/climber-stick/base.png" width="80" alt="Climber" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/vendo/base.png" width="80" alt="Vendo" /></td>
   </tr>
   <tr>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/vermora/base.png" width="80" alt="Vermora" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/wheelbox/base.png" width="80" alt="Wheelbox" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/whisk/base.png" width="80" alt="Whisk" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/white-eye/base.png" width="80" alt="White-Eye" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/wreckling/base.png" width="80" alt="Wreckling" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/pub-player/base.png" width="80" alt="Pub Player" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/castle-guard/base.png" width="80" alt="Castle Guard" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/pipe-wrench-robot/base.png" width="80" alt="Pipe Wrench Robot" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/machi-cat/base.png" width="80" alt="Machi Cat" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/tin-grin/base.png" width="80" alt="Tin Grin" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/flying robot/base.png" width="80" alt="Rotor Josef" /></td>
+  </tr>
+  <tr>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/scrib-codex-pet/base.png" width="80" alt="Scrib" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/machi-chef/base.png" width="80" alt="Machi Chef" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/machi-dog/base.png" width="80" alt="Machi Dog" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/tin-terrier/base.png" width="80" alt="Tin Terrier" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/brass-reed/base.png" width="80" alt="Brass Reed" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/the-drummer/base.png" width="80" alt="The Drummer" /></td>
+  </tr>
+  <tr>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/smoking-robot/base.png" width="80" alt="Smoking Robot" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/fat-robot/base.png" width="80" alt="Fat Robot" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/machi-owl/base.png" width="80" alt="Machi Owl" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/dog-creak/base.png" width="80" alt="Dog Creak" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/josef-bot/base.png" width="80" alt="Josef Bot" /></td>
     <td align="center" valign="middle" width="160" height="160">&nbsp;</td>
   </tr>
 </table>

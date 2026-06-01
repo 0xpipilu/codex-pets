@@ -55,7 +55,23 @@ def build_preview_rows(data: dict) -> list[dict]:
 def build_catalog() -> dict:
     pets = []
 
-    for pet_dir in sorted((path for path in PETS_DIR.iterdir() if path.is_dir()), key=lambda p: p.name.lower()):
+    # Get all pet directories
+    pet_dirs = [path for path in PETS_DIR.iterdir() if path.is_dir()]
+    
+    # Helper to get folder creation time from /Users/chen/.codex/pets/
+    def get_creation_time(p: Path) -> float:
+        source_path = Path("/Users/chen/.codex/pets") / p.name
+        # Fallback to local workspace pet directory if source_path does not exist
+        check_path = source_path if source_path.exists() else p
+        try:
+            return check_path.stat().st_birthtime
+        except AttributeError:
+            return check_path.stat().st_mtime
+
+    # Sort descending: newest created pet at the top (index 0), oldest at the bottom
+    pet_dirs.sort(key=get_creation_time, reverse=True)
+
+    for pet_dir in pet_dirs:
         pet_json = pet_dir / "pet.json"
         if not pet_json.exists():
             continue

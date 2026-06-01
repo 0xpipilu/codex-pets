@@ -16,8 +16,7 @@ def build_readme():
         catalog = json.load(f)
 
     pets = catalog.get("pets", [])
-    # Sort alphabetically by displayName
-    pets = sorted(pets, key=lambda p: p["displayName"].lower())
+    # Keep the exact order defined in index.json (sorted by creation time)
 
     cols = 6
     html_lines = []
