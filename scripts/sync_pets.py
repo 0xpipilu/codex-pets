@@ -80,18 +80,20 @@ def sync_pets():
     run_cmd(["python3", "scripts/generate_thumbnails.py"], cwd=WORKSPACE_ROOT)
     run_cmd(["python3", "scripts/build_readme.py"], cwd=WORKSPACE_ROOT)
     
-    # Auto git commit & push (Commented out for safe manual review)
-    # print("\n🚀 Pushing changes to GitHub and deploying to live site...")
-    # run_cmd(["git", "add", "."], cwd=WORKSPACE_ROOT)
-    # 
-    # commit_msg = "Feat: auto-sync pets from .codex"
-    # if synced_pets:
-    #     commit_msg += f" (added: {', '.join(synced_pets)})"
-    # if updated_pets:
-    #     commit_msg += f" (updated: {', '.join(updated_pets)})"
-    #     
-    # run_cmd(["git", "commit", "-m", commit_msg], cwd=WORKSPACE_ROOT)
-    # run_cmd(["git", "push", "origin", "main"], cwd=WORKSPACE_ROOT)
+    # Auto git commit & push (Optimized safe one-click deployment)
+    print("\n🚀 Pushing changes to GitHub and deploying to live site...")
+    
+    # Safe Git Add: Only stage synced pet folders and generated files (avoids staging unrelated index.html edits!)
+    run_cmd(["git", "add", "pets/", "index.json", "catalog.js", "README.md"], cwd=WORKSPACE_ROOT)
+    
+    commit_msg = "Feat: auto-sync pets from .codex"
+    if synced_pets:
+        commit_msg += f" (added: {', '.join(synced_pets)})"
+    if updated_pets:
+        commit_msg += f" (updated: {', '.join(updated_pets)})"
+        
+    run_cmd(["git", "commit", "-m", commit_msg], cwd=WORKSPACE_ROOT)
+    run_cmd(["git", "push", "origin", "main"], cwd=WORKSPACE_ROOT)
     
     print("\n🎉 Synchronization complete and live website updated!")
     print(f"👉 Visit https://cod.pet to see your new pets!")
