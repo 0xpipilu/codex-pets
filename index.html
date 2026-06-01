@@ -947,6 +947,10 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
           // Secret double-click trigger on the footer logo
           const footerLogo = document.querySelector(".footer .logo");
           if (footerLogo) {
+            footerLogo.addEventListener("click", (e) => {
+              // Prevent standard click navigation to allow dblclick to fire cleanly
+              e.preventDefault();
+            });
             footerLogo.addEventListener("dblclick", (e) => {
               e.preventDefault();
               openAdminPanel();
