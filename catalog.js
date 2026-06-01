@@ -1,6 +1,110 @@
 window.__CODEX_PETS__ = {
-  "count": 89,
+  "count": 90,
   "pets": [
+    {
+      "slug": "moro",
+      "folder": "pets/moro",
+      "id": "moro",
+      "displayName": "Moro",
+      "description": "A round mechanical white tiger cub guardian with black stripes, a curled tufted tail, and brass waist-side joints.",
+      "spritesheetPath": "spritesheet.webp",
+      "petJsonPath": "pets/moro/pet.json",
+      "spritesheetFile": "pets/moro/spritesheet.webp",
+      "stateNames": [],
+      "stateCount": 0,
+      "atlas": {
+        "columns": 8,
+        "rows": 9,
+        "frameWidth": 192,
+        "frameHeight": 208,
+        "sheetWidth": 1536,
+        "sheetHeight": 1872
+      },
+      "previewRows": [
+        {
+          "key": "idle",
+          "label": "Idle",
+          "rowIndex": 0,
+          "frames": 6,
+          "durationMs": 1100,
+          "semantic": null,
+          "notes": ""
+        },
+        {
+          "key": "running-right",
+          "label": "Run Right",
+          "rowIndex": 1,
+          "frames": 8,
+          "durationMs": 980,
+          "semantic": null,
+          "notes": ""
+        },
+        {
+          "key": "running-left",
+          "label": "Run Left",
+          "rowIndex": 2,
+          "frames": 8,
+          "durationMs": 980,
+          "semantic": null,
+          "notes": ""
+        },
+        {
+          "key": "waving",
+          "label": "Waving",
+          "rowIndex": 3,
+          "frames": 4,
+          "durationMs": 840,
+          "semantic": null,
+          "notes": ""
+        },
+        {
+          "key": "jumping",
+          "label": "Jumping",
+          "rowIndex": 4,
+          "frames": 5,
+          "durationMs": 900,
+          "semantic": null,
+          "notes": ""
+        },
+        {
+          "key": "failed",
+          "label": "Failed",
+          "rowIndex": 5,
+          "frames": 8,
+          "durationMs": 1120,
+          "semantic": null,
+          "notes": ""
+        },
+        {
+          "key": "waiting",
+          "label": "Waiting",
+          "rowIndex": 6,
+          "frames": 6,
+          "durationMs": 1260,
+          "semantic": null,
+          "notes": ""
+        },
+        {
+          "key": "running",
+          "label": "Running",
+          "rowIndex": 7,
+          "frames": 6,
+          "durationMs": 960,
+          "semantic": null,
+          "notes": ""
+        },
+        {
+          "key": "review",
+          "label": "Review",
+          "rowIndex": 8,
+          "frames": 6,
+          "durationMs": 1080,
+          "semantic": null,
+          "notes": ""
+        }
+      ],
+      "defaultPreviewRow": "idle"
+    },
     {
       "slug": "dusty",
       "folder": "pets/dusty",
