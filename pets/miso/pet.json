@@ -1,0 +1,90 @@
+{
+  "id": "miso",
+  "displayName": "Miso",
+  "description": "A compact Codex pet version of the attached reference cat: a small cream-bodied assassin cat with a dark black-brown face mask, very large round bright yellow eyes, a brass bell collar, a visible brass wind-up key on the back, a brass mechanical front-leg brace, almost no tail, and a quiet, alert, slightly mysterious Machinarium-like presence.",
+  "spritesheetPath": "spritesheet.webp",
+  "atlas": {
+    "columns": 8,
+    "rows": 9,
+    "cellWidth": 192,
+    "cellHeight": 208
+  },
+  "atlasRowSemantics": {
+    "0": "idle",
+    "1": "walk_right",
+    "2": "walk_left",
+    "3": "raise_paw",
+    "4": "stretch",
+    "5": "yawn",
+    "6": "sleep",
+    "7": "happy",
+    "8": "curious"
+  },
+  "requestedActionMap": {
+    "idle": {
+      "rowState": "idle",
+      "row": 0,
+      "match": "exact"
+    },
+    "walk_right": {
+      "rowState": "running-right",
+      "row": 1,
+      "match": "mapped-standard-row"
+    },
+    "walk_left": {
+      "rowState": "running-left",
+      "row": 2,
+      "match": "mapped-standard-row"
+    },
+    "curious": {
+      "rowState": "review",
+      "row": 8,
+      "match": "mapped-standard-row"
+    },
+    "happy": {
+      "rowState": "running",
+      "row": 7,
+      "match": "mapped-standard-row"
+    },
+    "sleep": {
+      "rowState": "waiting",
+      "row": 6,
+      "match": "mapped-standard-row"
+    },
+    "drag": {
+      "leftRowState": "running-left",
+      "leftRow": 2,
+      "rightRowState": "running-right",
+      "rightRow": 1,
+      "match": "directional-row-mapping"
+    },
+    "raise_paw": {
+      "rowState": "waving",
+      "row": 3,
+      "match": "mapped-standard-row"
+    },
+    "stretch": {
+      "rowState": "jumping",
+      "row": 4,
+      "match": "mapped-standard-row"
+    },
+    "yawn": {
+      "rowState": "failed",
+      "row": 5,
+      "match": "mapped-standard-row"
+    }
+  },
+  "unmappedRequestedActions": {
+    "play": "No dedicated row in the fixed 8x9 atlas. Priority was given to idle, walk_right, walk_left, curious, happy, sleep, drag, raise_paw, stretch, and yawn."
+  },
+  "dragFacingValidation": {
+    "validated": true,
+    "ruleLeft": "deltaX < 0 => facing left",
+    "ruleRight": "deltaX > 0 => facing right",
+    "leftFacingRowState": "running-left",
+    "leftFacingRow": 2,
+    "rightFacingRowState": "running-right",
+    "rightFacingRow": 1,
+    "manualReview": "Confirmed from contact-sheet QA that row 2 is left-facing and row 1 is right-facing, with the head, eyes, bell, wind-up key, and mechanical front leg aligned to body direction."
+  }
+}

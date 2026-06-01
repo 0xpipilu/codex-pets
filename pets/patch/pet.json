@@ -1,0 +1,138 @@
+{
+  "id": "patch",
+  "displayName": "Patch",
+  "description": "A faithful black-and-cream programmer cat Codex pet with heavy straight black bangs, warm sleepy yellow eyes, a brass bell collar, a brown leather tool pouch, and a quiet Machinarium-like companion mood.",
+  "spritesheetPath": "spritesheet.webp",
+  "baseImagePath": "base.png",
+  "states": {
+    "idle": {
+      "atlasRow": "idle",
+      "notes": "Quiet seated idle with tiny blink, minimal ear and bangs motion, and a stable bell and tool pouch."
+    },
+    "walk": {
+      "atlasRows": [
+        "running-right",
+        "running-left"
+      ],
+      "notes": "Short careful walk rows used for normal motion and true drag-facing behavior."
+    },
+    "curious": {
+      "atlasRow": "review",
+      "notes": "Curious observing loop with slight head tilt, focused glance, and subdued thinky energy."
+    },
+    "happy": {
+      "atlasRow": "waving",
+      "notes": "Restrained satisfied reaction with a tiny smile and soft tail motion."
+    },
+    "sleep": {
+      "atlasRow": "waiting",
+      "notes": "Desk-side tucked sleep with closed eyes and one subtle yawn beat."
+    },
+    "think": {
+      "atlasRow": "review",
+      "notes": "Mapped to the same quiet curious-think loop as curious due the fixed atlas."
+    },
+    "code": {
+      "atlasRow": "running",
+      "notes": "Quiet coding loop with a tiny brass laptop and minimal typing motion."
+    },
+    "play": {
+      "atlasRow": "jumping",
+      "notes": "Gentle play-pounce loop with a tiny toy kept physically near the paws."
+    },
+    "repair": {
+      "atlasRow": "failed",
+      "notes": "Careful repair loop with a tiny robot companion kept touching the paws or body."
+    },
+    "yawn": {
+      "atlasRow": "waiting",
+      "notes": "Approximated inside the sleep row as a brief sleepy yawn because the atlas has no separate yawn row."
+    }
+  },
+  "atlasRowSemantics": {
+    "idle": "idle",
+    "running-right": "walk-right",
+    "running-left": "walk-left",
+    "waving": "happy",
+    "jumping": "play",
+    "failed": "repair",
+    "waiting": "sleep-plus-yawn",
+    "running": "code",
+    "review": "curious-think"
+  },
+  "requestedActionMap": {
+    "idle": {
+      "atlasRow": "idle",
+      "status": "implemented"
+    },
+    "walk_right": {
+      "atlasRow": "running-right",
+      "status": "implemented"
+    },
+    "walk_left": {
+      "atlasRow": "running-left",
+      "status": "implemented"
+    },
+    "curious": {
+      "atlasRow": "review",
+      "status": "implemented"
+    },
+    "happy": {
+      "atlasRow": "waving",
+      "status": "implemented"
+    },
+    "sleep": {
+      "atlasRow": "waiting",
+      "status": "implemented"
+    },
+    "drag": {
+      "leftAtlasRow": "running-left",
+      "rightAtlasRow": "running-right",
+      "status": "implemented",
+      "notes": "Directional drag uses the true left-facing and right-facing walk rows rather than any mirrored guess."
+    },
+    "think": {
+      "atlasRow": "review",
+      "status": "approximated",
+      "notes": "Shares the same subdued curious-think loop as curious due the fixed atlas."
+    },
+    "code": {
+      "atlasRow": "running",
+      "status": "implemented"
+    },
+    "repair": {
+      "atlasRow": "failed",
+      "status": "implemented"
+    },
+    "play": {
+      "atlasRow": "jumping",
+      "status": "implemented"
+    },
+    "yawn": {
+      "atlasRow": "waiting",
+      "status": "approximated",
+      "notes": "Included as the brief yawn beat inside the sleep row because the fixed atlas has no standalone yawn strip."
+    }
+  },
+  "dragFacingValidation": {
+    "rule": "deltaX < 0 => facing left; deltaX > 0 => facing right",
+    "leftDragUses": "running-left",
+    "rightDragUses": "running-right",
+    "manualVerification": [
+      "left drag uses the true left-facing walk strip",
+      "right drag uses the true right-facing walk strip",
+      "walk_left and walk_right are not swapped",
+      "head, eyes, body, tool pouch, and tail all stay directionally unified in both walk rows",
+      "left drag never faces right and right drag never faces left",
+      "the black bangs, brass bell, brown tool pouch, and fluffy tail remain readable in both directional rows"
+    ]
+  },
+  "referenceFidelityAnchors": [
+    "thick straight black bangs",
+    "warm sleepy yellow eyes",
+    "brass bell collar",
+    "brown leather tool pouch with tiny wrench",
+    "cream muzzle and compact black-and-cream body",
+    "fluffy raised tail"
+  ]
+}

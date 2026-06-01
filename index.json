@@ -1,5 +1,5 @@
 {
-  "count": 83,
+  "count": 89,
   "pets": [
     {
       "slug": "battle-damaged-idle",
@@ -2213,6 +2213,119 @@
       "defaultPreviewRow": "idle"
     },
     {
+      "slug": "dusty",
+      "folder": "pets/dusty",
+      "id": "dusty",
+      "displayName": "Dusty",
+      "description": "A faithful Codex pet recreation of a shy long-haired gray stray cat with heavy face-covering bangs, one warm yellow eye, a brass bell collar, an old side pouch, and a huge fluffy tail.",
+      "spritesheetPath": "spritesheet.webp",
+      "petJsonPath": "pets/dusty/pet.json",
+      "spritesheetFile": "pets/dusty/spritesheet.webp",
+      "stateNames": [
+        "curious",
+        "explore",
+        "groom",
+        "happy",
+        "idle",
+        "shy",
+        "sleep",
+        "walk"
+      ],
+      "stateCount": 8,
+      "atlas": {
+        "columns": 8,
+        "rows": 9,
+        "frameWidth": 192,
+        "frameHeight": 208,
+        "sheetWidth": 1536,
+        "sheetHeight": 1872
+      },
+      "previewRows": [
+        {
+          "key": "idle",
+          "label": "Idle",
+          "rowIndex": 0,
+          "frames": 6,
+          "durationMs": 1100,
+          "semantic": "idle",
+          "notes": "Quiet standing idle with tiny blink, tiny fur sway, and gentle breathing."
+        },
+        {
+          "key": "running-right",
+          "label": "Run Right",
+          "rowIndex": 1,
+          "frames": 8,
+          "durationMs": 980,
+          "semantic": "walk-right",
+          "notes": ""
+        },
+        {
+          "key": "running-left",
+          "label": "Run Left",
+          "rowIndex": 2,
+          "frames": 8,
+          "durationMs": 980,
+          "semantic": "walk-left",
+          "notes": ""
+        },
+        {
+          "key": "waving",
+          "label": "Waving",
+          "rowIndex": 3,
+          "frames": 4,
+          "durationMs": 840,
+          "semantic": "happy",
+          "notes": "Restrained pleased loop with a small paw raise and softer relaxed posture."
+        },
+        {
+          "key": "jumping",
+          "label": "Jumping",
+          "rowIndex": 4,
+          "frames": 5,
+          "durationMs": 900,
+          "semantic": "groom",
+          "notes": "Fixed-atlas jumping row intentionally remapped to a seated grooming loop."
+        },
+        {
+          "key": "failed",
+          "label": "Failed",
+          "rowIndex": 5,
+          "frames": 8,
+          "durationMs": 1120,
+          "semantic": "shy",
+          "notes": "Fixed-atlas failed row intentionally remapped to a timid cower-and-recover loop."
+        },
+        {
+          "key": "waiting",
+          "label": "Waiting",
+          "rowIndex": 6,
+          "frames": 6,
+          "durationMs": 1260,
+          "semantic": "sleep",
+          "notes": "Curled sleeping loop with closed eyes and tail wrapped around the body and face."
+        },
+        {
+          "key": "running",
+          "label": "Running",
+          "rowIndex": 7,
+          "frames": 6,
+          "durationMs": 960,
+          "semantic": "explore",
+          "notes": "In-place scout loop with careful sniffing and tiny searching steps, not literal sprinting."
+        },
+        {
+          "key": "review",
+          "label": "Review",
+          "rowIndex": 8,
+          "frames": 6,
+          "durationMs": 1080,
+          "semantic": "curious",
+          "notes": "Shy-but-curious listen and look loop with a slight head lift and more visible yellow eye."
+        }
+      ],
+      "defaultPreviewRow": "idle"
+    },
+    {
       "slug": "fat-robot",
       "folder": "pets/fat-robot",
       "id": "fat-robot",
@@ -2841,6 +2954,119 @@
           "durationMs": 1080,
           "semantic": null,
           "notes": ""
+        }
+      ],
+      "defaultPreviewRow": "idle"
+    },
+    {
+      "slug": "grit",
+      "folder": "pets/grit",
+      "id": "grit",
+      "displayName": "Grit",
+      "description": "A faithful Codex pet recreation of a gray-and-cream spotted mechanical explorer kitten with brass goggles, a bell collar, a vintage brass backpack, and a gentle map-reading companion spirit.",
+      "spritesheetPath": "spritesheet.webp",
+      "petJsonPath": "pets/grit/pet.json",
+      "spritesheetFile": "pets/grit/spritesheet.webp",
+      "stateNames": [
+        "curious",
+        "explore",
+        "happy",
+        "idle",
+        "jump",
+        "map",
+        "sleep",
+        "walk"
+      ],
+      "stateCount": 8,
+      "atlas": {
+        "columns": 8,
+        "rows": 9,
+        "frameWidth": 192,
+        "frameHeight": 208,
+        "sheetWidth": 1536,
+        "sheetHeight": 1872
+      },
+      "previewRows": [
+        {
+          "key": "idle",
+          "label": "Idle",
+          "rowIndex": 0,
+          "frames": 6,
+          "durationMs": 1100,
+          "semantic": "idle",
+          "notes": "Quiet standing idle with tiny blink and soft explorer composure."
+        },
+        {
+          "key": "running-right",
+          "label": "Run Right",
+          "rowIndex": 1,
+          "frames": 8,
+          "durationMs": 980,
+          "semantic": "walk-right",
+          "notes": ""
+        },
+        {
+          "key": "running-left",
+          "label": "Run Left",
+          "rowIndex": 2,
+          "frames": 8,
+          "durationMs": 980,
+          "semantic": "walk-left",
+          "notes": ""
+        },
+        {
+          "key": "waving",
+          "label": "Waving",
+          "rowIndex": 3,
+          "frames": 4,
+          "durationMs": 840,
+          "semantic": "happy",
+          "notes": "Restrained pleased loop with a tiny proud paw lift and brighter expression."
+        },
+        {
+          "key": "jumping",
+          "label": "Jumping",
+          "rowIndex": 4,
+          "frames": 5,
+          "durationMs": 900,
+          "semantic": "jump",
+          "notes": "Small agile jump with tidy takeoff, air moment, and landing."
+        },
+        {
+          "key": "failed",
+          "label": "Failed",
+          "rowIndex": 5,
+          "frames": 8,
+          "durationMs": 1120,
+          "semantic": "map",
+          "notes": "Fixed-atlas spare row intentionally remapped to a map-checking loop with a non-text explorer map."
+        },
+        {
+          "key": "waiting",
+          "label": "Waiting",
+          "rowIndex": 6,
+          "frames": 6,
+          "durationMs": 1260,
+          "semantic": "sleep",
+          "notes": "Curled resting loop with closed eyes and visible goggles, bell, backpack, and ringed tail."
+        },
+        {
+          "key": "running",
+          "label": "Running",
+          "rowIndex": 7,
+          "frames": 6,
+          "durationMs": 960,
+          "semantic": "explore",
+          "notes": "In-place scout loop for careful searching, not literal sprinting."
+        },
+        {
+          "key": "review",
+          "label": "Review",
+          "rowIndex": 8,
+          "frames": 6,
+          "durationMs": 1080,
+          "semantic": "curious",
+          "notes": "Gentle observing loop with a head tilt, lean, and attentive gaze."
         }
       ],
       "defaultPreviewRow": "idle"
@@ -4447,6 +4673,110 @@
       "defaultPreviewRow": "idle"
     },
     {
+      "slug": "miso",
+      "folder": "pets/miso",
+      "id": "miso",
+      "displayName": "Miso",
+      "description": "A compact Codex pet version of the attached reference cat: a small cream-bodied assassin cat with a dark black-brown face mask, very large round bright yellow eyes, a brass bell collar, a visible brass wind-up key on the back, a brass mechanical front-leg brace, almost no tail, and a quiet, alert, slightly mysterious Machinarium-like presence.",
+      "spritesheetPath": "spritesheet.webp",
+      "petJsonPath": "pets/miso/pet.json",
+      "spritesheetFile": "pets/miso/spritesheet.webp",
+      "stateNames": [],
+      "stateCount": 0,
+      "atlas": {
+        "columns": 8,
+        "rows": 9,
+        "frameWidth": 192,
+        "frameHeight": 208,
+        "sheetWidth": 1536,
+        "sheetHeight": 1872
+      },
+      "previewRows": [
+        {
+          "key": "idle",
+          "label": "Idle",
+          "rowIndex": 0,
+          "frames": 6,
+          "durationMs": 1100,
+          "semantic": null,
+          "notes": ""
+        },
+        {
+          "key": "running-right",
+          "label": "Run Right",
+          "rowIndex": 1,
+          "frames": 8,
+          "durationMs": 980,
+          "semantic": null,
+          "notes": ""
+        },
+        {
+          "key": "running-left",
+          "label": "Run Left",
+          "rowIndex": 2,
+          "frames": 8,
+          "durationMs": 980,
+          "semantic": null,
+          "notes": ""
+        },
+        {
+          "key": "waving",
+          "label": "Waving",
+          "rowIndex": 3,
+          "frames": 4,
+          "durationMs": 840,
+          "semantic": null,
+          "notes": ""
+        },
+        {
+          "key": "jumping",
+          "label": "Jumping",
+          "rowIndex": 4,
+          "frames": 5,
+          "durationMs": 900,
+          "semantic": null,
+          "notes": ""
+        },
+        {
+          "key": "failed",
+          "label": "Failed",
+          "rowIndex": 5,
+          "frames": 8,
+          "durationMs": 1120,
+          "semantic": null,
+          "notes": ""
+        },
+        {
+          "key": "waiting",
+          "label": "Waiting",
+          "rowIndex": 6,
+          "frames": 6,
+          "durationMs": 1260,
+          "semantic": null,
+          "notes": ""
+        },
+        {
+          "key": "running",
+          "label": "Running",
+          "rowIndex": 7,
+          "frames": 6,
+          "durationMs": 960,
+          "semantic": null,
+          "notes": ""
+        },
+        {
+          "key": "review",
+          "label": "Review",
+          "rowIndex": 8,
+          "frames": 6,
+          "durationMs": 1080,
+          "semantic": null,
+          "notes": ""
+        }
+      ],
+      "defaultPreviewRow": "idle"
+    },
+    {
       "slug": "moss-maw",
       "folder": "pets/moss-maw",
       "id": "moss-maw",
@@ -4545,6 +4875,234 @@
           "frames": 6,
           "durationMs": 1080,
           "semantic": null,
+          "notes": ""
+        }
+      ],
+      "defaultPreviewRow": "idle"
+    },
+    {
+      "slug": "nib",
+      "folder": "pets/nib",
+      "id": "nib",
+      "displayName": "Nib",
+      "description": "A faithful Codex pet recreation of a round chibi fishing cat sitting in an integrated little boat seat, with a fluffy white pom-pom hat, big round eyes, a small blue-gray fish, and a thin fishing rod with line and bobber.",
+      "spritesheetPath": "spritesheet.webp",
+      "petJsonPath": "pets/nib/pet.json",
+      "spritesheetFile": "pets/nib/spritesheet.webp",
+      "stateNames": [
+        "curious",
+        "focused_fishing",
+        "happy",
+        "idle",
+        "sleep",
+        "slumped_miss",
+        "tiny_bobber_hop",
+        "walk"
+      ],
+      "stateCount": 8,
+      "atlas": {
+        "columns": 8,
+        "rows": 9,
+        "frameWidth": 192,
+        "frameHeight": 208,
+        "sheetWidth": 1536,
+        "sheetHeight": 1872
+      },
+      "previewRows": [
+        {
+          "key": "idle",
+          "label": "Idle",
+          "rowIndex": 0,
+          "frames": 6,
+          "durationMs": 1100,
+          "semantic": "idle",
+          "notes": "Quiet seated fishing idle with gentle breathing, tiny blink, and small rod and bobber sway."
+        },
+        {
+          "key": "running-right",
+          "label": "Run Right",
+          "rowIndex": 1,
+          "frames": 8,
+          "durationMs": 980,
+          "semantic": "walk-right-scene-glide",
+          "notes": ""
+        },
+        {
+          "key": "running-left",
+          "label": "Run Left",
+          "rowIndex": 2,
+          "frames": 8,
+          "durationMs": 980,
+          "semantic": "walk-left-scene-glide",
+          "notes": ""
+        },
+        {
+          "key": "waving",
+          "label": "Waving",
+          "rowIndex": 3,
+          "frames": 4,
+          "durationMs": 840,
+          "semantic": "happy",
+          "notes": "Restrained satisfied smile with a tiny fish wiggle; not a literal waving gesture."
+        },
+        {
+          "key": "jumping",
+          "label": "Jumping",
+          "rowIndex": 4,
+          "frames": 5,
+          "durationMs": 900,
+          "semantic": "tiny-bobber-hop",
+          "notes": ""
+        },
+        {
+          "key": "failed",
+          "label": "Failed",
+          "rowIndex": 5,
+          "frames": 8,
+          "durationMs": 1120,
+          "semantic": "slumped-miss",
+          "notes": ""
+        },
+        {
+          "key": "waiting",
+          "label": "Waiting",
+          "rowIndex": 6,
+          "frames": 6,
+          "durationMs": 1260,
+          "semantic": "sleep",
+          "notes": "Dozy fishing rest with closed eyes and lowered head while the rod and fish remain visible."
+        },
+        {
+          "key": "running",
+          "label": "Running",
+          "rowIndex": 7,
+          "frames": 6,
+          "durationMs": 960,
+          "semantic": "focused-fishing",
+          "notes": ""
+        },
+        {
+          "key": "review",
+          "label": "Review",
+          "rowIndex": 8,
+          "frames": 6,
+          "durationMs": 1080,
+          "semantic": "curious",
+          "notes": "Eyes widen and head leans forward as if the bobber twitched."
+        }
+      ],
+      "defaultPreviewRow": "idle"
+    },
+    {
+      "slug": "patch",
+      "folder": "pets/patch",
+      "id": "patch",
+      "displayName": "Patch",
+      "description": "A faithful black-and-cream programmer cat Codex pet with heavy straight black bangs, warm sleepy yellow eyes, a brass bell collar, a brown leather tool pouch, and a quiet Machinarium-like companion mood.",
+      "spritesheetPath": "spritesheet.webp",
+      "petJsonPath": "pets/patch/pet.json",
+      "spritesheetFile": "pets/patch/spritesheet.webp",
+      "stateNames": [
+        "code",
+        "curious",
+        "happy",
+        "idle",
+        "play",
+        "repair",
+        "sleep",
+        "think",
+        "walk",
+        "yawn"
+      ],
+      "stateCount": 10,
+      "atlas": {
+        "columns": 8,
+        "rows": 9,
+        "frameWidth": 192,
+        "frameHeight": 208,
+        "sheetWidth": 1536,
+        "sheetHeight": 1872
+      },
+      "previewRows": [
+        {
+          "key": "idle",
+          "label": "Idle",
+          "rowIndex": 0,
+          "frames": 6,
+          "durationMs": 1100,
+          "semantic": "idle",
+          "notes": "Quiet seated idle with tiny blink, minimal ear and bangs motion, and a stable bell and tool pouch."
+        },
+        {
+          "key": "running-right",
+          "label": "Run Right",
+          "rowIndex": 1,
+          "frames": 8,
+          "durationMs": 980,
+          "semantic": "walk-right",
+          "notes": ""
+        },
+        {
+          "key": "running-left",
+          "label": "Run Left",
+          "rowIndex": 2,
+          "frames": 8,
+          "durationMs": 980,
+          "semantic": "walk-left",
+          "notes": ""
+        },
+        {
+          "key": "waving",
+          "label": "Waving",
+          "rowIndex": 3,
+          "frames": 4,
+          "durationMs": 840,
+          "semantic": "happy",
+          "notes": "Restrained satisfied reaction with a tiny smile and soft tail motion."
+        },
+        {
+          "key": "jumping",
+          "label": "Jumping",
+          "rowIndex": 4,
+          "frames": 5,
+          "durationMs": 900,
+          "semantic": "play",
+          "notes": "Gentle play-pounce loop with a tiny toy kept physically near the paws."
+        },
+        {
+          "key": "failed",
+          "label": "Failed",
+          "rowIndex": 5,
+          "frames": 8,
+          "durationMs": 1120,
+          "semantic": "repair",
+          "notes": "Careful repair loop with a tiny robot companion kept touching the paws or body."
+        },
+        {
+          "key": "waiting",
+          "label": "Waiting",
+          "rowIndex": 6,
+          "frames": 6,
+          "durationMs": 1260,
+          "semantic": "sleep-plus-yawn",
+          "notes": ""
+        },
+        {
+          "key": "running",
+          "label": "Running",
+          "rowIndex": 7,
+          "frames": 6,
+          "durationMs": 960,
+          "semantic": "code",
+          "notes": "Quiet coding loop with a tiny brass laptop and minimal typing motion."
+        },
+        {
+          "key": "review",
+          "label": "Review",
+          "rowIndex": 8,
+          "frames": 6,
+          "durationMs": 1080,
+          "semantic": "curious-think",
           "notes": ""
         }
       ],
@@ -4659,6 +5217,119 @@
           "durationMs": 1080,
           "semantic": "curious",
           "notes": "Small attentive head tilt and observant lean without loosening the hug."
+        }
+      ],
+      "defaultPreviewRow": "idle"
+    },
+    {
+      "slug": "pinka",
+      "folder": "pets/pinka",
+      "id": "pinka",
+      "displayName": "Pinka",
+      "description": "A faithful Codex pet of a soft pale-pink closed-eye cat with a tiny crown, pink bow, bell, and gold pocket watch, preserved as a calm elegant tea-time companion.",
+      "spritesheetPath": "spritesheet.webp",
+      "petJsonPath": "pets/pinka/pet.json",
+      "spritesheetFile": "pets/pinka/spritesheet.webp",
+      "stateNames": [
+        "bow_tidy",
+        "curious",
+        "happy",
+        "idle",
+        "sleep",
+        "tail_sway",
+        "walk",
+        "yawn"
+      ],
+      "stateCount": 8,
+      "atlas": {
+        "columns": 8,
+        "rows": 9,
+        "frameWidth": 192,
+        "frameHeight": 208,
+        "sheetWidth": 1536,
+        "sheetHeight": 1872
+      },
+      "previewRows": [
+        {
+          "key": "idle",
+          "label": "Idle",
+          "rowIndex": 0,
+          "frames": 6,
+          "durationMs": 1100,
+          "semantic": "idle",
+          "notes": "Calm seated idle with tiny breathing motion and a subtle tail sway."
+        },
+        {
+          "key": "running-right",
+          "label": "Run Right",
+          "rowIndex": 1,
+          "frames": 8,
+          "durationMs": 980,
+          "semantic": "walk-right",
+          "notes": ""
+        },
+        {
+          "key": "running-left",
+          "label": "Run Left",
+          "rowIndex": 2,
+          "frames": 8,
+          "durationMs": 980,
+          "semantic": "walk-left",
+          "notes": ""
+        },
+        {
+          "key": "waving",
+          "label": "Waving",
+          "rowIndex": 3,
+          "frames": 4,
+          "durationMs": 840,
+          "semantic": "happy",
+          "notes": "Closed-eye satisfied smile with a tiny refined paw gesture."
+        },
+        {
+          "key": "jumping",
+          "label": "Jumping",
+          "rowIndex": 4,
+          "frames": 5,
+          "durationMs": 900,
+          "semantic": "tail-sway",
+          "notes": ""
+        },
+        {
+          "key": "failed",
+          "label": "Failed",
+          "rowIndex": 5,
+          "frames": 8,
+          "durationMs": 1120,
+          "semantic": "yawn",
+          "notes": "Soft sleepy yawn loop with no detached effects."
+        },
+        {
+          "key": "waiting",
+          "label": "Waiting",
+          "rowIndex": 6,
+          "frames": 6,
+          "durationMs": 1260,
+          "semantic": "sleep",
+          "notes": "Curled noble nap with crown, bow, bell, and pocket watch still visible."
+        },
+        {
+          "key": "running",
+          "label": "Running",
+          "rowIndex": 7,
+          "frames": 6,
+          "durationMs": 960,
+          "semantic": "bow-tidy",
+          "notes": ""
+        },
+        {
+          "key": "review",
+          "label": "Review",
+          "rowIndex": 8,
+          "frames": 6,
+          "durationMs": 1080,
+          "semantic": "curious",
+          "notes": "Quiet curious loop with restrained head tilt and attentive posture."
         }
       ],
       "defaultPreviewRow": "idle"

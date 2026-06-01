@@ -1,0 +1,123 @@
+{
+  "id": "dusty",
+  "displayName": "Dusty",
+  "description": "A faithful Codex pet recreation of a shy long-haired gray stray cat with heavy face-covering bangs, one warm yellow eye, a brass bell collar, an old side pouch, and a huge fluffy tail.",
+  "spritesheetPath": "spritesheet.webp",
+  "states": {
+    "idle": {
+      "atlasRow": "idle",
+      "notes": "Quiet standing idle with tiny blink, tiny fur sway, and gentle breathing."
+    },
+    "walk": {
+      "atlasRows": [
+        "running-right",
+        "running-left"
+      ],
+      "notes": "True directional cautious walk rows used for movement and drag-facing behavior."
+    },
+    "curious": {
+      "atlasRow": "review",
+      "notes": "Shy-but-curious listen and look loop with a slight head lift and more visible yellow eye."
+    },
+    "happy": {
+      "atlasRow": "waving",
+      "notes": "Restrained pleased loop with a small paw raise and softer relaxed posture."
+    },
+    "sleep": {
+      "atlasRow": "waiting",
+      "notes": "Curled sleeping loop with closed eyes and tail wrapped around the body and face."
+    },
+    "explore": {
+      "atlasRow": "running",
+      "notes": "In-place scout loop with careful sniffing and tiny searching steps, not literal sprinting."
+    },
+    "groom": {
+      "atlasRow": "jumping",
+      "notes": "Fixed-atlas jumping row intentionally remapped to a seated grooming loop."
+    },
+    "shy": {
+      "atlasRow": "failed",
+      "notes": "Fixed-atlas failed row intentionally remapped to a timid cower-and-recover loop."
+    }
+  },
+  "atlasRowSemantics": {
+    "idle": "idle",
+    "running-right": "walk-right",
+    "running-left": "walk-left",
+    "waving": "happy",
+    "jumping": "groom",
+    "failed": "shy",
+    "waiting": "sleep",
+    "running": "explore",
+    "review": "curious"
+  },
+  "requestedActionMap": {
+    "idle": {
+      "atlasRow": "idle",
+      "status": "implemented"
+    },
+    "walk_right": {
+      "atlasRow": "running-right",
+      "status": "implemented"
+    },
+    "walk_left": {
+      "atlasRow": "running-left",
+      "status": "implemented"
+    },
+    "curious": {
+      "atlasRow": "review",
+      "status": "implemented"
+    },
+    "happy": {
+      "atlasRow": "waving",
+      "status": "implemented"
+    },
+    "sleep": {
+      "atlasRow": "waiting",
+      "status": "implemented"
+    },
+    "drag": {
+      "leftAtlasRow": "running-left",
+      "rightAtlasRow": "running-right",
+      "status": "implemented",
+      "notes": "Directional drag uses the true left-facing and right-facing walk rows."
+    },
+    "explore": {
+      "atlasRow": "running",
+      "status": "implemented",
+      "notes": "Fixed atlas running row was intentionally remapped to an in-place scout loop."
+    },
+    "groom": {
+      "atlasRow": "jumping",
+      "status": "implemented",
+      "notes": "Fixed atlas jumping row was intentionally remapped to a grooming loop."
+    },
+    "shy": {
+      "atlasRow": "failed",
+      "status": "implemented",
+      "notes": "Fixed atlas failed row was intentionally remapped to a timid cower loop."
+    },
+    "curl_sleep": {
+      "approxAtlasRow": "waiting",
+      "status": "approximated",
+      "notes": "No dedicated extra row remained in the fixed atlas, so curl_sleep is approximated by the main curled sleep loop."
+    }
+  },
+  "dragFacingValidation": {
+    "rule": "deltaX < 0 => facing left; deltaX > 0 => facing right",
+    "leftDragUses": "running-left",
+    "rightDragUses": "running-right",
+    "leftRowDerivedFrom": "generated-directly",
+    "rightRowDerivedFrom": "generated-directly",
+    "manualVerification": [
+      "left drag uses a true left-facing strip",
+      "right drag uses a true right-facing strip",
+      "walk_left and walk_right are not swapped",
+      "left-facing row keeps head, bangs, visible eye, pouch, body, and tail aligned left",
+      "right-facing row keeps head, bangs, visible eye, pouch, body, and tail aligned right",
+      "left drag never faces right",
+      "right drag never faces left",
+      "heavy face-covering bangs, one visible yellow eye, brass bell, side pouch, and huge fluffy tail stay readable at small size"
+    ]
+  }
+}

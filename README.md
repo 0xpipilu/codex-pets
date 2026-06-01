@@ -114,7 +114,7 @@ python3 scripts/generate_favicon.py
 
 ## Pets Gallery / 宠物画廊
 
-Here is a visual list of all the **83** interactive pixel pets available in Codpet:
+Here is a visual list of all the **89** interactive pixel pets available in Codpet:
 
 <table align="center">
   <tr>
@@ -145,36 +145,44 @@ Here is a visual list of all the **83** interactive pixel pets available in Codp
     <td align="center" valign="middle" width="160" height="160"><img src="pets/dart/base.png" width="80" alt="Dart" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/dog-creak/base.png" width="80" alt="Dog Creak" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/droopy7/base.png" width="80" alt="Droopy-7" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/dusty/base.png" width="80" alt="Dusty" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/fat-robot/base.png" width="80" alt="Fat Robot" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/flamingo/base.png" width="80" alt="flamingo" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/freddy-machi/base.png" width="80" alt="Freddy Machi" /></td>
   </tr>
   <tr>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/freddy-machi/base.png" width="80" alt="Freddy Machi" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/glint/base.png" width="80" alt="Glint" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/glowtail/base.png" width="80" alt="Glowtail" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/grit/base.png" width="80" alt="Grit" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/heron/base.png" width="80" alt="Heron" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/honeybee/base.png" width="80" alt="Honeybee" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/inkbit/base.png" width="80" alt="Inkbit" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/jem/base.png" width="80" alt="Jem" /></td>
   </tr>
   <tr>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/inkbit/base.png" width="80" alt="Inkbit" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/jem/base.png" width="80" alt="Jem" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/josef-bot/base.png" width="80" alt="Josef Bot" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/koi/base.png" width="80" alt="Koi" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/luna/base.png" width="80" alt="Luna" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/machi-cat/base.png" width="80" alt="Machi Cat" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/machi-chef/base.png" width="80" alt="Machi Chef" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/machi-dog/base.png" width="80" alt="Machi Dog" /></td>
   </tr>
   <tr>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/machi-chef/base.png" width="80" alt="Machi Chef" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/machi-dog/base.png" width="80" alt="Machi Dog" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/machi-foxy/base.png" width="80" alt="Machi Foxy" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/machi-owl/base.png" width="80" alt="Machi Owl" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/marten/base.png" width="80" alt="Marten" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/mean guard/base.png" width="80" alt="Mean Guard" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/mechanical-maze-knight/base.png" width="80" alt="Mechanical Maze Knight" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/moss-maw/base.png" width="80" alt="Moss Maw" /></td>
   </tr>
   <tr>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/mechanical-maze-knight/base.png" width="80" alt="Mechanical Maze Knight" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/miso/base.png" width="80" alt="Miso" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/moss-maw/base.png" width="80" alt="Moss Maw" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/nib/base.png" width="80" alt="Nib" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/patch/base.png" width="80" alt="Patch" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/pebb/base.png" width="80" alt="Pebb" /></td>
+  </tr>
+  <tr>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/pinka/base.png" width="80" alt="Pinka" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/pinky/base.png" width="80" alt="Pinky" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/pip/base.png" width="80" alt="Pip" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/pipe-wrench-robot/base.png" width="80" alt="Pipe Wrench Robot" /></td>

@@ -1,0 +1,100 @@
+{
+  "id": "nib",
+  "displayName": "Nib",
+  "description": "A faithful Codex pet recreation of a round chibi fishing cat sitting in an integrated little boat seat, with a fluffy white pom-pom hat, big round eyes, a small blue-gray fish, and a thin fishing rod with line and bobber.",
+  "spritesheetPath": "spritesheet.webp",
+  "states": {
+    "idle": {
+      "atlasRow": "idle",
+      "notes": "Quiet seated fishing idle with gentle breathing, tiny blink, and small rod and bobber sway."
+    },
+    "walk": {
+      "atlasRows": [
+        "running-right",
+        "running-left"
+      ],
+      "notes": "Directional scene-glide rows used for movement and drag-facing behavior; Nib stays seated in the fishing base."
+    },
+    "curious": {
+      "atlasRow": "review",
+      "notes": "Eyes widen and head leans forward as if the bobber twitched."
+    },
+    "happy": {
+      "atlasRow": "waving",
+      "notes": "Restrained satisfied smile with a tiny fish wiggle; not a literal waving gesture."
+    },
+    "sleep": {
+      "atlasRow": "waiting",
+      "notes": "Dozy fishing rest with closed eyes and lowered head while the rod and fish remain visible."
+    },
+    "focused_fishing": {
+      "atlasRow": "running",
+      "notes": "Slightly more active in-place fishing loop with careful rod adjustment."
+    },
+    "tiny_bobber_hop": {
+      "atlasRow": "jumping",
+      "notes": "Tiny buoyant hop triggered by a bobber tug while Nib stays seated."
+    },
+    "slumped_miss": {
+      "atlasRow": "failed",
+      "notes": "Gentle low-energy miss-the-bite reaction with the fishing setup intact."
+    }
+  },
+  "atlasRowSemantics": {
+    "idle": "idle",
+    "running-right": "walk-right-scene-glide",
+    "running-left": "walk-left-scene-glide",
+    "waving": "happy",
+    "jumping": "tiny-bobber-hop",
+    "failed": "slumped-miss",
+    "waiting": "sleep",
+    "running": "focused-fishing",
+    "review": "curious"
+  },
+  "requestedActionMap": {
+    "idle": {
+      "atlasRow": "idle",
+      "status": "implemented"
+    },
+    "walk_right": {
+      "atlasRow": "running-right",
+      "status": "implemented",
+      "notes": "Rightward scene-glide row; Nib remains seated in the fishing base."
+    },
+    "walk_left": {
+      "atlasRow": "running-left",
+      "status": "implemented",
+      "notes": "Leftward scene-glide row; Nib remains seated in the fishing base."
+    },
+    "curious": {
+      "atlasRow": "review",
+      "status": "implemented"
+    },
+    "happy": {
+      "atlasRow": "waving",
+      "status": "implemented"
+    },
+    "sleep": {
+      "atlasRow": "waiting",
+      "status": "implemented"
+    },
+    "drag": {
+      "leftAtlasRow": "running-left",
+      "rightAtlasRow": "running-right",
+      "status": "implemented",
+      "notes": "Directional drag uses dedicated left and right scene-glide strips with the rod, bobber, and fish kept directionally aligned."
+    }
+  },
+  "dragFacingValidation": {
+    "rule": "deltaX < 0 => facing left; deltaX > 0 => facing right",
+    "leftDragUses": "running-left",
+    "rightDragUses": "running-right",
+    "manualVerification": [
+      "left drag uses a true left-facing strip",
+      "right drag uses a true right-facing strip",
+      "walk_left and walk_right are not swapped",
+      "the cat, base, rod, line, bobber, and fish stay directionally unified in both glide rows",
+      "left drag never faces right and right drag never faces left"
+    ]
+  }
+}
