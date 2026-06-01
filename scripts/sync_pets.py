@@ -74,9 +74,10 @@ def sync_pets():
         
     print(f"\nSuccessfully copied {len(synced_pets)} new pets and updated {len(updated_pets)} existing pets.")
     
-    # Rebuild Index and README
-    print("\n🛠️ Rebuilding index and README...")
+    # Rebuild Index, generate optimized thumbnails, and README
+    print("\n🛠️ Rebuilding index, thumbnails, and README...")
     run_cmd(["python3", "scripts/build_index.py"], cwd=WORKSPACE_ROOT)
+    run_cmd(["python3", "scripts/generate_thumbnails.py"], cwd=WORKSPACE_ROOT)
     run_cmd(["python3", "scripts/build_readme.py"], cwd=WORKSPACE_ROOT)
     
     # Auto git commit & push
