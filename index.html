@@ -20,6 +20,23 @@
       gtag('config', 'G-RT5ZG7801R');
     </script>
 
+    <!-- JSON-LD Structured Data for Search & AI Indexers -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Codpet",
+      "operatingSystem": "VS Code, Cursor, Codex Editor",
+      "applicationCategory": "DeveloperApplication",
+      "description": "Animated pixel companion pets for Codex developer workspace.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://cod.pet/" />
@@ -438,6 +455,19 @@
       .admin-btn-sec:hover {
         background: #f6f6f6;
       }
+
+      /* Screen Reader / SEO Only */
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
     </style>
   </head>
   <body>
@@ -453,6 +483,33 @@
     </header>
 
     <main class="shell">
+      <!-- Semantic SEO H1 Header -->
+      <h1 class="sr-only">Codpet — Animated Pixel Companion Pets for Codex Developer Workspace</h1>
+
+      <!-- AISO / Crawler Index Fallback (for non-JS indexers and AI models) -->
+      <noscript>
+        <div class="sr-only">
+          <h2>Available Animated Pixel Companions for Codex:</h2>
+          <ul>
+            <li><strong>Dusty</strong> - An adorable animated pixel cat companion pet for Codex workspace.</li>
+            <li><strong>Grit</strong> - A cool steampunk pixel cat with custom animated states.</li>
+            <li><strong>Pinka</strong> - A beautiful, sweet royal pink cat desktop companion.</li>
+            <li><strong>Patch</strong> - A cute pirate pixel cat to accompany your coding.</li>
+            <li><strong>Miso</strong> - A playful, animated siamese cat desktop pet.</li>
+            <li><strong>Nib</strong> - A cute chubby mouse companion for developers.</li>
+            <li><strong>Rook</strong> - A brave and loyal detective pixel dog pet.</li>
+            <li><strong>Bruno</strong> - A strong and helpful pixel helper companion.</li>
+            <li><strong>Sunny</strong> - A lazy beach-loving pixel mouse desktop companion.</li>
+            <li><strong>Luna</strong> - A magical space rocket companion to boost your developer productivity.</li>
+            <li><strong>Rustango, Rustveil, RustBeak, Brassbun, Copper Cat, Brassprout, Curlcap, Tinward, Budley, Scrapling, Wheelbox, Battle-Damaged Idle</strong> - Beautifully animated, custom interactive pixel companions for your editor.</li>
+          </ul>
+          <p>
+            Browse, preview, and download premium custom animated pixel companion pets for your Codex developer workspace, VS Code, or Cursor. 
+            All pets are free to download and include detailed documentation, installation guides, and metadata configuration files.
+          </p>
+        </div>
+      </noscript>
+
       <section id="gallery" class="gallery">
         <div class="empty">Loading…</div>
       </section>
