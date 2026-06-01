@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Codpet — Interactive Pixel Companions</title>
-    <link rel="icon" type="image/png" href="./favicon.png" />
+    <link rel="icon" type="image/png" href="./favicon.png?v=2" />
     <meta name="description" content="Browse and preview all Codpet companions — animated pixel companions for your editor or developer workspace." />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -562,15 +562,6 @@
           (-frameIndex * a.fw * a.s) + "px " + (-rowIndex * a.fh * a.s) + "px";
       }
 
-      /* Lazy load: set dimensions immediately, load image when near viewport */
-      const lazyObs = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-          if (!e.isIntersecting) return;
-          loadSprite(e.target);
-          showFrame(e.target, e.target._atlas.defaultRow, 0);
-          lazyObs.unobserve(e.target);
-        });
-      }, { rootMargin: "400px" });
 
       /* ---- Hover: accelerated all-state cycling ---- */
       function startHover(tile) {
@@ -789,8 +780,9 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
           /* Cache sprite ref on tile */
           tile._sprite = el;
 
-          /* Observe for lazy loading */
-          lazyObs.observe(el);
+          /* Load sprite and first frame immediately */
+          loadSprite(el);
+          showFrame(el, row0.rowIndex, 0);
 
           /* Hover handlers */
           tile.addEventListener("mouseenter", () => startHover(tile));
