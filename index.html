@@ -356,6 +356,80 @@
           zip.file("pet.json", jsonBlob);
           zip.file("spritesheet." + ext, imgBlob);
 
+          const readmeCN = `==================================================
+        Codpet (像素桌面伴侣) 安装与使用说明
+==================================================
+
+这是一只精心制作的 Codpet 互动像素桌面伴侣！请按照以下简单的步骤将其安装到您的 Codex 环境中：
+
+【第一步：解压文件】
+1. 解压下载的压缩包（建议将解压后的文件夹命名为该宠物的名字，例如：${pet.slug}）。
+2. 确保文件夹内部包含核心资源文件：
+   - pet.json （动作与元数据配置文件）
+   - spritesheet.${ext} （动画精灵图）
+
+【第二步：放入宠物目录】
+将解压后的宠物文件夹直接移动到您的 Codex 宠物存放目录下（无需重启编辑器，插件会自动监听目录并实时热重载识别！）：
+
+- macOS 用户：
+  📂 路径：/Users/您的用户名/.codex/pets/
+  💡 快捷操作：打开终端（Terminal），运行命令：open ~/.codex/pets 即可直接打开该目录，然后把宠物文件夹拖入。
+
+- Windows 用户：
+  📂 路径：C:\\Users\\您的用户名\\.codex\\pets\\
+  💡 快捷操作：按下快捷键 Win + R，输入 %USERPROFILE%\\.codex\\pets 并回车，即可直接打开目录，将宠物文件夹拖入。
+
+- Linux 用户：
+  📂 路径：~/.codex/pets/
+
+【第三步：启用并体验】
+1. 打开您的编辑器（VS Code / Cursor），进入插件设置面板。
+2. 依次点击导航路径进行选择：
+   📌 Codex ➔ Settings (设置) ➔ Appearance (外观) ➔ Pet (宠物)
+3. 在下拉菜单中选中您刚刚下载的新宠物，您的像素伴侣就会立刻在编辑器中动起来！
+
+--------------------------------------------------
+🌐 更多宠物尽在 Codpet 官网：https://cod.pet`;
+
+          const readmeEN = `==================================================
+      Codpet Installation Guide & README
+==================================================
+
+Thank you for downloading a beautiful animated companion from Codpet! 
+Follow these simple steps to install this pet in your Codex environment:
+
+[Step 1: Extract Files]
+1. Extract the downloaded zip file into a folder (we recommend naming the folder after the pet, e.g., "${pet.slug}").
+2. Make sure the folder contains these key files:
+   - pet.json (state and metadata configuration)
+   - spritesheet.${ext} (animation spritesheet)
+
+[Step 2: Move to the Local Pets Directory]
+Move your extracted pet folder directly into the Codex local pets folder (no editor restart required—the extension automatically watches the directory and hot-reloads it in real-time!):
+
+- macOS:
+  📂 Path: /Users/<your-username>/.codex/pets/
+  💡 Quick access: Open Terminal and run: open ~/.codex/pets
+
+- Windows:
+  📂 Path: C:\\Users\\<your-username>\\.codex\\pets\\
+  💡 Quick access: Press Win + R, type %USERPROFILE%\\.codex\\pets and press Enter.
+
+- Linux:
+  📂 Path: ~/.codex/pets/
+
+[Step 3: Launch and Enjoy]
+1. Open your editor (VS Code / Cursor), and navigate to the extension settings.
+2. Click through the following path:
+   📌 Codex ➔ Settings ➔ Appearance ➔ Pet
+3. Select your new companion from the dropdown menu, and enjoy your new desktop companion!
+
+--------------------------------------------------
+🌐 Discover more pets at: https://cod.pet`;
+
+          zip.file("安装说明.txt", readmeCN);
+          zip.file("README.txt", readmeEN);
+
           const zipBlob = await zip.generateAsync({ type: "blob" });
           const url = URL.createObjectURL(zipBlob);
           const a = document.createElement("a");
