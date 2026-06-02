@@ -639,11 +639,13 @@
 
       /* ---- Sprite engine ---- */
       function loadSprite(el, callback) {
+        const a = el._atlas;
         if (el._loaded) {
+          el.style.backgroundImage = `url("${encodeURI(a.src)}")`;
+          el.style.backgroundSize  = a.sw * a.s + "px " + a.sh * a.s + "px";
           if (callback) callback();
           return;
         }
-        const a = el._atlas;
         const img = new Image();
         img.src = a.src;
         img.onload = () => {
