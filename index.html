@@ -916,6 +916,7 @@
         loadSprite(
           el,
           (pct) => {
+            if (!tile._isHovered) return;
             const colorEl = tile._spriteStaticColor;
             if (colorEl) {
               const insetTop = 100 - pct;
@@ -927,6 +928,10 @@
             // Double check hover state before starting the loop
             if (!tile._isHovered) {
               tile.classList.remove("playing");
+              const colorEl = tile._spriteStaticColor;
+              if (colorEl) {
+                colorEl.style.clipPath = "inset(100% 0 0 0)";
+              }
               return;
             }
             tile.classList.add("playing");
