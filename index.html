@@ -246,12 +246,19 @@
       .tile:hover .tile-name { display: none; }
       .tile:hover .tile-dl   { display: inline-flex; }
 
-      /* — Sprite — */
       .sprite-player {
         flex: none;
         background-repeat: no-repeat;
         background-position: 0 0;
         image-rendering: auto;
+        filter: grayscale(100%);
+        opacity: 0.8;
+        transition: filter 250ms ease, opacity 250ms ease;
+      }
+
+      .tile:hover .sprite-player {
+        filter: grayscale(0%);
+        opacity: 1;
       }
 
       .empty {
