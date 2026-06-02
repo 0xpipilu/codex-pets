@@ -181,6 +181,33 @@
 
       .tile:hover { background: var(--card); }
 
+      .tile-loading-bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 2px;
+        width: 100%;
+        background: #56F264;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 150ms ease, opacity 150ms ease;
+        opacity: 0;
+        z-index: 5;
+      }
+
+      .tile.loading .tile-loading-bar {
+        opacity: 1;
+        transform: scaleX(1);
+        animation: tileLoading 1.2s infinite linear;
+      }
+
+      @keyframes tileLoading {
+        0% { transform: scaleX(0); transform-origin: left; }
+        49% { transform: scaleX(1); transform-origin: left; }
+        50% { transform: scaleX(1); transform-origin: right; }
+        100% { transform: scaleX(0); transform-origin: right; }
+      }
+
       .tile-stage {
         display: grid;
         place-items: center;
@@ -675,7 +702,13 @@
           tile._anim = requestAnimationFrame(tick);
         }
 
+        // Set loading class while spritesheet loads
+        if (!el._loaded) {
+          tile.classList.add("loading");
+        }
+
         loadSprite(el, () => {
+          tile.classList.remove("loading");
           if (!tile._isHovered) {
             showStaticPreview(el);
             return;
@@ -685,6 +718,7 @@
       }
 
       function stopHover(tile) {
+        tile.classList.remove("loading");
         if (tile._anim) { cancelAnimationFrame(tile._anim); tile._anim = null; }
         const el = tile._sprite;
         if (el) {
@@ -837,6 +871,7 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
           const row = getRows(pet)[0] || { rowIndex: 0, frames: 6, durationMs: 1100 };
           return `
             <div class="tile" data-slug="${pet.slug}">
+              <div class="tile-loading-bar"></div>
               <div class="tile-stage">
                 <div class="sprite-player" data-pet-slug="${pet.slug}"></div>
               </div>
@@ -901,8 +936,7 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
         pageviews: 0
       };
 
-      async function loadGlobalStats() {
-        // 1. Log / fetch global pageviews
+      async function logGlobalPageView() {
         try {
           const res = await fetch("https://countapi.mileshilliard.com/api/v1/hit/codpet_global_pageviews");
           if (res.ok) {
@@ -913,8 +947,9 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
         } catch (e) {
           console.error("Failed to fetch global pageviews:", e);
         }
+      }
 
-        // 2. Load global downloads for all pets sequentially with a tiny delay
+      async function loadGlobalStats() {
         for (const pet of allPets) {
           try {
             const res = await fetch(`https://countapi.mileshilliard.com/api/v1/get/codpet_dl_${pet.slug}`);
@@ -940,7 +975,7 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
 
           allPets = catalog.pets || [];
           renderGallery();
-          loadGlobalStats();
+          logGlobalPageView();
           
           // Page view tracking
           const views = parseInt(localStorage.getItem("page_views") || "0", 10) + 1;
@@ -1001,6 +1036,7 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
           function openAdminPanel() {
             updateAdminPanelData();
             adminPanel.classList.add("active");
+            loadGlobalStats();
           }
 
           function closeAdminPanel() {
