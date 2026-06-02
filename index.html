@@ -299,20 +299,6 @@
         clip-path: inset(100% 0 0 0); /* Clipped out completely by default */
       }
 
-      /* Defrosting Clip-Path Rise Animation */
-      @keyframes defrost-rise {
-        0% {
-          clip-path: inset(100% 0 0 0);
-        }
-        100% {
-          clip-path: inset(0% 0 0 0);
-        }
-      }
-
-      .tile.loading .sprite-static-color {
-        animation: defrost-rise 450ms cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
-      }
-
       .sprite-player {
         position: absolute;
         background-repeat: no-repeat;
@@ -1043,40 +1029,50 @@
           tile._anim = requestAnimationFrame(tick);
         }
 
-        // Always set the loading class to trigger the elegant rising steam particles and CSS defrost-rise animation!
+        // Always set the loading class to trigger the elegant rising steam particles!
         tile.classList.add("loading");
         
         const colorEl = tile._spriteStaticColor;
         if (colorEl) {
-          // Clear any inline styles to let the pristine stylesheet CSS animation run flawlessly
-          colorEl.style.animation = "";
-          colorEl.style.transition = "";
-          colorEl.style.clipPath = "";
+          colorEl.style.animation = "none";
+          colorEl.style.transition = "none";
+          colorEl.style.clipPath = "inset(100% 0 0 0)";
         }
 
+        let targetPct = el._loaded ? 100 : 0;
         const hoverStartTime = Date.now();
         const minDefrostDuration = 450; // Guarantee at least 450ms of steam & defrost visibility!
+
+        // Smooth, mathematically guaranteed non-snapping defrost update loop
+        function updateDefrost() {
+          if (tile._hoverSession !== currentSession || !tile._isHovered) return;
+
+          const elapsed = Date.now() - hoverStartTime;
+          // Calculate visual progress: smooth rise from 0 to 100, capped at current download targetPct
+          const currentPct = Math.min((elapsed / minDefrostDuration) * 100, targetPct);
+
+          if (colorEl) {
+            colorEl.style.clipPath = `inset(${100 - currentPct}% 0 0 0)`;
+          }
+
+          // Continue the loop only while the card is actively loading/defrosting
+          if (tile.classList.contains("loading")) {
+            requestAnimationFrame(updateDefrost);
+          }
+        }
+        requestAnimationFrame(updateDefrost);
 
         loadSprite(
           el,
           (pct) => {
             // Cancel progress if hover session has changed
             if (tile._hoverSession !== currentSession) return;
-
-            // If the network is slow, override the CSS transition and follow actual stream progress
-            const timeElapsed = Date.now() - hoverStartTime;
-            if (timeElapsed > minDefrostDuration) {
-              if (!tile._isHovered) return;
-              if (colorEl) {
-                colorEl.style.animation = "none"; // Disable CSS animation to take manual control
-                colorEl.style.transition = "none";
-                const insetTop = 100 - pct;
-                colorEl.style.clipPath = `inset(${insetTop}% 0 0 0)`;
-              }
-            }
+            targetPct = pct;
           },
           async () => {
-            // Wait for the remaining duration of the minimum transition time
+            targetPct = 100; // Guarantee target is 100% on complete
+
+            // Wait until the minimum defrost time has elapsed (e.g. 450ms)
             const timeElapsed = Date.now() - hoverStartTime;
             const remainingTime = Math.max(0, minDefrostDuration - timeElapsed);
             await new Promise(r => setTimeout(r, remainingTime));
