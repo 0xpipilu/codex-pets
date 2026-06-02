@@ -209,6 +209,7 @@
       }
 
       .tile-stage {
+        position: relative;
         display: grid;
         place-items: center;
         width: 100%;
@@ -273,20 +274,43 @@
       .tile:hover .tile-name { display: none; }
       .tile:hover .tile-dl   { display: inline-flex; }
 
-      .sprite-player {
-        flex: none;
+      .sprite-static {
+        position: absolute;
+        width: 72.96px;
+        height: 79.04px;
         background-repeat: no-repeat;
         background-position: center;
+        background-size: contain;
         image-rendering: pixelated;
         image-rendering: crisp-edges;
         filter: grayscale(100%);
         opacity: 0.8;
-        transition: filter 250ms ease, opacity 250ms ease;
+        transition: filter 250ms ease, opacity 200ms ease;
+        z-index: 2;
       }
 
+      .sprite-player {
+        position: absolute;
+        background-repeat: no-repeat;
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+        filter: grayscale(100%);
+        opacity: 0;
+        transition: filter 250ms ease, opacity 200ms ease;
+        z-index: 3;
+      }
+
+      .tile:hover .sprite-static,
       .tile:hover .sprite-player {
         filter: grayscale(0%);
+      }
+
+      .tile.playing .sprite-player {
         opacity: 1;
+      }
+
+      .tile.playing .sprite-static {
+        opacity: 0;
       }
 
       .empty {
@@ -639,33 +663,19 @@
 
       /* ---- Sprite engine ---- */
       function loadSprite(el, callback) {
-        const a = el._atlas;
         if (el._loaded) {
-          el.style.backgroundImage = `url("${encodeURI(a.src)}")`;
-          el.style.backgroundSize  = a.sw * a.s + "px " + a.sh * a.s + "px";
           if (callback) callback();
           return;
         }
+        const a = el._atlas;
         const img = new Image();
         img.src = a.src;
         img.onload = () => {
-          el.style.width  = a.fw * a.s + "px";
-          el.style.height = a.fh * a.s + "px";
           el.style.backgroundImage = `url("${encodeURI(a.src)}")`;
           el.style.backgroundSize  = a.sw * a.s + "px " + a.sh * a.s + "px";
           el._loaded = true;
           if (callback) callback();
         };
-      }
-
-      function showStaticPreview(el) {
-        const a = el._atlas;
-        el.style.width  = a.fw * a.s + "px";
-        el.style.height = a.fh * a.s + "px";
-        el.style.backgroundImage = `url("${encodeURI(a.png)}")`;
-        el.style.backgroundSize  = "contain";
-        el.style.backgroundPosition = "center";
-        el.style.backgroundRepeat = "no-repeat";
       }
 
       function showFrame(el, rowIndex, frameIndex) {
@@ -677,7 +687,13 @@
 
       /* ---- Hover: accelerated all-state cycling ---- */
       function startHover(tile) {
-        const el = tile._sprite;
+        // 1. Cancel any existing animation loop immediately to prevent duplicate/orphan loops
+        if (tile._anim) {
+          cancelAnimationFrame(tile._anim);
+          tile._anim = null;
+        }
+
+        const el = tile._spritePlayer;
         const pet = getPet(tile.dataset.slug);
         if (!el || !pet) return;
 
@@ -689,6 +705,10 @@
         let t0 = null;
 
         function tick(now) {
+          if (!tile._isHovered) {
+            stopHover(tile);
+            return;
+          }
           if (t0 === null) t0 = now;
           const elapsed = Math.max(0, now - t0) % totalDur;
           const idx = Math.floor(elapsed / msPerRow) % rows.length;
@@ -711,9 +731,15 @@
 
         loadSprite(el, () => {
           tile.classList.remove("loading");
+          // Double check hover state before starting the loop
           if (!tile._isHovered) {
-            showStaticPreview(el);
+            tile.classList.remove("playing");
             return;
+          }
+          tile.classList.add("playing");
+          // Double check to prevent starting another loop if one was started concurrently
+          if (tile._anim) {
+            cancelAnimationFrame(tile._anim);
           }
           tile._anim = requestAnimationFrame(tick);
         });
@@ -721,10 +747,10 @@
 
       function stopHover(tile) {
         tile.classList.remove("loading");
-        if (tile._anim) { cancelAnimationFrame(tile._anim); tile._anim = null; }
-        const el = tile._sprite;
-        if (el) {
-          showStaticPreview(el);
+        tile.classList.remove("playing");
+        if (tile._anim) {
+          cancelAnimationFrame(tile._anim);
+          tile._anim = null;
         }
       }
 
@@ -875,6 +901,7 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
             <div class="tile" data-slug="${pet.slug}">
               <div class="tile-loading-bar"></div>
               <div class="tile-stage">
+                <div class="sprite-static" data-pet-slug="${pet.slug}"></div>
                 <div class="sprite-player" data-pet-slug="${pet.slug}"></div>
               </div>
               <div class="tile-label">
@@ -892,24 +919,29 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
           if (!pet) return;
           const a = pet.atlas || FA;
           const row0 = getRows(pet)[0] || { rowIndex: 0 };
-          const el = tile.querySelector(".sprite-player");
+          const elStatic = tile.querySelector(".sprite-static");
+          const elPlayer = tile.querySelector(".sprite-player");
+
+          /* Initialize static preview */
+          elStatic.style.backgroundImage = `url("${encodeURI(`pets/${pet.slug}/base.png`)}")`;
 
           /* Store atlas info directly on the element */
-          el._atlas = {
+          elPlayer._atlas = {
             src: pet.spritesheetFile,
-            png: `pets/${pet.slug}/base.png`,
             fw: a.frameWidth, fh: a.frameHeight,
             sw: a.sheetWidth, sh: a.sheetHeight,
             s: 0.38,
             defaultRow: row0.rowIndex,
           };
-          el._loaded = false;
+          elPlayer._loaded = false;
 
-          /* Set static preview immediately (loads lightweight base.png) */
-          showStaticPreview(el);
+          /* Set dimensions immediately to reserve layout space */
+          elPlayer.style.width  = a.frameWidth * 0.38 + "px";
+          elPlayer.style.height = a.frameHeight * 0.38 + "px";
 
-          /* Cache sprite ref on tile */
-          tile._sprite = el;
+          /* Cache sprite refs on tile */
+          tile._spriteStatic = elStatic;
+          tile._spritePlayer = elPlayer;
           tile._isHovered = false;
 
           /* Hover handlers */
