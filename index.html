@@ -660,7 +660,7 @@
         const a = el._atlas;
         el.style.width  = a.fw * a.s + "px";
         el.style.height = a.fh * a.s + "px";
-        el.style.backgroundImage = `url("${encodeURI(a.svg)}")`;
+        el.style.backgroundImage = `url("${encodeURI(a.png)}")`;
         el.style.backgroundSize  = "contain";
         el.style.backgroundPosition = "center";
         el.style.backgroundRepeat = "no-repeat";
@@ -895,7 +895,7 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
           /* Store atlas info directly on the element */
           el._atlas = {
             src: pet.spritesheetFile,
-            svg: `pets/${pet.slug}/animated.svg`,
+            png: `pets/${pet.slug}/base.png`,
             fw: a.frameWidth, fh: a.frameHeight,
             sw: a.sheetWidth, sh: a.sheetHeight,
             s: 0.38,
@@ -903,7 +903,7 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
           };
           el._loaded = false;
 
-          /* Set static preview immediately (loads lightweight animated.svg) */
+          /* Set static preview immediately (loads lightweight base.png) */
           showStaticPreview(el);
 
           /* Cache sprite ref on tile */
