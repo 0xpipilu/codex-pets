@@ -311,6 +311,118 @@
         border-right: 1px solid var(--border);
         border-bottom: 1px solid var(--border);
       }
+      /* — Defrosting Brand Loader — */
+      .defrost-loader {
+        grid-column: 1 / -1;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 380px;
+        gap: 16px;
+        background: var(--bg);
+        opacity: 1;
+        transform: scale(1);
+        transition: opacity 250ms ease, transform 250ms ease;
+      }
+
+      .defrost-loader.fade-out {
+        opacity: 0;
+        transform: scale(0.98);
+        pointer-events: none;
+      }
+
+      .defrost-logo {
+        position: relative;
+        font-family: 'Nanum Pen Script', cursive;
+        font-size: 64px;
+        line-height: 1;
+        user-select: none;
+        width: 160px;
+        height: 64px;
+      }
+
+      .defrost-logo-base,
+      .defrost-logo-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+      }
+
+      /* Base layer: frozen light-gray */
+      .defrost-logo-base .other-base,
+      .defrost-logo-base .core-base {
+        color: #E2E2E2;
+        transition: color 150ms ease;
+      }
+
+      /* Overlay layer: active brand colors */
+      .defrost-logo-overlay .other {
+        color: #9E9E9E;
+      }
+      .defrost-logo-overlay .core {
+        color: var(--ink);
+      }
+
+      /* Rising defrost animation using clip-path */
+      .defrost-logo-overlay {
+        z-index: 2;
+        clip-path: inset(100% 0 0 0);
+        animation: logo-defrost-wave 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      }
+
+      @keyframes logo-defrost-wave {
+        0% {
+          clip-path: inset(100% 0 0 0);
+        }
+        40% {
+          clip-path: inset(0% 0 0 0);
+        }
+        60% {
+          clip-path: inset(0% 0 0 0);
+        }
+        100% {
+          clip-path: inset(0% 0 100% 0);
+        }
+      }
+
+      /* Minimalist Progress Bar */
+      .defrost-progress {
+        width: 120px;
+        height: 2px;
+        background: #F0F0F0;
+        border-radius: 99px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .defrost-progress-bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 0%;
+        background: #9E9E9E;
+        transition: width 200ms cubic-bezier(0.1, 0.8, 0.25, 1);
+      }
+
+      @keyframes tile-fade-in {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
       /* — Footer — */
       .footer {
@@ -564,7 +676,20 @@
       </noscript>
 
       <section id="gallery" class="gallery">
-        <div class="empty">Loading…</div>
+        <!-- 💡 Premium Option B Brand Defrosting Loading Screen -->
+        <div id="defrostLoader" class="defrost-loader">
+          <div class="defrost-logo">
+            <div class="defrost-logo-base">
+              <span class="other-base">co</span><span class="core-base">d.p</span><span class="other-base">et</span>
+            </div>
+            <div class="defrost-logo-overlay">
+              <span class="other">co</span><span class="core">d.p</span><span class="other">et</span>
+            </div>
+          </div>
+          <div class="defrost-progress">
+            <div id="defrostProgressBar" class="defrost-progress-bar"></div>
+          </div>
+        </div>
       </section>
     </main>
 
@@ -1051,12 +1176,41 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
 
       /* ---- Boot ---- */
       (async function boot() {
+        const progressBar = document.getElementById("defrostProgressBar");
+        const loader = document.getElementById("defrostLoader");
+        
+        function setProgress(pct) {
+          if (progressBar) progressBar.style.width = pct + "%";
+        }
+        
         try {
+          // 1. Boot started: set to 25% immediately
+          setProgress(25);
+          await new Promise(r => setTimeout(r, 80));
+          
+          // 2. Mid-way boot check: set to 55%
+          setProgress(55);
+
           const catalog = typeof window.__CODEX_PETS__ === "object" && window.__CODEX_PETS__
             ? window.__CODEX_PETS__
             : await fetch("./index.json?v=20260601").then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
 
+          // 3. Catalog fetched: set to 85%
+          setProgress(85);
+          await new Promise(r => setTimeout(r, 60));
+
           allPets = catalog.pets || [];
+          
+          // 4. Completed: set to 100%
+          setProgress(100);
+          await new Promise(r => setTimeout(r, 150)); // let the bar reach 100% smoothly
+          
+          // 5. Beautiful fade out of the defrost loader
+          if (loader) {
+            loader.classList.add("fade-out");
+            await new Promise(r => setTimeout(r, 250)); // wait for fade out transition
+          }
+
           renderGallery();
           logGlobalPageView();
           
