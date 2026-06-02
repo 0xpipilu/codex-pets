@@ -187,25 +187,16 @@
         left: 0;
         height: 2px;
         width: 100%;
-        background: #56F264;
+        background: #9E9E9E;
         transform: scaleX(0);
         transform-origin: left;
-        transition: transform 150ms ease, opacity 150ms ease;
+        transition: transform 120ms linear, opacity 150ms ease;
         opacity: 0;
         z-index: 5;
       }
 
       .tile.loading .tile-loading-bar {
         opacity: 1;
-        transform: scaleX(1);
-        animation: tileLoading 1.2s infinite linear;
-      }
-
-      @keyframes tileLoading {
-        0% { transform: scaleX(0); transform-origin: left; }
-        49% { transform: scaleX(1); transform-origin: left; }
-        50% { transform: scaleX(1); transform-origin: right; }
-        100% { transform: scaleX(0); transform-origin: right; }
       }
 
       .tile-stage {
@@ -662,20 +653,58 @@
       }
 
       /* ---- Sprite engine ---- */
-      function loadSprite(el, callback) {
+      async function loadSprite(el, onProgress, callback) {
         if (el._loaded) {
           if (callback) callback();
           return;
         }
         const a = el._atlas;
-        const img = new Image();
-        img.src = a.src;
-        img.onload = () => {
-          el.style.backgroundImage = `url("${encodeURI(a.src)}")`;
+        try {
+          const response = await fetch(a.src);
+          if (!response.ok) throw new Error("Network response was not ok");
+          
+          const contentLength = response.headers.get('content-length');
+          if (!contentLength) {
+            el.style.backgroundImage = `url("${encodeURI(a.src)}")`;
+            el.style.backgroundSize  = a.sw * a.s + "px " + a.sh * a.s + "px";
+            el._loaded = true;
+            if (onProgress) onProgress(100);
+            if (callback) callback();
+            return;
+          }
+          
+          const total = parseInt(contentLength, 10);
+          let loaded = 0;
+          const reader = response.body.getReader();
+          const chunks = [];
+          
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            chunks.push(value);
+            loaded += value.length;
+            const pct = Math.round((loaded / total) * 100);
+            if (onProgress) onProgress(pct);
+          }
+          
+          const blob = new Blob(chunks);
+          const blobUrl = URL.createObjectURL(blob);
+          el.style.backgroundImage = `url("${blobUrl}")`;
           el.style.backgroundSize  = a.sw * a.s + "px " + a.sh * a.s + "px";
           el._loaded = true;
           if (callback) callback();
-        };
+        } catch (e) {
+          console.error("Failed to load spritesheet with progress:", e);
+          const img = new Image();
+          img.src = a.src;
+          img.onload = () => {
+            el.style.backgroundImage = `url("${encodeURI(a.src)}")`;
+            el.style.backgroundSize  = a.sw * a.s + "px " + a.sh * a.s + "px";
+            el._loaded = true;
+            if (onProgress) onProgress(100);
+            if (callback) callback();
+          };
+        }
       }
 
       function showFrame(el, rowIndex, frameIndex) {
@@ -724,25 +753,38 @@
           tile._anim = requestAnimationFrame(tick);
         }
 
-        // Set loading class while spritesheet loads
+        // Set loading class and reset bar scale while spritesheet loads
         if (!el._loaded) {
           tile.classList.add("loading");
+          const bar = tile.querySelector(".tile-loading-bar");
+          if (bar) {
+            bar.style.transform = "scaleX(0)";
+          }
         }
 
-        loadSprite(el, () => {
-          tile.classList.remove("loading");
-          // Double check hover state before starting the loop
-          if (!tile._isHovered) {
-            tile.classList.remove("playing");
-            return;
+        loadSprite(
+          el,
+          (pct) => {
+            const bar = tile.querySelector(".tile-loading-bar");
+            if (bar) {
+              bar.style.transform = `scaleX(${pct / 100})`;
+            }
+          },
+          () => {
+            tile.classList.remove("loading");
+            // Double check hover state before starting the loop
+            if (!tile._isHovered) {
+              tile.classList.remove("playing");
+              return;
+            }
+            tile.classList.add("playing");
+            // Double check to prevent starting another loop if one was started concurrently
+            if (tile._anim) {
+              cancelAnimationFrame(tile._anim);
+            }
+            tile._anim = requestAnimationFrame(tick);
           }
-          tile.classList.add("playing");
-          // Double check to prevent starting another loop if one was started concurrently
-          if (tile._anim) {
-            cancelAnimationFrame(tile._anim);
-          }
-          tile._anim = requestAnimationFrame(tick);
-        });
+        );
       }
 
       function stopHover(tile) {
@@ -751,6 +793,10 @@
         if (tile._anim) {
           cancelAnimationFrame(tile._anim);
           tile._anim = null;
+        }
+        const bar = tile.querySelector(".tile-loading-bar");
+        if (bar) {
+          bar.style.transform = "scaleX(0)";
         }
       }
 
