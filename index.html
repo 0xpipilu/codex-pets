@@ -8,6 +8,7 @@
     <meta name="description" content="Browse and preview all Codpet companions — animated pixel companions for your editor or developer workspace." />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.gstatic.com/s/nanumpenscript/v25/daaDSSYiLGqEal3MvdA_FOL_3FkN6zn0aeNBYTQ.woff2" as="font" type="font/woff2" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
     <script>
       (function() {
@@ -1328,8 +1329,8 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
             <div class="tile" data-slug="${pet.slug}">
               <div class="tile-stage">
                 <!-- Evaporating Defrost Steam is dynamically injected on hover to minimize DOM size -->
-                <img class="sprite-static sprite-static-gray" loading="lazy" data-pet-slug="${pet.slug}" alt="${esc(pet.displayName)} preview">
-                <img class="sprite-static sprite-static-color" loading="lazy" data-pet-slug="${pet.slug}" alt="${esc(pet.displayName)} preview colored">
+                 <img class="sprite-static sprite-static-gray" width="73" height="79" loading="lazy" data-pet-slug="${pet.slug}" alt="${esc(pet.displayName)} preview">
+                 <img class="sprite-static sprite-static-color" width="73" height="79" loading="lazy" data-pet-slug="${pet.slug}" alt="${esc(pet.displayName)} preview colored">
                 <div class="sprite-player" data-pet-slug="${pet.slug}"></div>
               </div>
               <div class="tile-label">
