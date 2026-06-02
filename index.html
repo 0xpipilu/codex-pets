@@ -326,101 +326,120 @@
       }
 
       /* — Defrosting Steam Evaporation Effect — */
-      .steam-container {
-        position: absolute;
-        top: 8px; /* Position it elegantly above the pet's head inside the stage */
-        left: 50%;
-        transform: translateX(-50%);
-        width: 60px;
-        height: 35px;
-        pointer-events: none;
-        display: flex;
-        justify-content: space-around;
-        align-items: flex-end;
-        z-index: 5;
-        opacity: 0;
-        transition: opacity 250ms ease;
+      .tile.loading {
+        background: #ebebeb !important; /* Premium active-loading tile background for perfect white steam contrast */
       }
 
-      /* Only show and trigger steam animations when card is actively loading/defrosting */
+      .steam-container {
+        position: absolute;
+        width: 72.96px;
+        height: 79.04px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* Centered exactly over the pet sprite */
+        pointer-events: none;
+        z-index: 5;
+        opacity: 0;
+        transition: opacity 200ms ease;
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-start; /* Align puffs at the top of the sprite frame near pet's head */
+      }
+
+      /* Only show steam container when card is actively loading/defrosting */
       .tile.loading .steam-container {
         opacity: 1;
       }
 
       .steam-puff {
-        width: 8px;
-        height: 8px;
-        background: rgba(255, 255, 255, 0.7);
+        background: rgba(255, 255, 255, 0.95); /* Pure white, dense steam for premium visibility */
         border-radius: 50%;
-        filter: blur(2px);
+        filter: blur(2.5px); /* Soft, fluffy volumetric steam clouds */
         opacity: 0;
+        will-change: transform, opacity;
       }
 
       .steam-1 {
-        animation: steam-rise-1 1.6s ease-in-out infinite;
-        animation-delay: 0s;
+        width: 11px;
+        height: 11px;
       }
 
       .steam-2 {
-        animation: steam-rise-2 1.6s ease-in-out infinite;
-        animation-delay: 0.5s;
+        width: 14px;
+        height: 14px;
       }
 
       .steam-3 {
-        animation: steam-rise-3 1.6s ease-in-out infinite;
-        animation-delay: 1s;
+        width: 9px;
+        height: 9px;
+      }
+
+      /* Trigger animations ONLY during active hover loading/defrosting to guarantee 0% passive CPU */
+      .tile.loading .steam-1 {
+        animation: steam-rise-1 0.75s ease-in-out infinite;
+        animation-delay: 0s;
+      }
+
+      .tile.loading .steam-2 {
+        animation: steam-rise-2 0.75s ease-in-out infinite;
+        animation-delay: 0.18s;
+      }
+
+      .tile.loading .steam-3 {
+        animation: steam-rise-3 0.75s ease-in-out infinite;
+        animation-delay: 0.36s;
       }
 
       @keyframes steam-rise-1 {
         0% {
-          transform: translateY(10px) scale(0.6) translateX(0);
+          transform: translateY(18px) scale(0.5) translateX(0);
           opacity: 0;
         }
         20% {
-          opacity: 0.7;
+          opacity: 0.95;
         }
         60% {
-          transform: translateY(-12px) scale(1.3) translateX(-4px);
-          opacity: 0.5;
+          transform: translateY(-4px) scale(1.3) translateX(-3px);
+          opacity: 0.6;
         }
         100% {
-          transform: translateY(-30px) scale(0.7) translateX(-8px);
+          transform: translateY(-24px) scale(0.6) translateX(-6px);
           opacity: 0;
         }
       }
 
       @keyframes steam-rise-2 {
         0% {
-          transform: translateY(10px) scale(0.6) translateX(0);
+          transform: translateY(22px) scale(0.5) translateX(0);
           opacity: 0;
         }
         20% {
-          opacity: 0.7;
+          opacity: 0.95;
         }
         60% {
-          transform: translateY(-10px) scale(1.4) translateX(4px);
-          opacity: 0.5;
+          transform: translateY(-2px) scale(1.4) translateX(3px);
+          opacity: 0.6;
         }
         100% {
-          transform: translateY(-26px) scale(0.6) translateX(8px);
+          transform: translateY(-20px) scale(0.5) translateX(6px);
           opacity: 0;
         }
       }
 
       @keyframes steam-rise-3 {
         0% {
-          transform: translateY(10px) scale(0.5) translateX(0);
+          transform: translateY(16px) scale(0.5) translateX(0);
           opacity: 0;
         }
         20% {
-          opacity: 0.6;
+          opacity: 0.9;
         }
         60% {
-          transform: translateY(-14px) scale(1.2) translateX(-2px);
-          opacity: 0.4;
+          transform: translateY(-6px) scale(1.2) translateX(-1px);
+          opacity: 0.5;
         }
         100% {
-          transform: translateY(-32px) scale(0.5) translateX(-4px);
+          transform: translateY(-26px) scale(0.5) translateX(-2px);
           opacity: 0;
         }
       }
@@ -1010,36 +1029,57 @@
           tile._anim = requestAnimationFrame(tick);
         }
 
-        // Set loading class and reset colored overlay clip-path
-        if (!el._loaded) {
-          tile.classList.add("loading");
-          const colorEl = tile._spriteStaticColor;
-          if (colorEl) {
-            colorEl.style.clipPath = "inset(100% 0 0 0)";
-          }
+        // Always set the loading class to trigger the elegant rising steam particles!
+        tile.classList.add("loading");
+        
+        const colorEl = tile._spriteStaticColor;
+        if (colorEl) {
+          // Force layout reflow to ensure the 100% starting point is registered
+          colorEl.style.transition = "none";
+          colorEl.style.clipPath = "inset(100% 0 0 0)";
+          colorEl.getBoundingClientRect(); // trigger reflow
+          
+          // Apply a smooth 450ms CSS clip-path transition for the color defrosting
+          colorEl.style.transition = "clip-path 450ms cubic-bezier(0.25, 0.8, 0.25, 1)";
+          colorEl.style.clipPath = "inset(0% 0 0 0)";
         }
+
+        const hoverStartTime = Date.now();
+        const minDefrostDuration = 450; // Guarantee at least 450ms of steam & defrost visibility!
 
         loadSprite(
           el,
           (pct) => {
-            if (!tile._isHovered) return;
-            const colorEl = tile._spriteStaticColor;
-            if (colorEl) {
-              const insetTop = 100 - pct;
-              colorEl.style.clipPath = `inset(${insetTop}% 0 0 0)`;
+            // If the network is slow, override the CSS transition and follow actual stream progress
+            const timeElapsed = Date.now() - hoverStartTime;
+            if (timeElapsed > minDefrostDuration) {
+              if (!tile._isHovered) return;
+              if (colorEl) {
+                colorEl.style.transition = "none";
+                const insetTop = 100 - pct;
+                colorEl.style.clipPath = `inset(${insetTop}% 0 0 0)`;
+              }
             }
           },
-          () => {
+          async () => {
+            // Wait for the remaining duration of the minimum transition time
+            const timeElapsed = Date.now() - hoverStartTime;
+            const remainingTime = Math.max(0, minDefrostDuration - timeElapsed);
+            await new Promise(r => setTimeout(r, remainingTime));
+
+            // Hide the steam container and update active rendering states
             tile.classList.remove("loading");
+            
             // Double check hover state before starting the loop
             if (!tile._isHovered) {
               tile.classList.remove("playing");
-              const colorEl = tile._spriteStaticColor;
               if (colorEl) {
+                colorEl.style.transition = "none";
                 colorEl.style.clipPath = "inset(100% 0 0 0)";
               }
               return;
             }
+            
             tile.classList.add("playing");
             // Double check to prevent starting another loop if one was started concurrently
             if (tile._anim) {
@@ -1059,6 +1099,8 @@
         }
         const colorEl = tile._spriteStaticColor;
         if (colorEl) {
+          // Snap back to grayscale instantly on leave
+          colorEl.style.transition = "none";
           colorEl.style.clipPath = "inset(100% 0 0 0)";
         }
       }
