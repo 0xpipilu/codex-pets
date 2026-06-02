@@ -328,7 +328,7 @@
 
       .steam-container {
         position: absolute;
-        width: 72.96px;
+        width: 48px; /* Narrower width focused exactly on the top hairline/scalp curve */
         height: 79.04px;
         top: 50%;
         left: 50%;
@@ -338,7 +338,7 @@
         opacity: 0;
         transition: opacity 200ms ease;
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between; /* Distribute the 5 steam columns beautifully across the head */
         align-items: flex-start; /* Align puffs at the top of the sprite frame near pet's head */
       }
 
@@ -348,94 +348,131 @@
       }
 
       .steam-puff {
-        background: rgba(255, 255, 255, 0.95); /* Pure white, dense steam for premium visibility */
+        background: rgba(255, 255, 255, 0.85); /* Faint, whispery pure white vapor */
         border-radius: 50%;
-        filter: blur(2.5px); /* Soft, fluffy volumetric steam clouds */
+        filter: blur(4.5px); /* Deep blur turns them into completely soft, edge-less mist clouds */
         opacity: 0;
         will-change: transform, opacity;
       }
 
-      .steam-1 {
-        width: 11px;
-        height: 11px;
-      }
+      .steam-1 { width: 14px; height: 14px; }
+      .steam-2 { width: 18px; height: 18px; }
+      .steam-3 { width: 15px; height: 15px; }
+      .steam-4 { width: 17px; height: 17px; }
+      .steam-5 { width: 13px; height: 13px; }
 
-      .steam-2 {
-        width: 14px;
-        height: 14px;
-      }
-
-      .steam-3 {
-        width: 9px;
-        height: 9px;
-      }
-
-      /* Trigger animations ONLY during active hover loading/defrosting to guarantee 0% passive CPU */
+      /* Trigger 5-column animations ONLY during active hover loading to guarantee 0% passive CPU */
       .tile.loading .steam-1 {
-        animation: steam-rise-1 0.75s ease-in-out infinite;
+        animation: steam-rise-1 0.8s ease-in-out infinite;
         animation-delay: 0s;
       }
 
       .tile.loading .steam-2 {
-        animation: steam-rise-2 0.75s ease-in-out infinite;
-        animation-delay: 0.18s;
+        animation: steam-rise-2 0.8s ease-in-out infinite;
+        animation-delay: 0.16s;
       }
 
       .tile.loading .steam-3 {
-        animation: steam-rise-3 0.75s ease-in-out infinite;
-        animation-delay: 0.36s;
+        animation: steam-rise-3 0.8s ease-in-out infinite;
+        animation-delay: 0.32s;
+      }
+
+      .tile.loading .steam-4 {
+        animation: steam-rise-4 0.8s ease-in-out infinite;
+        animation-delay: 0.48s;
+      }
+
+      .tile.loading .steam-5 {
+        animation: steam-rise-5 0.8s ease-in-out infinite;
+        animation-delay: 0.64s;
       }
 
       @keyframes steam-rise-1 {
         0% {
-          transform: translateY(18px) scale(0.5) translateX(0);
+          transform: translateY(22px) scaleX(0.4) scaleY(0.7) translateX(0);
           opacity: 0;
         }
-        20% {
-          opacity: 0.95;
+        25% {
+          opacity: 0.4;
         }
         60% {
-          transform: translateY(-4px) scale(1.3) translateX(-3px);
-          opacity: 0.6;
+          transform: translateY(4px) scaleX(1.3) scaleY(1.8) translateX(-3px);
+          opacity: 0.28;
         }
         100% {
-          transform: translateY(-24px) scale(0.6) translateX(-6px);
+          transform: translateY(-16px) scaleX(1.8) scaleY(2.2) translateX(-6px);
           opacity: 0;
         }
       }
 
       @keyframes steam-rise-2 {
         0% {
-          transform: translateY(22px) scale(0.5) translateX(0);
+          transform: translateY(24px) scaleX(0.4) scaleY(0.7) translateX(0);
           opacity: 0;
         }
-        20% {
-          opacity: 0.95;
+        25% {
+          opacity: 0.45;
         }
         60% {
-          transform: translateY(-2px) scale(1.4) translateX(3px);
-          opacity: 0.6;
+          transform: translateY(6px) scaleX(1.4) scaleY(1.9) translateX(2px);
+          opacity: 0.32;
         }
         100% {
-          transform: translateY(-20px) scale(0.5) translateX(6px);
+          transform: translateY(-13px) scaleX(1.9) scaleY(2.3) translateX(4px);
           opacity: 0;
         }
       }
 
       @keyframes steam-rise-3 {
         0% {
-          transform: translateY(16px) scale(0.5) translateX(0);
+          transform: translateY(20px) scaleX(0.4) scaleY(0.7) translateX(0);
           opacity: 0;
         }
-        20% {
-          opacity: 0.9;
-        }
-        60% {
-          transform: translateY(-6px) scale(1.2) translateX(-1px);
+        25% {
           opacity: 0.5;
         }
+        60% {
+          transform: translateY(2px) scaleX(1.2) scaleY(1.7) translateX(-1px);
+          opacity: 0.35;
+        }
         100% {
-          transform: translateY(-26px) scale(0.5) translateX(-2px);
+          transform: translateY(-18px) scaleX(1.7) scaleY(2.1) translateX(-2px);
+          opacity: 0;
+        }
+      }
+
+      @keyframes steam-rise-4 {
+        0% {
+          transform: translateY(23px) scaleX(0.4) scaleY(0.7) translateX(0);
+          opacity: 0;
+        }
+        25% {
+          opacity: 0.4;
+        }
+        60% {
+          transform: translateY(5px) scaleX(1.3) scaleY(1.8) translateX(3px);
+          opacity: 0.28;
+        }
+        100% {
+          transform: translateY(-14px) scaleX(1.8) scaleY(2.2) translateX(5px);
+          opacity: 0;
+        }
+      }
+
+      @keyframes steam-rise-5 {
+        0% {
+          transform: translateY(21px) scaleX(0.4) scaleY(0.7) translateX(0);
+          opacity: 0;
+        }
+        25% {
+          opacity: 0.45;
+        }
+        60% {
+          transform: translateY(3px) scaleX(1.5) scaleY(1.9) translateX(-2px);
+          opacity: 0.32;
+        }
+        100% {
+          transform: translateY(-17px) scaleX(1.9) scaleY(2.3) translateX(-4px);
           opacity: 0;
         }
       }
@@ -1273,6 +1310,8 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
                   <div class="steam-puff steam-1"></div>
                   <div class="steam-puff steam-2"></div>
                   <div class="steam-puff steam-3"></div>
+                  <div class="steam-puff steam-4"></div>
+                  <div class="steam-puff steam-5"></div>
                 </div>
                 <img class="sprite-static sprite-static-gray" loading="lazy" data-pet-slug="${pet.slug}" alt="${esc(pet.displayName)} preview">
                 <img class="sprite-static sprite-static-color" loading="lazy" data-pet-slug="${pet.slug}" alt="${esc(pet.displayName)} preview colored">
