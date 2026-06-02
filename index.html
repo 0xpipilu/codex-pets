@@ -998,6 +998,10 @@
           tile._anim = null;
         }
 
+        // Increment hover session ID to invalidate any stale asynchronous callbacks from previous hovers
+        tile._hoverSession = (tile._hoverSession || 0) + 1;
+        const currentSession = tile._hoverSession;
+
         const el = tile._spritePlayer;
         const pet = getPet(tile.dataset.slug);
         if (!el || !pet) return;
@@ -1010,7 +1014,7 @@
         let t0 = null;
 
         function tick(now) {
-          if (!tile._isHovered) {
+          if (tile._hoverSession !== currentSession || !tile._isHovered) {
             stopHover(tile);
             return;
           }
@@ -1050,6 +1054,9 @@
         loadSprite(
           el,
           (pct) => {
+            // Cancel progress if hover session has changed
+            if (tile._hoverSession !== currentSession) return;
+
             // If the network is slow, override the CSS transition and follow actual stream progress
             const timeElapsed = Date.now() - hoverStartTime;
             if (timeElapsed > minDefrostDuration) {
@@ -1066,6 +1073,9 @@
             const timeElapsed = Date.now() - hoverStartTime;
             const remainingTime = Math.max(0, minDefrostDuration - timeElapsed);
             await new Promise(r => setTimeout(r, remainingTime));
+
+            // Cancel completion if hover session has changed
+            if (tile._hoverSession !== currentSession) return;
 
             // Hide the steam container and update active rendering states
             tile.classList.remove("loading");
@@ -1091,6 +1101,7 @@
       }
 
       function stopHover(tile) {
+        tile._hoverSession = 0; // Invalidate any running session instantly
         tile.classList.remove("loading");
         tile.classList.remove("playing");
         if (tile._anim) {
