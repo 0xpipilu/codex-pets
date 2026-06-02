@@ -181,23 +181,7 @@
 
       .tile:hover { background: var(--card); }
 
-      .tile-loading-bar {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 2px;
-        width: 100%;
-        background: #9E9E9E;
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform 120ms linear, opacity 150ms ease;
-        opacity: 0;
-        z-index: 5;
-      }
 
-      .tile.loading .tile-loading-bar {
-        opacity: 1;
-      }
 
       .tile-stage {
         position: relative;
@@ -274,10 +258,23 @@
         background-size: contain;
         image-rendering: pixelated;
         image-rendering: crisp-edges;
+        transition: filter 250ms ease, opacity 200ms ease;
+      }
+
+      /* Grayscale static base */
+      .sprite-static-gray {
         filter: grayscale(100%);
         opacity: 0.8;
-        transition: filter 250ms ease, opacity 200ms ease;
         z-index: 2;
+      }
+
+      /* Colored static overlay (the defrosting progress) */
+      .sprite-static-color {
+        filter: grayscale(0%);
+        opacity: 1;
+        z-index: 3;
+        clip-path: inset(100% 0 0 0); /* Clipped out completely by default */
+        transition: clip-path 120ms linear; /* Smooth linear rising transition */
       }
 
       .sprite-player {
@@ -285,22 +282,23 @@
         background-repeat: no-repeat;
         image-rendering: pixelated;
         image-rendering: crisp-edges;
-        filter: grayscale(100%);
+        filter: grayscale(0%);
         opacity: 0;
-        transition: filter 250ms ease, opacity 200ms ease;
-        z-index: 3;
+        transition: opacity 200ms ease;
+        z-index: 4;
       }
 
-      .tile:hover .sprite-static,
-      .tile:hover .sprite-player {
-        filter: grayscale(0%);
+      .tile:hover .sprite-static-gray {
+        filter: grayscale(100%);
+        opacity: 0.8;
       }
 
       .tile.playing .sprite-player {
         opacity: 1;
       }
 
-      .tile.playing .sprite-static {
+      .tile.playing .sprite-static-gray,
+      .tile.playing .sprite-static-color {
         opacity: 0;
       }
 
@@ -753,21 +751,22 @@
           tile._anim = requestAnimationFrame(tick);
         }
 
-        // Set loading class and reset bar scale while spritesheet loads
+        // Set loading class and reset colored overlay clip-path
         if (!el._loaded) {
           tile.classList.add("loading");
-          const bar = tile.querySelector(".tile-loading-bar");
-          if (bar) {
-            bar.style.transform = "scaleX(0)";
+          const colorEl = tile._spriteStaticColor;
+          if (colorEl) {
+            colorEl.style.clipPath = "inset(100% 0 0 0)";
           }
         }
 
         loadSprite(
           el,
           (pct) => {
-            const bar = tile.querySelector(".tile-loading-bar");
-            if (bar) {
-              bar.style.transform = `scaleX(${pct / 100})`;
+            const colorEl = tile._spriteStaticColor;
+            if (colorEl) {
+              const insetTop = 100 - pct;
+              colorEl.style.clipPath = `inset(${insetTop}% 0 0 0)`;
             }
           },
           () => {
@@ -794,9 +793,9 @@
           cancelAnimationFrame(tile._anim);
           tile._anim = null;
         }
-        const bar = tile.querySelector(".tile-loading-bar");
-        if (bar) {
-          bar.style.transform = "scaleX(0)";
+        const colorEl = tile._spriteStaticColor;
+        if (colorEl) {
+          colorEl.style.clipPath = "inset(100% 0 0 0)";
         }
       }
 
@@ -945,9 +944,9 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
           const row = getRows(pet)[0] || { rowIndex: 0, frames: 6, durationMs: 1100 };
           return `
             <div class="tile" data-slug="${pet.slug}">
-              <div class="tile-loading-bar"></div>
               <div class="tile-stage">
-                <div class="sprite-static" data-pet-slug="${pet.slug}"></div>
+                <div class="sprite-static sprite-static-gray" data-pet-slug="${pet.slug}"></div>
+                <div class="sprite-static sprite-static-color" data-pet-slug="${pet.slug}"></div>
                 <div class="sprite-player" data-pet-slug="${pet.slug}"></div>
               </div>
               <div class="tile-label">
@@ -965,11 +964,14 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
           if (!pet) return;
           const a = pet.atlas || FA;
           const row0 = getRows(pet)[0] || { rowIndex: 0 };
-          const elStatic = tile.querySelector(".sprite-static");
+          const elStaticGray = tile.querySelector(".sprite-static-gray");
+          const elStaticColor = tile.querySelector(".sprite-static-color");
           const elPlayer = tile.querySelector(".sprite-player");
 
-          /* Initialize static preview */
-          elStatic.style.backgroundImage = `url("${encodeURI(`pets/${pet.slug}/base.png`)}")`;
+          /* Initialize static previews (both gray and color use base.png) */
+          const bgUrl = `url("${encodeURI(`pets/${pet.slug}/base.png`)}")`;
+          elStaticGray.style.backgroundImage = bgUrl;
+          elStaticColor.style.backgroundImage = bgUrl;
 
           /* Store atlas info directly on the element */
           elPlayer._atlas = {
@@ -986,7 +988,8 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
           elPlayer.style.height = a.frameHeight * 0.38 + "px";
 
           /* Cache sprite refs on tile */
-          tile._spriteStatic = elStatic;
+          tile._spriteStaticGray = elStaticGray;
+          tile._spriteStaticColor = elStaticColor;
           tile._spritePlayer = elPlayer;
           tile._isHovered = false;
 
