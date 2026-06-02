@@ -1,6 +1,232 @@
 window.__CODEX_PETS__ = {
-  "count": 92,
+  "count": 93,
   "pets": [
+    {
+      "slug": "skiff",
+      "folder": "pets/skiff",
+      "id": "skiff",
+      "displayName": "Skiff",
+      "description": "A quiet winter mechanical seagull scene pet standing on a floating ice floe beside a small postal bucket.",
+      "spritesheetPath": "spritesheet.webp",
+      "petJsonPath": "pets/skiff/pet.json",
+      "spritesheetFile": "pets/skiff/spritesheet.webp",
+      "stateNames": [
+        "curious",
+        "float",
+        "happy",
+        "idle",
+        "melancholy",
+        "probe",
+        "sleep",
+        "walk"
+      ],
+      "stateCount": 8,
+      "atlas": {
+        "columns": 8,
+        "rows": 9,
+        "frameWidth": 192,
+        "frameHeight": 208,
+        "sheetWidth": 1536,
+        "sheetHeight": 1872
+      },
+      "previewRows": [
+        {
+          "key": "idle",
+          "label": "Idle",
+          "rowIndex": 0,
+          "frames": 6,
+          "durationMs": 1100,
+          "semantic": "idle",
+          "notes": "Calm breathing and blink loop with the gull, floe, and postal bucket held together as one quiet scene."
+        },
+        {
+          "key": "running-right",
+          "label": "Run Right",
+          "rowIndex": 1,
+          "frames": 8,
+          "durationMs": 980,
+          "semantic": "scene-slide-right",
+          "notes": ""
+        },
+        {
+          "key": "running-left",
+          "label": "Run Left",
+          "rowIndex": 2,
+          "frames": 8,
+          "durationMs": 980,
+          "semantic": "scene-slide-left",
+          "notes": ""
+        },
+        {
+          "key": "waving",
+          "label": "Waving",
+          "rowIndex": 3,
+          "frames": 4,
+          "durationMs": 840,
+          "semantic": "happy",
+          "notes": "Gentle open-beak happy chirp with tiny scarf motion while the bucket stays grounded."
+        },
+        {
+          "key": "jumping",
+          "label": "Jumping",
+          "rowIndex": 4,
+          "frames": 5,
+          "durationMs": 900,
+          "semantic": "float",
+          "notes": "Tiny buoyant floe-bob loop where the full scene rises and settles together."
+        },
+        {
+          "key": "failed",
+          "label": "Failed",
+          "rowIndex": 5,
+          "frames": 8,
+          "durationMs": 1120,
+          "semantic": "melancholy",
+          "notes": "Mild weary droop and recovery loop, still patient and on duty."
+        },
+        {
+          "key": "waiting",
+          "label": "Waiting",
+          "rowIndex": 6,
+          "frames": 6,
+          "durationMs": 1260,
+          "semantic": "sleep",
+          "notes": "Soft closed-eye watch-duty nap without breaking the upright scene silhouette."
+        },
+        {
+          "key": "running",
+          "label": "Running",
+          "rowIndex": 7,
+          "frames": 6,
+          "durationMs": 960,
+          "semantic": "post-duty-adjust",
+          "notes": ""
+        },
+        {
+          "key": "review",
+          "label": "Review",
+          "rowIndex": 8,
+          "frames": 6,
+          "durationMs": 1080,
+          "semantic": "curious",
+          "notes": "Small attentive head lift and side-look toward the bucket or distant movement."
+        }
+      ],
+      "defaultPreviewRow": "idle"
+    },
+    {
+      "slug": "floe",
+      "folder": "pets/floe",
+      "id": "floe",
+      "displayName": "Floe",
+      "description": "A gentle mechanical polar bear quietly fishing from a floating ice floe with its stool, rod, bucket, scarf, and winter calm intact.",
+      "spritesheetPath": "spritesheet.webp",
+      "petJsonPath": "pets/floe/pet.json",
+      "spritesheetFile": "pets/floe/spritesheet.webp",
+      "stateNames": [
+        "active",
+        "curious",
+        "happy",
+        "hop",
+        "idle",
+        "melancholy",
+        "sleep",
+        "walk"
+      ],
+      "stateCount": 8,
+      "atlas": {
+        "columns": 8,
+        "rows": 9,
+        "frameWidth": 192,
+        "frameHeight": 208,
+        "sheetWidth": 1536,
+        "sheetHeight": 1872
+      },
+      "previewRows": [
+        {
+          "key": "idle",
+          "label": "Idle",
+          "rowIndex": 0,
+          "frames": 6,
+          "durationMs": 1100,
+          "semantic": "idle",
+          "notes": "Calm seated fishing idle with tiny breathing and line sway."
+        },
+        {
+          "key": "running-right",
+          "label": "Run Right",
+          "rowIndex": 1,
+          "frames": 8,
+          "durationMs": 980,
+          "semantic": "scene-glide-right",
+          "notes": ""
+        },
+        {
+          "key": "running-left",
+          "label": "Run Left",
+          "rowIndex": 2,
+          "frames": 8,
+          "durationMs": 980,
+          "semantic": "scene-glide-left",
+          "notes": ""
+        },
+        {
+          "key": "waving",
+          "label": "Waving",
+          "rowIndex": 3,
+          "frames": 4,
+          "durationMs": 840,
+          "semantic": "happy",
+          "notes": "Soft contented smile and tiny scarf sway, mapped onto the fixed waving row."
+        },
+        {
+          "key": "jumping",
+          "label": "Jumping",
+          "rowIndex": 4,
+          "frames": 5,
+          "durationMs": 900,
+          "semantic": "hop-support",
+          "notes": ""
+        },
+        {
+          "key": "failed",
+          "label": "Failed",
+          "rowIndex": 5,
+          "frames": 8,
+          "durationMs": 1120,
+          "semantic": "melancholy-support",
+          "notes": ""
+        },
+        {
+          "key": "waiting",
+          "label": "Waiting",
+          "rowIndex": 6,
+          "frames": 6,
+          "durationMs": 1260,
+          "semantic": "sleep",
+          "notes": "Seated winter doze with lowered head and closed eyes while keeping rod, floe, and bucket stable."
+        },
+        {
+          "key": "running",
+          "label": "Running",
+          "rowIndex": 7,
+          "frames": 6,
+          "durationMs": 960,
+          "semantic": "active-support",
+          "notes": ""
+        },
+        {
+          "key": "review",
+          "label": "Review",
+          "rowIndex": 8,
+          "frames": 6,
+          "durationMs": 1080,
+          "semantic": "curious",
+          "notes": "Gentle curious reaction to a small movement in the line or ice hole while staying seated."
+        }
+      ],
+      "defaultPreviewRow": "idle"
+    },
     {
       "slug": "rex",
       "folder": "pets/rex",
@@ -6094,110 +6320,6 @@ window.__CODEX_PETS__ = {
       "spritesheetPath": "spritesheet.webp",
       "petJsonPath": "pets/battle-damaged-idle/pet.json",
       "spritesheetFile": "pets/battle-damaged-idle/spritesheet.webp",
-      "stateNames": [],
-      "stateCount": 0,
-      "atlas": {
-        "columns": 8,
-        "rows": 9,
-        "frameWidth": 192,
-        "frameHeight": 208,
-        "sheetWidth": 1536,
-        "sheetHeight": 1872
-      },
-      "previewRows": [
-        {
-          "key": "idle",
-          "label": "Idle",
-          "rowIndex": 0,
-          "frames": 6,
-          "durationMs": 1100,
-          "semantic": null,
-          "notes": ""
-        },
-        {
-          "key": "running-right",
-          "label": "Run Right",
-          "rowIndex": 1,
-          "frames": 8,
-          "durationMs": 980,
-          "semantic": null,
-          "notes": ""
-        },
-        {
-          "key": "running-left",
-          "label": "Run Left",
-          "rowIndex": 2,
-          "frames": 8,
-          "durationMs": 980,
-          "semantic": null,
-          "notes": ""
-        },
-        {
-          "key": "waving",
-          "label": "Waving",
-          "rowIndex": 3,
-          "frames": 4,
-          "durationMs": 840,
-          "semantic": null,
-          "notes": ""
-        },
-        {
-          "key": "jumping",
-          "label": "Jumping",
-          "rowIndex": 4,
-          "frames": 5,
-          "durationMs": 900,
-          "semantic": null,
-          "notes": ""
-        },
-        {
-          "key": "failed",
-          "label": "Failed",
-          "rowIndex": 5,
-          "frames": 8,
-          "durationMs": 1120,
-          "semantic": null,
-          "notes": ""
-        },
-        {
-          "key": "waiting",
-          "label": "Waiting",
-          "rowIndex": 6,
-          "frames": 6,
-          "durationMs": 1260,
-          "semantic": null,
-          "notes": ""
-        },
-        {
-          "key": "running",
-          "label": "Running",
-          "rowIndex": 7,
-          "frames": 6,
-          "durationMs": 960,
-          "semantic": null,
-          "notes": ""
-        },
-        {
-          "key": "review",
-          "label": "Review",
-          "rowIndex": 8,
-          "frames": 6,
-          "durationMs": 1080,
-          "semantic": null,
-          "notes": ""
-        }
-      ],
-      "defaultPreviewRow": "idle"
-    },
-    {
-      "slug": "split-chip",
-      "folder": "pets/split-chip",
-      "id": "split-chip",
-      "displayName": "Split Chip",
-      "description": "A half-destroyed doll robot with an exposed red brain chip, dragging itself onward with pitiful, dangerous determination.",
-      "spritesheetPath": "spritesheet.webp",
-      "petJsonPath": "pets/split-chip/pet.json",
-      "spritesheetFile": "pets/split-chip/spritesheet.webp",
       "stateNames": [],
       "stateCount": 0,
       "atlas": {

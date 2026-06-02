@@ -1,0 +1,119 @@
+{
+  "id": "skiff",
+  "displayName": "Skiff",
+  "description": "A quiet winter mechanical seagull scene pet standing on a floating ice floe beside a small postal bucket.",
+  "spritesheetPath": "spritesheet.webp",
+  "states": {
+    "idle": {
+      "atlasRow": "idle",
+      "notes": "Calm breathing and blink loop with the gull, floe, and postal bucket held together as one quiet scene."
+    },
+    "walk": {
+      "atlasRows": [
+        "running-right",
+        "running-left"
+      ],
+      "notes": "Not a literal bird walk. These rows are directional scene-slide loops for drag and walk mapping."
+    },
+    "curious": {
+      "atlasRow": "review",
+      "notes": "Small attentive head lift and side-look toward the bucket or distant movement."
+    },
+    "happy": {
+      "atlasRow": "waving",
+      "notes": "Gentle open-beak happy chirp with tiny scarf motion while the bucket stays grounded."
+    },
+    "sleep": {
+      "atlasRow": "waiting",
+      "notes": "Soft closed-eye watch-duty nap without breaking the upright scene silhouette."
+    },
+    "probe": {
+      "atlasRow": "running",
+      "notes": "Auxiliary post-duty adjustment loop with tiny bucket glance and posture reset."
+    },
+    "float": {
+      "atlasRow": "jumping",
+      "notes": "Tiny buoyant floe-bob loop where the full scene rises and settles together."
+    },
+    "melancholy": {
+      "atlasRow": "failed",
+      "notes": "Mild weary droop and recovery loop, still patient and on duty."
+    }
+  },
+  "atlasRowSemantics": {
+    "idle": "idle",
+    "running-right": "scene-slide-right",
+    "running-left": "scene-slide-left",
+    "waving": "happy",
+    "jumping": "float",
+    "failed": "melancholy",
+    "waiting": "sleep",
+    "running": "post-duty-adjust",
+    "review": "curious"
+  },
+  "requestedActionMap": {
+    "idle": {
+      "atlasRow": "idle",
+      "status": "implemented"
+    },
+    "walk_right": {
+      "atlasRow": "running-right",
+      "status": "implemented",
+      "notes": "Scene glides right while the seagull keeps its planted floe stance."
+    },
+    "walk_left": {
+      "atlasRow": "running-left",
+      "status": "implemented",
+      "notes": "Scene glides left while the seagull keeps its planted floe stance."
+    },
+    "curious": {
+      "atlasRow": "review",
+      "status": "implemented"
+    },
+    "happy": {
+      "atlasRow": "waving",
+      "status": "implemented"
+    },
+    "sleep": {
+      "atlasRow": "waiting",
+      "status": "implemented"
+    },
+    "drag": {
+      "leftAtlasRow": "running-left",
+      "rightAtlasRow": "running-right",
+      "status": "implemented",
+      "notes": "Directional drag uses the true-facing scene-slide rows rather than a standard walk cycle."
+    },
+    "extra_scene_adjust": {
+      "atlasRow": "running",
+      "status": "implemented",
+      "notes": "Optional small on-duty adjustment loop."
+    },
+    "extra_float": {
+      "atlasRow": "jumping",
+      "status": "implemented",
+      "notes": "Optional subtle floe-bob loop."
+    },
+    "extra_droop": {
+      "atlasRow": "failed",
+      "status": "implemented",
+      "notes": "Optional mild weary droop loop."
+    }
+  },
+  "dragFacingValidation": {
+    "rule": "deltaX < 0 => facing left; deltaX > 0 => facing right",
+    "leftDragUses": "running-left",
+    "rightDragUses": "running-right",
+    "leftRowDerivedFrom": "generated-directly",
+    "rightRowDerivedFrom": "generated-directly",
+    "manualVerification": [
+      "left drag uses a true left-facing strip",
+      "right drag uses a true right-facing strip",
+      "walk-left and walk-right are not swapped",
+      "left-facing row keeps the seagull, floe, and postal bucket directionally unified",
+      "right-facing row keeps the seagull, floe, and postal bucket directionally unified",
+      "hat, scarf, floating ice, and postal bucket remain present in both directional rows",
+      "postal bucket stays attached to the same scene and does not drift during drag-facing rows"
+    ]
+  }
+}

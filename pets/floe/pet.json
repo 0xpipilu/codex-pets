@@ -1,0 +1,132 @@
+{
+  "id": "floe",
+  "displayName": "Floe",
+  "description": "A gentle mechanical polar bear quietly fishing from a floating ice floe with its stool, rod, bucket, scarf, and winter calm intact.",
+  "spritesheetPath": "spritesheet.webp",
+  "states": {
+    "idle": {
+      "atlasRow": "idle",
+      "notes": "Calm seated fishing idle with tiny breathing and line sway."
+    },
+    "walk": {
+      "atlasRows": [
+        "running-right",
+        "running-left"
+      ],
+      "notes": "Directional scene-glide rows used for drag-facing and motion semantics; Floe remains seated and fishing rather than literally walking."
+    },
+    "curious": {
+      "atlasRow": "review",
+      "notes": "Gentle curious reaction to a small movement in the line or ice hole while staying seated."
+    },
+    "happy": {
+      "atlasRow": "waving",
+      "notes": "Soft contented smile and tiny scarf sway, mapped onto the fixed waving row."
+    },
+    "sleep": {
+      "atlasRow": "waiting",
+      "notes": "Seated winter doze with lowered head and closed eyes while keeping rod, floe, and bucket stable."
+    },
+    "active": {
+      "atlasRow": "running",
+      "notes": "Support loop with a slightly more attentive line-check motion."
+    },
+    "hop": {
+      "atlasRow": "jumping",
+      "notes": "Support loop interpreted as a tiny buoyant bob of the whole floe scene, not a literal jump."
+    },
+    "melancholy": {
+      "atlasRow": "failed",
+      "notes": "Soft no-catch slump that preserves the calm healing tone."
+    }
+  },
+  "atlasRowSemantics": {
+    "idle": "idle",
+    "running-right": "scene-glide-right",
+    "running-left": "scene-glide-left",
+    "waving": "happy",
+    "jumping": "hop-support",
+    "failed": "melancholy-support",
+    "waiting": "sleep",
+    "running": "active-support",
+    "review": "curious"
+  },
+  "requestedActionMap": {
+    "idle": {
+      "atlasRow": "idle",
+      "status": "implemented"
+    },
+    "walk_right": {
+      "atlasRow": "running-right",
+      "status": "implemented",
+      "notes": "Scene glides right while Floe stays seated and keeps the fishing composition intact."
+    },
+    "walk_left": {
+      "atlasRow": "running-left",
+      "status": "implemented",
+      "notes": "Scene glides left while Floe stays seated and keeps the fishing composition intact."
+    },
+    "curious": {
+      "atlasRow": "review",
+      "status": "implemented"
+    },
+    "happy": {
+      "atlasRow": "waving",
+      "status": "implemented"
+    },
+    "sleep": {
+      "atlasRow": "waiting",
+      "status": "implemented"
+    },
+    "drag": {
+      "leftAtlasRow": "running-left",
+      "rightAtlasRow": "running-right",
+      "status": "implemented",
+      "notes": "Directional drag uses the true-facing scene-glide rows rather than a literal walk cycle."
+    },
+    "active_support": {
+      "atlasRow": "running",
+      "status": "implemented"
+    },
+    "hop_support": {
+      "atlasRow": "jumping",
+      "status": "implemented"
+    },
+    "melancholy_support": {
+      "atlasRow": "failed",
+      "status": "implemented"
+    }
+  },
+  "dragFacingValidation": {
+    "rule": "deltaX < 0 => facing left; deltaX > 0 => facing right",
+    "leftDragUses": "running-left",
+    "rightDragUses": "running-right",
+    "leftRowDerivedFrom": "mirrored-from-running-right-after-manual-review",
+    "rightRowDerivedFrom": "generated-directly",
+    "manualVerification": [
+      "left drag uses the true left-facing seated fishing row",
+      "right drag uses the true right-facing seated fishing row",
+      "walk_left and walk_right are not swapped",
+      "left drag never faces right",
+      "right drag never faces left",
+      "the bear, floe, stool, rod, line, ice hole, and bucket remain coordinated in both directions",
+      "Floe stays readable at small size as a seated mechanical polar bear fishing on a floating ice floe"
+    ]
+  },
+  "baseSceneIdentity": {
+    "subject": "white mechanical polar bear",
+    "posture": "seated on stool",
+    "props": [
+      "fishing rod",
+      "fishing line",
+      "ice hole",
+      "old metal bucket",
+      "floating ice floe"
+    ],
+    "signatureWear": [
+      "orange-red and cream striped knit hat",
+      "orange-red and cream striped scarf"
+    ],
+    "mood": "gentle, quiet, patient, winter healing companion"
+  }
+}
