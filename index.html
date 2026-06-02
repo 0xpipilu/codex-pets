@@ -535,6 +535,55 @@
       </div>
     </footer>
 
+    <!-- Admin Dashboard Panel -->
+    <div id="adminPanel" class="admin-panel">
+      <div class="admin-card">
+        <div class="admin-header">
+          <div class="admin-title">cod.pet Dashboard</div>
+          <div id="adminCloseBtn" class="admin-close">&times;</div>
+        </div>
+        <div class="admin-body">
+          <div class="admin-stat-grid">
+            <div class="admin-stat-card">
+              <div id="statPageviews" class="admin-stat-val">0</div>
+              <div class="admin-stat-lbl">Pageviews (Local)</div>
+            </div>
+            <div class="admin-stat-card">
+              <div id="statPageviewsGlobal" class="admin-stat-val">0</div>
+              <div class="admin-stat-lbl">Pageviews (Global)</div>
+            </div>
+            <div class="admin-stat-card">
+              <div id="statDownloads" class="admin-stat-val">0</div>
+              <div class="admin-stat-lbl">Downloads (Local)</div>
+            </div>
+            <div class="admin-stat-card">
+              <div id="statDownloadsGlobal" class="admin-stat-val">0</div>
+              <div class="admin-stat-lbl">Downloads (Global)</div>
+            </div>
+          </div>
+          
+          <div>
+            <div class="admin-section-title">Downloads by Pet (Local / Global)</div>
+            <div id="adminDownloadsList" class="admin-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+          
+          <div class="admin-info-card">
+            <strong>🌐 Real-Time Global Stats Enabled!</strong><br>
+            Global metrics are aggregated dynamically across all browsers and devices in real-time:<br>
+            • <strong>Pageviews & Downloads:</strong> Live serverless counts mapped from global hits.<br>
+            • <strong>Local Stats:</strong> Tracked in your current browser's localStorage.
+          </div>
+          
+          <div class="admin-actions">
+            <button id="adminClearBtn" class="admin-btn admin-btn-sec">Reset Local Stats</button>
+            <button id="adminCloseBtn2" class="admin-btn">Close Panel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="./catalog.js?v=20260601"></script>
     <script>
@@ -737,7 +786,6 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
             .then(data => {
               if (data && typeof data.value === "number") {
                 window.globalStats.downloads[pet.slug] = data.value;
-                btn.innerHTML = DL_ICON + " Download (" + data.value + ")";
               }
             })
             .catch(err => console.error("Global increment failed:", err));
@@ -754,7 +802,7 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
         }
 
         btn.classList.remove("busy");
-        btn.innerHTML = DL_ICON + " Download (" + getDisplayDownloadCount(pet.slug) + ")";
+        btn.innerHTML = DL_ICON + " Download";
       }
 
       /* ---- Render ---- */
@@ -774,7 +822,7 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
               <div class="tile-label">
                 <div class="tile-name">${esc(pet.displayName)}</div>
                 <button type="button" class="tile-dl" data-slug="${pet.slug}">
-                  ${DL_ICON} Download (${getDisplayDownloadCount(pet.slug)})
+                  ${DL_ICON} Download
                 </button>
               </div>
             </div>`;
@@ -849,12 +897,6 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
             if (res.ok) {
               const data = await res.json();
               window.globalStats.downloads[pet.slug] = data.value || 0;
-              
-              // Dynamically update the specific button count if rendered
-              const btn = document.querySelector(`.tile-dl[data-slug="${pet.slug}"]`);
-              if (btn) {
-                btn.innerHTML = DL_ICON + " Download (" + (data.value || 0) + ")";
-              }
               if (typeof window.updateAdminPanelData === "function") window.updateAdminPanelData();
             }
           } catch (e) {
@@ -979,54 +1021,5 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
         }
       })();
     </script>
-
-    <!-- Admin Dashboard Panel -->
-    <div id="adminPanel" class="admin-panel">
-      <div class="admin-card">
-        <div class="admin-header">
-          <div class="admin-title">cod.pet Dashboard</div>
-          <div id="adminCloseBtn" class="admin-close">&times;</div>
-        </div>
-        <div class="admin-body">
-          <div class="admin-stat-grid">
-            <div class="admin-stat-card">
-              <div id="statPageviews" class="admin-stat-val">0</div>
-              <div class="admin-stat-lbl">Pageviews (Local)</div>
-            </div>
-            <div class="admin-stat-card">
-              <div id="statPageviewsGlobal" class="admin-stat-val">0</div>
-              <div class="admin-stat-lbl">Pageviews (Global)</div>
-            </div>
-            <div class="admin-stat-card">
-              <div id="statDownloads" class="admin-stat-val">0</div>
-              <div class="admin-stat-lbl">Downloads (Local)</div>
-            </div>
-            <div class="admin-stat-card">
-              <div id="statDownloadsGlobal" class="admin-stat-val">0</div>
-              <div class="admin-stat-lbl">Downloads (Global)</div>
-            </div>
-          </div>
-          
-          <div>
-            <div class="admin-section-title">Downloads by Pet (Local / Global)</div>
-            <div id="adminDownloadsList" class="admin-list">
-              <!-- Dynamically populated -->
-            </div>
-          </div>
-          
-          <div class="admin-info-card">
-            <strong>🌐 Real-Time Global Stats Enabled!</strong><br>
-            Global metrics are aggregated dynamically across all browsers and devices in real-time:<br>
-            • <strong>Pageviews & Downloads:</strong> Live serverless counts mapped from global hits.<br>
-            • <strong>Local Stats:</strong> Tracked in your current browser's localStorage.
-          </div>
-          
-          <div class="admin-actions">
-            <button id="adminClearBtn" class="admin-btn admin-btn-sec">Reset Local Stats</button>
-            <button id="adminCloseBtn2" class="admin-btn">Close Panel</button>
-          </div>
-        </div>
-      </div>
-    </div>
   </body>
 </html>
