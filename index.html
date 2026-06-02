@@ -1351,8 +1351,8 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
           const elStaticColor = tile.querySelector(".sprite-static-color");
           const elPlayer = tile.querySelector(".sprite-player");
 
-          /* Initialize static previews (both gray and color use base.png) */
-          const imgUrl = `pets/${pet.slug}/base.png`;
+          /* Initialize static previews (both gray and color use lossless base.webp for high performance & Retina sharpness) */
+          const imgUrl = `pets/${pet.slug}/base.webp`;
           elStaticGray.src = imgUrl;
           elStaticColor.src = imgUrl;
 

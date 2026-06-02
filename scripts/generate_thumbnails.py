@@ -72,6 +72,10 @@ def main():
                 cropped.save(output_path, "PNG", optimize=True)
                 print(f"Created base.png for {slug}")
                 
+                output_webp = folder_path / "base.webp"
+                cropped.save(output_webp, "WEBP", lossless=True)
+                print(f"Created base.webp for {slug}")
+                
                 # For animated.svg (6 frames)
                 idle_strip = img.crop((0, top, fw * 6, top + fh))
                 idle_datas = idle_strip.getdata()
