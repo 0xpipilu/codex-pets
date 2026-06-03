@@ -1,0 +1,12 @@
+# Codpet
+
+> Animated pixel companion pets for Codex developer workspace, VS Code, and Cursor.
+
+## Core Features
+- Browse, preview, and download custom animated pixel companions.
+- Light-weight, high-performance, and Retina-sharp WebP static assets.
+- Fully compatible with Codex Editor and modern code workspaces.
+
+## Key Resources
+- [Index Catalog (JSON)](/index.json): Complete pet metadata registry containing names, slug values, and atlas configurations.
+- [Pet Assets Directory](/pets/): Contains individual folders per pet with spritesheets and base WebP previews.

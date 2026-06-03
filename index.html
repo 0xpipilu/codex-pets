@@ -80,7 +80,7 @@
         --card: #f6f6f6;
         --border: rgba(0, 0, 0, 0.1);
         --ink: #0a0a0a;
-        --secondary: rgba(0, 0, 0, 0.4);
+        --secondary: rgba(0, 0, 0, 0.56);
         --r: 10px;
         --max-w: 1200px;
       }
@@ -153,7 +153,7 @@
       }
 
       .logo .other {
-        color: #9E9E9E;
+        color: #6E6E6E;
         transition: color 150ms ease;
       }
 
@@ -192,6 +192,8 @@
 
       /* — Gallery — */
       .gallery {
+        position: relative;
+        min-height: 380px;
         display: grid;
         grid-template-columns: repeat(6, 1fr);
         border-left: 1px solid var(--border);
@@ -489,13 +491,17 @@
       }
       /* — Defrosting Brand Loader — */
       .defrost-loader {
-        grid-column: 1 / -1;
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
+        height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         min-height: 380px;
+        z-index: 50;
         gap: 16px;
         background: var(--bg);
         opacity: 1;
@@ -541,7 +547,7 @@
 
       /* Overlay layer: active brand colors */
       .defrost-logo-overlay .other {
-        color: #9E9E9E;
+        color: #6E6E6E;
       }
       .defrost-logo-overlay .core {
         color: var(--ink);
@@ -585,7 +591,7 @@
         left: 0;
         height: 100%;
         width: 0%;
-        background: #9E9E9E;
+        background: #6E6E6E;
         transition: width 200ms cubic-bezier(0.1, 0.8, 0.25, 1);
       }
 
@@ -1464,15 +1470,16 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
           setProgress(100);
           await new Promise(r => setTimeout(r, 150)); // let the bar reach 100% smoothly
           
-          // 5. Beautiful fade out of the defrost loader
+          // Render cards first so layout is prepared in the DOM under the loader overlay
+          renderGallery();
+          logGlobalPageView();
+          
+          // 5. Beautiful fade out and removal of the defrost loader
           if (loader) {
             loader.classList.add("fade-out");
             await new Promise(r => setTimeout(r, 250)); // wait for fade out transition
-            loader.style.display = "none"; // Hard stop rendering and animation loops!
+            loader.remove(); // Completely remove from DOM to prevent any rendering loops or layout shifts!
           }
-
-          renderGallery();
-          logGlobalPageView();
           
           // Page view tracking
           const views = parseInt(localStorage.getItem("page_views") || "0", 10) + 1;
