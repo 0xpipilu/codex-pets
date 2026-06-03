@@ -520,14 +520,11 @@ console.error("Download failed:", e);
 btn.classList.remove("busy");
 btn.innerHTML = DL_ICON;
 }
-function renderGallery() {
-if (!allPets.length) {
-galleryEl.innerHTML = `<div class="empty">No pets available.</div>`;
-return;
-}
-galleryEl.innerHTML = allPets.map((pet, idx) => {
-const row = getRows(pet)[0] || { rowIndex: 0, frames: 6, durationMs: 1100 };
-const isLCP = idx < 6;
+let renderedCount = 0;
+function renderChunk(pets, append = false) {
+const html = pets.map((pet, idx) => {
+const overallIdx = append ? renderedCount + idx : idx;
+const isLCP = overallIdx < 6;
 const loadingAttr = isLCP ? "" : 'loading="lazy"';
 const priorityAttr = isLCP ? 'fetchpriority="high"' : "";
 return `
@@ -546,9 +543,21 @@ ${DL_ICON}
 </div>
 </div>`;
 }).join("");
-galleryEl.querySelectorAll(".tile").forEach(tile => {
+if (append) {
+const temp = document.createElement("div");
+temp.innerHTML = html;
+while (temp.firstChild) {
+galleryEl.appendChild(temp.firstChild);
+}
+} else {
+galleryEl.innerHTML = html;
+}
+const tiles = galleryEl.querySelectorAll(".tile");
+const startIndex = append ? renderedCount : 0;
+for (let i = startIndex; i < tiles.length; i++) {
+const tile = tiles[i];
 const pet = getPet(tile.dataset.slug);
-if (!pet) return;
+if (!pet) continue;
 const a = pet.atlas || FA;
 const row0 = getRows(pet)[0] || { rowIndex: 0 };
 const elStaticGray = tile.querySelector(".sprite-static-gray");
@@ -579,14 +588,47 @@ tile.addEventListener("mouseleave", () => {
 tile._isHovered = false;
 stopHover(tile);
 });
-});
-galleryEl.querySelectorAll(".tile-dl").forEach(btn => {
+}
+const dls = galleryEl.querySelectorAll(".tile-dl");
+for (let i = startIndex; i < dls.length; i++) {
+const btn = dls[i];
 btn.addEventListener("click", e => {
 e.stopPropagation();
 const pet = getPet(btn.dataset.slug);
 if (pet) downloadPet(pet, btn);
 });
-});
+}
+renderedCount += pets.length;
+}
+function renderGallery() {
+if (!allPets.length) {
+galleryEl.innerHTML = `<div class="empty">No pets available.</div>`;
+return;
+}
+renderedCount = 0;
+renderChunk(allPets.slice(0, 12), false);
+let currentIndex = 12;
+const totalPets = allPets.length;
+function queueNext() {
+if (currentIndex >= totalPets) return;
+const nextChunk = allPets.slice(currentIndex, currentIndex + 20);
+renderChunk(nextChunk, true);
+currentIndex += 20;
+if (currentIndex < totalPets) {
+if (typeof requestIdleCallback === "function") {
+requestIdleCallback(queueNext);
+} else {
+setTimeout(queueNext, 30);
+}
+}
+}
+if (currentIndex < totalPets) {
+if (typeof requestIdleCallback === "function") {
+requestIdleCallback(queueNext);
+} else {
+setTimeout(queueNext, 30);
+}
+}
 }
 window.globalStats = {
 downloads: {},
@@ -631,10 +673,12 @@ setProgress(55);
 let catalog = typeof window.__CODEX_PETS__ === "object" && window.__CODEX_PETS__
 ? window.__CODEX_PETS__
 : null;
+let catalogFetchNeeded = false;
 if (!catalog && typeof INLINED_PETS !== "undefined" && Array.isArray(INLINED_PETS) && INLINED_PETS.length > 0) {
 catalog = { pets: INLINED_PETS };
 }
 if (!catalog) {
+catalogFetchNeeded = true;
 catalog = await fetch("./index.json?v=20260601").then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
 }
 setProgress(85);
@@ -643,10 +687,17 @@ renderGallery();
 document.documentElement.classList.add("loaded");
 logGlobalPageView();
 setProgress(100);
-await new Promise(r => setTimeout(r, 100));
+const loaderDelay = catalogFetchNeeded ? 100 : 0;
+const transitionDelay = catalogFetchNeeded ? 250 : 100;
+if (loaderDelay > 0) {
+await new Promise(r => setTimeout(r, loaderDelay));
+}
 if (loader) {
+if (!catalogFetchNeeded) {
+loader.style.transitionDuration = "150ms";
+}
 loader.classList.add("fade-out");
-await new Promise(r => setTimeout(r, 250));
+await new Promise(r => setTimeout(r, transitionDelay));
 loader.remove();
 }
 const views = parseInt(localStorage.getItem("page_views") || "0", 10) + 1;

@@ -407,15 +407,12 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
       }
 
       /* ---- Render ---- */
-      function renderGallery() {
-        if (!allPets.length) {
-          galleryEl.innerHTML = `<div class="empty">No pets available.</div>`;
-          return;
-        }
+      let renderedCount = 0;
 
-        galleryEl.innerHTML = allPets.map((pet, idx) => {
-          const row = getRows(pet)[0] || { rowIndex: 0, frames: 6, durationMs: 1100 };
-          const isLCP = idx < 6;
+      function renderChunk(pets, append = false) {
+        const html = pets.map((pet, idx) => {
+          const overallIdx = append ? renderedCount + idx : idx;
+          const isLCP = overallIdx < 6;
           const loadingAttr = isLCP ? "" : 'loading="lazy"';
           const priorityAttr = isLCP ? 'fetchpriority="high"' : "";
           return `
@@ -435,10 +432,24 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
             </div>`;
         }).join("");
 
+        if (append) {
+          const temp = document.createElement("div");
+          temp.innerHTML = html;
+          while (temp.firstChild) {
+            galleryEl.appendChild(temp.firstChild);
+          }
+        } else {
+          galleryEl.innerHTML = html;
+        }
+
         /* Init sprite elements with atlas data */
-        galleryEl.querySelectorAll(".tile").forEach(tile => {
+        const tiles = galleryEl.querySelectorAll(".tile");
+        const startIndex = append ? renderedCount : 0;
+
+        for (let i = startIndex; i < tiles.length; i++) {
+          const tile = tiles[i];
           const pet = getPet(tile.dataset.slug);
-          if (!pet) return;
+          if (!pet) continue;
           const a = pet.atlas || FA;
           const row0 = getRows(pet)[0] || { rowIndex: 0 };
           const elStaticGray = tile.querySelector(".sprite-static-gray");
@@ -479,16 +490,59 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
             tile._isHovered = false;
             stopHover(tile);
           });
-        });
+        }
 
         /* Download handlers */
-        galleryEl.querySelectorAll(".tile-dl").forEach(btn => {
+        const dls = galleryEl.querySelectorAll(".tile-dl");
+        for (let i = startIndex; i < dls.length; i++) {
+          const btn = dls[i];
           btn.addEventListener("click", e => {
             e.stopPropagation();
             const pet = getPet(btn.dataset.slug);
             if (pet) downloadPet(pet, btn);
           });
-        });
+        }
+
+        renderedCount += pets.length;
+      }
+
+      function renderGallery() {
+        if (!allPets.length) {
+          galleryEl.innerHTML = `<div class="empty">No pets available.</div>`;
+          return;
+        }
+
+        renderedCount = 0;
+        
+        // 1. Render first chunk (12 pets) synchronously for instant layout & paint
+        renderChunk(allPets.slice(0, 12), false);
+
+        // 2. Queue remaining chunks asynchronously to keep main thread completely unblocked
+        let currentIndex = 12;
+        const totalPets = allPets.length;
+
+        function queueNext() {
+          if (currentIndex >= totalPets) return;
+          const nextChunk = allPets.slice(currentIndex, currentIndex + 20);
+          renderChunk(nextChunk, true);
+          currentIndex += 20;
+
+          if (currentIndex < totalPets) {
+            if (typeof requestIdleCallback === "function") {
+              requestIdleCallback(queueNext);
+            } else {
+              setTimeout(queueNext, 30);
+            }
+          }
+        }
+
+        if (currentIndex < totalPets) {
+          if (typeof requestIdleCallback === "function") {
+            requestIdleCallback(queueNext);
+          } else {
+            setTimeout(queueNext, 30);
+          }
+        }
       }
 
       window.globalStats = {
@@ -546,11 +600,13 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
             ? window.__CODEX_PETS__
             : null;
 
+          let catalogFetchNeeded = false;
           if (!catalog && typeof INLINED_PETS !== "undefined" && Array.isArray(INLINED_PETS) && INLINED_PETS.length > 0) {
             catalog = { pets: INLINED_PETS };
           }
 
           if (!catalog) {
+            catalogFetchNeeded = true;
             catalog = await fetch("./index.json?v=20260601").then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
           }
 
@@ -566,12 +622,22 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
           
           // 4. Completed: set to 100%
           setProgress(100);
-          await new Promise(r => setTimeout(r, 100)); // tiny delay to let progress bar transition finish
+
+          // If loaded instantly, bypass/shorten timeouts to show gallery immediately
+          const loaderDelay = catalogFetchNeeded ? 100 : 0;
+          const transitionDelay = catalogFetchNeeded ? 250 : 100;
+
+          if (loaderDelay > 0) {
+            await new Promise(r => setTimeout(r, loaderDelay));
+          }
           
           // 5. Beautiful fade out and removal of the defrost loader
           if (loader) {
+            if (!catalogFetchNeeded) {
+              loader.style.transitionDuration = "150ms";
+            }
             loader.classList.add("fade-out");
-            await new Promise(r => setTimeout(r, 250)); // wait for fade out transition
+            await new Promise(r => setTimeout(r, transitionDelay)); // wait for fade out transition
             loader.remove(); // Completely remove from DOM to prevent any rendering loops or layout shifts!
           }
           
