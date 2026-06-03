@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" href="https://fonts.gstatic.com/s/nanumpenscript/v25/daaDSSYiLGqEal3MvdA_FOL_3FkN6zn0aeNBYTQ.woff2" as="font" type="font/woff2" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <script>
       (function() {
         // Prevent FOUT (Flash of Unstyled Text / 宋体闪烁) by hiding elements until web font is ready
@@ -495,12 +495,11 @@
         top: 0;
         left: 0;
         width: 100%;
-        height: 100%;
+        height: 380px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-height: 380px;
         z-index: 50;
         gap: 16px;
         background: var(--bg);
@@ -612,6 +611,12 @@
         text-align: center;
         font-size: 11px;
         color: var(--secondary);
+        opacity: 0;
+        transition: opacity 250ms ease;
+      }
+
+      .loaded .footer {
+        opacity: 1;
       }
 
       /* — Responsive — */
@@ -816,6 +821,11 @@
         border: 0;
       }
     </style>
+    <noscript>
+      <style>
+        .footer { opacity: 1 !important; }
+      </style>
+    </noscript>
   </head>
   <body>
     <header class="header">
@@ -1472,6 +1482,7 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
           
           // Render cards first so layout is prepared in the DOM under the loader overlay
           renderGallery();
+          document.documentElement.classList.add("loaded");
           logGlobalPageView();
           
           // 5. Beautiful fade out and removal of the defrost loader
