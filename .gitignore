@@ -5,3 +5,13 @@ tmp/
 
 .DS_Store
 __pycache__/
+
+# Swift Build Products
+.build/
+dist/
+.build-native/
+**/build/
+**/.build/
+**/dist/
+**/Packages/
+

@@ -347,14 +347,15 @@ stage.appendChild(steamContainer);
 }
 }
 const colorEl = tile._spriteStaticColor;
-if (colorEl) {
+const isInstalled = tile.classList.contains("native-installed");
+if (colorEl && !isInstalled) {
 colorEl.style.animation = "none";
 colorEl.style.transition = "none";
 colorEl.style.clipPath = "inset(100% 0 0 0)";
 }
 let targetPct = el._loaded ? 100 : 0;
 const hoverStartTime = Date.now();
-const minDefrostDuration = 450;
+const minDefrostDuration = isInstalled ? 0 : 450;
 function updateDefrost() {
 if (tile._hoverSession !== currentSession || !tile._isHovered) return;
 const elapsed = Date.now() - hoverStartTime;
