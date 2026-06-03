@@ -55,6 +55,17 @@ def main():
             print(f"Error: Required file '{p}' not found!")
             return
 
+    # Run build_index.py first to ensure index.json is updated
+    print("Running build_index.py to sync catalog...")
+    try:
+        import subprocess
+        # Get path to build_index.py
+        build_index_path = os.path.join(os.path.dirname(__file__), "build_index.py")
+        subprocess.run(["python3", build_index_path], check=True)
+        print("  - Catalog synced successfully.")
+    except Exception as e:
+        print(f"  - Warning: Failed to run build_index.py: {e}")
+
     # Read development files
     with open(dev_html_path, "r", encoding="utf-8") as f:
         html = f.read()
@@ -62,6 +73,31 @@ def main():
         css = f.read()
     with open(js_path, "r", encoding="utf-8") as f:
         js = f.read()
+
+    # Load index.json and extract lightweight pets for inlining
+    print("Inlining optimized pet catalog...")
+    index_json_path = "index.json"
+    if os.path.exists(index_json_path):
+        import json
+        try:
+            with open(index_json_path, "r", encoding="utf-8") as f:
+                catalog_data = json.load(f)
+            pets_raw = catalog_data.get("pets", [])
+            # Extract only slug and displayName
+            light_pets = [{"slug": p["slug"], "displayName": p["displayName"]} for p in pets_raw]
+            # Convert to string without unnecessary spacing
+            inlined_json = json.dumps(light_pets, ensure_ascii=True, separators=(',', ':'))
+            # Replace placeholder in JS
+            placeholder = "const INLINED_PETS = [];"
+            if placeholder in js:
+                js = js.replace(placeholder, f"const INLINED_PETS = {inlined_json};")
+                print(f"  - Inlined {len(light_pets)} pets into app.js.")
+            else:
+                print("  - Warning: Placeholder 'const INLINED_PETS = [];' not found in app.js!")
+        except Exception as e:
+            print(f"  - Error inlining index.json: {e}")
+    else:
+        print("  - Warning: index.json not found, skipping catalog inlining!")
 
     print("Minifying CSS...")
     min_css = minify_css(css)

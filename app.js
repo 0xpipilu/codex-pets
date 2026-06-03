@@ -1,7 +1,21 @@
-const galleryEl = document.getElementById("gallery");
+const INLINED_PETS = [];
+
+      const galleryEl = document.getElementById("gallery");
       let allPets = [];
 
       const FA = { frameWidth: 192, frameHeight: 208, sheetWidth: 1536, sheetHeight: 1872 };
+
+      const DEFAULT_ROWS = [
+        { rowIndex: 0, frames: 6 },
+        { rowIndex: 1, frames: 8 },
+        { rowIndex: 2, frames: 8 },
+        { rowIndex: 3, frames: 4 },
+        { rowIndex: 4, frames: 5 },
+        { rowIndex: 5, frames: 8 },
+        { rowIndex: 6, frames: 6 },
+        { rowIndex: 7, frames: 6 },
+        { rowIndex: 8, frames: 6 }
+      ];
 
       // Dynamically load JSZip library from CDN only on demand when a download is requested
       function loadJSZip() {
@@ -17,7 +31,10 @@ const galleryEl = document.getElementById("gallery");
 
       function esc(t) { return String(t ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;"); }
       function getPet(s) { return allPets.find(p => p.slug === s) || null; }
-      function getRows(p) { return Array.isArray(p.previewRows) && p.previewRows.length ? p.previewRows : []; }
+      function getRows(p) {
+        if (!p) return DEFAULT_ROWS;
+        return Array.isArray(p.previewRows) && p.previewRows.length ? p.previewRows : DEFAULT_ROWS;
+      }
 
       const DL_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
 
@@ -259,9 +276,11 @@ const galleryEl = document.getElementById("gallery");
 
         try {
           await loadJSZip(); // Ensure JSZip library is dynamically loaded on-demand
+          const jsonPath = pet.petJsonPath || `pets/${pet.slug}/pet.json`;
+          const spritesheetPath = pet.spritesheetFile || `pets/${pet.slug}/spritesheet.webp`;
           const [jsonResp, imgResp] = await Promise.all([
-            fetch(pet.petJsonPath),
-            fetch(pet.spritesheetFile),
+            fetch(jsonPath),
+            fetch(spritesheetPath),
           ]);
 
           const [jsonBlob, imgBlob] = await Promise.all([
@@ -433,7 +452,7 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
 
           /* Store atlas info directly on the element */
           elPlayer._atlas = {
-            src: pet.spritesheetFile,
+            src: pet.spritesheetFile || `pets/${pet.slug}/spritesheet.webp`,
             fw: a.frameWidth, fh: a.frameHeight,
             sw: a.sheetWidth, sh: a.sheetHeight,
             s: 0.38,
@@ -523,9 +542,17 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
           // 2. Mid-way boot check: set to 55%
           setProgress(55);
 
-          const catalog = typeof window.__CODEX_PETS__ === "object" && window.__CODEX_PETS__
+          let catalog = typeof window.__CODEX_PETS__ === "object" && window.__CODEX_PETS__
             ? window.__CODEX_PETS__
-            : await fetch("./index.json?v=20260601").then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
+            : null;
+
+          if (!catalog && typeof INLINED_PETS !== "undefined" && Array.isArray(INLINED_PETS) && INLINED_PETS.length > 0) {
+            catalog = { pets: INLINED_PETS };
+          }
+
+          if (!catalog) {
+            catalog = await fetch("./index.json?v=20260601").then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
+          }
 
           // 3. Catalog fetched: set to 85%
           setProgress(85);
