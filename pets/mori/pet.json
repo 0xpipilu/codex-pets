@@ -1,0 +1,132 @@
+{
+  "id": "mori",
+  "displayName": "Mori",
+  "description": "A gentle mechanical frog guardian who keeps watch over a wooden talisman plaque shrine, with brass bells, hanging charms, sprout, and quiet shrine-spirit calm kept intact as one inseparable scene pet.",
+  "spritesheetPath": "spritesheet.webp",
+  "states": {
+    "idle": {
+      "atlasRow": "idle",
+      "notes": "Calm guardian idle with tiny breathing and blink while Mori stays perched on the plaque roof."
+    },
+    "walk": {
+      "atlasRows": [
+        "running-right",
+        "running-left"
+      ],
+      "notes": "Directional scene-glide rows used for drag-facing and motion semantics; Mori remains attached to the shrine scene rather than literally walking."
+    },
+    "curious": {
+      "atlasRow": "review",
+      "notes": "Soft forward lean and watchful peeking from the roof ridge."
+    },
+    "happy": {
+      "atlasRow": "waving",
+      "notes": "Gentle pleased smile with a tiny buoyant lift and light charm and bell sway."
+    },
+    "sleep": {
+      "atlasRow": "waiting",
+      "notes": "Peaceful guardian nap on the roof ridge with closed eyes and minimal movement."
+    },
+    "observe": {
+      "atlasRow": "running",
+      "notes": "Slightly more deliberate scanning loop while Mori keeps watch over the plaque."
+    },
+    "jump": {
+      "atlasRow": "jumping",
+      "notes": "Short roof-bounce hop that keeps Mori physically attached to the shrine scene in every frame."
+    },
+    "shrine-rest": {
+      "atlasRow": "failed",
+      "notes": "Deeper settled rest across the roof ridge, repurposing the fixed atlas row into a peaceful shrine-rest loop."
+    }
+  },
+  "atlasRowSemantics": {
+    "idle": "idle",
+    "running-right": "scene-glide-right",
+    "running-left": "scene-glide-left",
+    "waving": "happy",
+    "jumping": "jump",
+    "failed": "shrine-rest",
+    "waiting": "sleep",
+    "running": "observe",
+    "review": "curious"
+  },
+  "requestedActionMap": {
+    "idle": {
+      "atlasRow": "idle",
+      "status": "implemented"
+    },
+    "walk_right": {
+      "atlasRow": "running-right",
+      "status": "implemented",
+      "notes": "Whole plaque-shrine scene glides right while the frog remains guarding the roof."
+    },
+    "walk_left": {
+      "atlasRow": "running-left",
+      "status": "implemented",
+      "notes": "Whole plaque-shrine scene glides left while the frog remains guarding the roof."
+    },
+    "curious": {
+      "atlasRow": "review",
+      "status": "implemented"
+    },
+    "happy": {
+      "atlasRow": "waving",
+      "status": "implemented"
+    },
+    "sleep": {
+      "atlasRow": "waiting",
+      "status": "implemented"
+    },
+    "drag": {
+      "leftAtlasRow": "running-left",
+      "rightAtlasRow": "running-right",
+      "status": "implemented",
+      "notes": "Directional drag uses the true-facing scene-glide rows, not a literal walk cycle."
+    },
+    "observe": {
+      "atlasRow": "running",
+      "status": "implemented"
+    },
+    "jump": {
+      "atlasRow": "jumping",
+      "status": "implemented"
+    },
+    "shrine-rest": {
+      "atlasRow": "failed",
+      "status": "implemented"
+    }
+  },
+  "dragFacingValidation": {
+    "rule": "deltaX < 0 => facing left; deltaX > 0 => facing right",
+    "leftDragUses": "running-left",
+    "rightDragUses": "running-right",
+    "leftRowDerivedFrom": "mirrored-from-running-right-after-manual-review",
+    "rightRowDerivedFrom": "generated-directly",
+    "manualVerification": [
+      "left drag uses the true left-facing shrine scene row",
+      "right drag uses the true right-facing shrine scene row",
+      "walk_left and walk_right are not swapped",
+      "left drag never faces right",
+      "right drag never faces left",
+      "the frog, plaque roof, front rune board, side charm, lower bell, sprout, and grass base remain coordinated in both directions",
+      "Mori stays readable at small size as a frog guarding a wooden talisman plaque shrine"
+    ]
+  },
+  "baseSceneIdentity": {
+    "subject": "small round mechanical frog guardian",
+    "posture": "perched on the wooden plaque shrine roof ridge",
+    "props": [
+      "wooden plaque shrine with roof cap",
+      "dark front rune motif",
+      "side hanging talisman charm",
+      "lower brass bell",
+      "moss and grass base"
+    ],
+    "signatureWear": [
+      "tiny head sprout",
+      "brass bell collar"
+    ],
+    "mood": "quiet, patient, observant, gentle shrine guardian and record-keeper spirit"
+  }
+}

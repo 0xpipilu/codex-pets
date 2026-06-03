@@ -1,6 +1,119 @@
 window.__CODEX_PETS__ = {
-  "count": 93,
+  "count": 94,
   "pets": [
+    {
+      "slug": "mori",
+      "folder": "pets/mori",
+      "id": "mori",
+      "displayName": "Mori",
+      "description": "A gentle mechanical frog guardian who keeps watch over a wooden talisman plaque shrine, with brass bells, hanging charms, sprout, and quiet shrine-spirit calm kept intact as one inseparable scene pet.",
+      "spritesheetPath": "spritesheet.webp",
+      "petJsonPath": "pets/mori/pet.json",
+      "spritesheetFile": "pets/mori/spritesheet.webp",
+      "stateNames": [
+        "curious",
+        "happy",
+        "idle",
+        "jump",
+        "observe",
+        "shrine-rest",
+        "sleep",
+        "walk"
+      ],
+      "stateCount": 8,
+      "atlas": {
+        "columns": 8,
+        "rows": 9,
+        "frameWidth": 192,
+        "frameHeight": 208,
+        "sheetWidth": 1536,
+        "sheetHeight": 1872
+      },
+      "previewRows": [
+        {
+          "key": "idle",
+          "label": "Idle",
+          "rowIndex": 0,
+          "frames": 6,
+          "durationMs": 1100,
+          "semantic": "idle",
+          "notes": "Calm guardian idle with tiny breathing and blink while Mori stays perched on the plaque roof."
+        },
+        {
+          "key": "running-right",
+          "label": "Run Right",
+          "rowIndex": 1,
+          "frames": 8,
+          "durationMs": 980,
+          "semantic": "scene-glide-right",
+          "notes": ""
+        },
+        {
+          "key": "running-left",
+          "label": "Run Left",
+          "rowIndex": 2,
+          "frames": 8,
+          "durationMs": 980,
+          "semantic": "scene-glide-left",
+          "notes": ""
+        },
+        {
+          "key": "waving",
+          "label": "Waving",
+          "rowIndex": 3,
+          "frames": 4,
+          "durationMs": 840,
+          "semantic": "happy",
+          "notes": "Gentle pleased smile with a tiny buoyant lift and light charm and bell sway."
+        },
+        {
+          "key": "jumping",
+          "label": "Jumping",
+          "rowIndex": 4,
+          "frames": 5,
+          "durationMs": 900,
+          "semantic": "jump",
+          "notes": "Short roof-bounce hop that keeps Mori physically attached to the shrine scene in every frame."
+        },
+        {
+          "key": "failed",
+          "label": "Failed",
+          "rowIndex": 5,
+          "frames": 8,
+          "durationMs": 1120,
+          "semantic": "shrine-rest",
+          "notes": "Deeper settled rest across the roof ridge, repurposing the fixed atlas row into a peaceful shrine-rest loop."
+        },
+        {
+          "key": "waiting",
+          "label": "Waiting",
+          "rowIndex": 6,
+          "frames": 6,
+          "durationMs": 1260,
+          "semantic": "sleep",
+          "notes": "Peaceful guardian nap on the roof ridge with closed eyes and minimal movement."
+        },
+        {
+          "key": "running",
+          "label": "Running",
+          "rowIndex": 7,
+          "frames": 6,
+          "durationMs": 960,
+          "semantic": "observe",
+          "notes": "Slightly more deliberate scanning loop while Mori keeps watch over the plaque."
+        },
+        {
+          "key": "review",
+          "label": "Review",
+          "rowIndex": 8,
+          "frames": 6,
+          "durationMs": 1080,
+          "semantic": "curious",
+          "notes": "Soft forward lean and watchful peeking from the roof ridge."
+        }
+      ],
+      "defaultPreviewRow": "idle"
+    },
     {
       "slug": "puff",
       "folder": "pets/puff",
