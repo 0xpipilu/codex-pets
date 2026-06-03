@@ -408,6 +408,7 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
 
       /* ---- Render ---- */
       let renderedCount = 0;
+      let galleryObserver = null;
 
       function renderChunk(pets, append = false) {
         const html = pets.map((pet, idx) => {
@@ -517,30 +518,51 @@ Move your extracted pet folder directly into the Codex local pets folder (no cli
         // 1. Render first chunk (12 pets) synchronously for instant layout & paint
         renderChunk(allPets.slice(0, 12), false);
 
-        // 2. Queue remaining chunks asynchronously to keep main thread completely unblocked
-        let currentIndex = 12;
-        const totalPets = allPets.length;
-
-        function queueNext() {
-          if (currentIndex >= totalPets) return;
-          const nextChunk = allPets.slice(currentIndex, currentIndex + 20);
-          renderChunk(nextChunk, true);
-          currentIndex += 20;
-
-          if (currentIndex < totalPets) {
-            if (typeof requestIdleCallback === "function") {
-              requestIdleCallback(queueNext);
-            } else {
-              setTimeout(queueNext, 30);
-            }
+        // 2. Setup IntersectionObserver to lazy load the remaining pets on scroll
+        if (allPets.length > 12) {
+          // Disconnect existing observer if it was active
+          if (galleryObserver) {
+            galleryObserver.disconnect();
+            galleryObserver = null;
           }
-        }
 
-        if (currentIndex < totalPets) {
-          if (typeof requestIdleCallback === "function") {
-            requestIdleCallback(queueNext);
+          const sentinel = document.createElement("div");
+          sentinel.id = "gallerySentinel";
+          sentinel.style.gridColumn = "1 / -1";
+          sentinel.style.height = "1px";
+          sentinel.style.margin = "0";
+          galleryEl.appendChild(sentinel);
+
+          let currentIndex = 12;
+
+          if (typeof IntersectionObserver === "function") {
+            galleryObserver = new IntersectionObserver((entries) => {
+              if (entries[0].isIntersecting) {
+                const nextChunk = allPets.slice(currentIndex, currentIndex + 20);
+                
+                // Remove sentinel temporarily to append tiles cleanly
+                sentinel.remove();
+                
+                renderChunk(nextChunk, true);
+                currentIndex += 20;
+
+                if (currentIndex < allPets.length) {
+                  // Re-append sentinel to the bottom
+                  galleryEl.appendChild(sentinel);
+                } else {
+                  // All pets rendered, disconnect observer
+                  galleryObserver.disconnect();
+                  galleryObserver = null;
+                }
+              }
+            }, { rootMargin: "300px" }); // Preload next chunk 300px before user scrolls to the bottom
+            
+            galleryObserver.observe(sentinel);
           } else {
-            setTimeout(queueNext, 30);
+            // Fallback for browsers without IntersectionObserver support
+            setTimeout(() => {
+              renderChunk(allPets.slice(12), true);
+            }, 200);
           }
         }
       }

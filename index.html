@@ -99,7 +99,7 @@
       </div>
     </header>
 
-    <main class="shell">
+    <main class="shell" style="position: relative;">
       <!-- Semantic SEO H1 Header -->
       <h1 class="sr-only">Codpet — Animated Pixel Companion Pets for Codex Developer Workspace</h1>
 
@@ -127,21 +127,22 @@
         </div>
       </noscript>
 
-      <section id="gallery" class="gallery">
-        <!-- 💡 Premium Option B Brand Defrosting Loading Screen -->
-        <div id="defrostLoader" class="defrost-loader">
-          <div class="defrost-logo">
-            <div class="defrost-logo-base">
-              <span class="other-base">co</span><span class="core-base">d.p</span><span class="other-base">et</span>
-            </div>
-            <div class="defrost-logo-overlay">
-              <span class="other">co</span><span class="core">d.p</span><span class="other">et</span>
-            </div>
+      <!-- 💡 Premium Option B Brand Defrosting Loading Screen -->
+      <div id="defrostLoader" class="defrost-loader">
+        <div class="defrost-logo">
+          <div class="defrost-logo-base">
+            <span class="other-base">co</span><span class="core-base">d.p</span><span class="other-base">et</span>
           </div>
-          <div class="defrost-progress">
-            <div id="defrostProgressBar" class="defrost-progress-bar"></div>
+          <div class="defrost-logo-overlay">
+            <span class="other">co</span><span class="core">d.p</span><span class="other">et</span>
           </div>
         </div>
+        <div class="defrost-progress">
+          <div id="defrostProgressBar" class="defrost-progress-bar"></div>
+        </div>
+      </div>
+
+      <section id="gallery" class="gallery">
       </section>
     </main>
 
@@ -521,6 +522,7 @@ btn.classList.remove("busy");
 btn.innerHTML = DL_ICON;
 }
 let renderedCount = 0;
+let galleryObserver = null;
 function renderChunk(pets, append = false) {
 const html = pets.map((pet, idx) => {
 const overallIdx = append ? renderedCount + idx : idx;
@@ -607,26 +609,38 @@ return;
 }
 renderedCount = 0;
 renderChunk(allPets.slice(0, 12), false);
+if (allPets.length > 12) {
+if (galleryObserver) {
+galleryObserver.disconnect();
+galleryObserver = null;
+}
+const sentinel = document.createElement("div");
+sentinel.id = "gallerySentinel";
+sentinel.style.gridColumn = "1 / -1";
+sentinel.style.height = "1px";
+sentinel.style.margin = "0";
+galleryEl.appendChild(sentinel);
 let currentIndex = 12;
-const totalPets = allPets.length;
-function queueNext() {
-if (currentIndex >= totalPets) return;
+if (typeof IntersectionObserver === "function") {
+galleryObserver = new IntersectionObserver((entries) => {
+if (entries[0].isIntersecting) {
 const nextChunk = allPets.slice(currentIndex, currentIndex + 20);
+sentinel.remove();
 renderChunk(nextChunk, true);
 currentIndex += 20;
-if (currentIndex < totalPets) {
-if (typeof requestIdleCallback === "function") {
-requestIdleCallback(queueNext);
+if (currentIndex < allPets.length) {
+galleryEl.appendChild(sentinel);
 } else {
-setTimeout(queueNext, 30);
+galleryObserver.disconnect();
+galleryObserver = null;
 }
 }
-}
-if (currentIndex < totalPets) {
-if (typeof requestIdleCallback === "function") {
-requestIdleCallback(queueNext);
+}, { rootMargin: "300px" }); // Preload next chunk 300px before user scrolls to the bottom
+galleryObserver.observe(sentinel);
 } else {
-setTimeout(queueNext, 30);
+setTimeout(() => {
+renderChunk(allPets.slice(12), true);
+}, 200);
 }
 }
 }
