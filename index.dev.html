@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Codpet — Interactive Pixel Companions</title>
+    <link rel="icon" type="image/png" href="./favicon.png?v=3" />
+    <meta name="description" content="Browse and preview all Codpet companions — animated pixel companions for your editor or developer workspace." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.gstatic.com/s/nanumpenscript/v25/daaDSSYiLGqEal3MvdA_FOL_3FkN6zn0aeNBYTQ.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="pets/skiff/base.webp" as="image" type="image/webp" fetchpriority="high">
+    <link rel="preload" href="pets/floe/base.webp" as="image" type="image/webp" fetchpriority="high">
+    <link rel="preload" href="pets/rex/base.webp" as="image" type="image/webp" fetchpriority="high">
+    <link rel="preload" href="pets/mack/base.webp" as="image" type="image/webp" fetchpriority="high">
+    <link rel="preload" href="pets/moro/base.webp" as="image" type="image/webp" fetchpriority="high">
+    <link rel="preload" href="pets/dusty/base.webp" as="image" type="image/webp" fetchpriority="high">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <script>
+      (function() {
+        // Prevent FOUT (Flash of Unstyled Text / 宋体闪烁) by hiding elements until web font is ready
+        if (typeof document.fonts === "object" && typeof document.fonts.load === "function") {
+          document.fonts.load("1em 'Nanum Pen Script'").then(function() {
+            document.documentElement.classList.add("fonts-loaded");
+          }).catch(function() {
+            document.documentElement.classList.add("fonts-loaded");
+          });
+          // Fallback timer: force show after 1 second if loading is delayed to prevent blank screens
+          setTimeout(function() {
+            document.documentElement.classList.add("fonts-loaded");
+          }, 1000);
+        } else {
+          document.documentElement.classList.add("fonts-loaded");
+        }
+      })();
+    </script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RT5ZG7801R"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-RT5ZG7801R');
+    </script>
+
+    <!-- JSON-LD Structured Data for Search & AI Indexers -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Codpet",
+      "operatingSystem": "VS Code, Cursor, Codex Editor",
+      "applicationCategory": "DeveloperApplication",
+      "description": "Animated pixel companion pets for Codex developer workspace.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "ratingCount": "28"
+      }
+    }
+    </script>
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://cod.pet/" />
+    <meta property="og:title" content="Codpet — Interactive Pixel Companions" />
+    <meta property="og:description" content="Browse and preview all Codpet companions — animated pixel companions for your editor or developer workspace." />
+    <meta property="og:image" content="https://cod.pet/og-image.png" />
+
+    <!-- Twitter / X -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://cod.pet/" />
+    <meta property="twitter:title" content="Codpet — Interactive Pixel Companions" />
+    <meta property="twitter:description" content="Browse and preview all Codpet companions — animated pixel companions for your editor or developer workspace." />
+    <meta property="twitter:image" content="https://cod.pet/og-image.png" />
+    <link rel="stylesheet" href="style.css">
+    <noscript>
+      <style>
+        .footer { opacity: 1 !important; }
+      </style>
+    </noscript>
+  </head>
+  <body>
+    <header class="header">
+      <div class="shell header-inner">
+        <a href="./" class="logo" aria-label="Codpet Home"><span class="other">co</span><span class="core">d.p</span><span class="other">et</span></a>
+        <div class="social-links">
+          <a href="https://github.com/0xpipilu/codpet" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="View Codpet on GitHub">github</a>
+          <span class="divider">/</span>
+          <a href="https://x.com/cod_pet" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Follow Codpet on X">x</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="shell">
+      <!-- Semantic SEO H1 Header -->
+      <h1 class="sr-only">Codpet — Animated Pixel Companion Pets for Codex Developer Workspace</h1>
+
+      <!-- AISO / Crawler Index Fallback (for non-JS indexers and AI models) -->
+      <noscript>
+        <div class="sr-only">
+          <h2>Available Animated Pixel Companions for Codex:</h2>
+          <ul>
+            <li><strong>Dusty</strong> - An adorable animated pixel cat companion pet for Codex workspace.</li>
+            <li><strong>Grit</strong> - A cool steampunk pixel cat with custom animated states.</li>
+            <li><strong>Pinka</strong> - A beautiful, sweet royal pink cat desktop companion.</li>
+            <li><strong>Patch</strong> - A cute pirate pixel cat to accompany your coding.</li>
+            <li><strong>Miso</strong> - A playful, animated siamese cat desktop pet.</li>
+            <li><strong>Nib</strong> - A cute chubby mouse companion for developers.</li>
+            <li><strong>Rook</strong> - A brave and loyal detective pixel dog pet.</li>
+            <li><strong>Bruno</strong> - A strong and helpful pixel helper companion.</li>
+            <li><strong>Sunny</strong> - A lazy beach-loving pixel mouse desktop companion.</li>
+            <li><strong>Luna</strong> - A magical space rocket companion to boost your developer productivity.</li>
+            <li><strong>Rustango, Rustveil, RustBeak, Brassbun, Copper Cat, Brassprout, Curlcap, Tinward, Budley, Scrapling, Wheelbox, Battle-Damaged Idle</strong> - Beautifully animated, custom interactive pixel companions for your editor.</li>
+          </ul>
+          <p>
+            Browse, preview, and download premium custom animated pixel companion pets for your Codex developer workspace, VS Code, or Cursor. 
+            All pets are free to download and include detailed documentation, installation guides, and metadata configuration files.
+          </p>
+        </div>
+      </noscript>
+
+      <section id="gallery" class="gallery">
+        <!-- 💡 Premium Option B Brand Defrosting Loading Screen -->
+        <div id="defrostLoader" class="defrost-loader">
+          <div class="defrost-logo">
+            <div class="defrost-logo-base">
+              <span class="other-base">co</span><span class="core-base">d.p</span><span class="other-base">et</span>
+            </div>
+            <div class="defrost-logo-overlay">
+              <span class="other">co</span><span class="core">d.p</span><span class="other">et</span>
+            </div>
+          </div>
+          <div class="defrost-progress">
+            <div id="defrostProgressBar" class="defrost-progress-bar"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="shell" style="display: flex; justify-content: center;">
+        <a href="./" class="logo" aria-label="Codpet Home" style="font-size: 20px;">
+          <span class="other">co</span><span class="core">d.p</span><span class="other">et</span>
+        </a>
+      </div>
+    </footer>
+
+    <!-- Admin Dashboard Panel -->
+    <div id="adminPanel" class="admin-panel">
+      <div class="admin-card">
+        <div class="admin-header">
+          <div class="admin-title">cod.pet Dashboard</div>
+          <div id="adminCloseBtn" class="admin-close">&times;</div>
+        </div>
+        <div class="admin-body">
+          <div class="admin-stat-grid">
+            <div class="admin-stat-card">
+              <div id="statPageviews" class="admin-stat-val">0</div>
+              <div class="admin-stat-lbl">Pageviews (Local)</div>
+            </div>
+            <div class="admin-stat-card">
+              <div id="statPageviewsGlobal" class="admin-stat-val">0</div>
+              <div class="admin-stat-lbl">Pageviews (Global)</div>
+            </div>
+            <div class="admin-stat-card">
+              <div id="statDownloads" class="admin-stat-val">0</div>
+              <div class="admin-stat-lbl">Downloads (Local)</div>
+            </div>
+            <div class="admin-stat-card">
+              <div id="statDownloadsGlobal" class="admin-stat-val">0</div>
+              <div class="admin-stat-lbl">Downloads (Global)</div>
+            </div>
+          </div>
+          
+          <div>
+            <div class="admin-section-title">Downloads by Pet (Local / Global)</div>
+            <div id="adminDownloadsList" class="admin-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+          
+          <div class="admin-info-card">
+            <strong>🌐 Real-Time Global Stats Enabled!</strong><br>
+            Global metrics are aggregated dynamically across all browsers and devices in real-time:<br>
+            • <strong>Pageviews & Downloads:</strong> Live serverless counts mapped from global hits.<br>
+            • <strong>Local Stats:</strong> Tracked in your current browser's localStorage.
+          </div>
+          
+          <div class="admin-actions">
+            <button id="adminClearBtn" class="admin-btn admin-btn-sec">Reset Local Stats</button>
+            <button id="adminCloseBtn2" class="admin-btn">Close Panel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
