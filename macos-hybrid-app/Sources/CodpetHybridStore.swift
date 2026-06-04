@@ -510,8 +510,8 @@ final class CodpetHybridStore: ObservableObject {
                     if success {
                         if let overlayWsURL = overlayWsURL {
                             // Step 2: Wait 500ms for backend flush, then invalidate overlay cache
-                            DispatchQueue.global().asyncAfter(deadline: .now() + 0.5) {
-                                self.sendCDPInvalidateCache(wsURL: overlayWsURL) { _ in
+                             DispatchQueue.global().asyncAfter(deadline: .now() + 0.5) {
+                                self.sendCDPInvalidateCache(wsURL: overlayWsURL, slug: slug) { _ in
                                     // Complete with true regardless of invalidation success since setting was written
                                     completion(true)
                                 }
@@ -608,7 +608,7 @@ final class CodpetHybridStore: ObservableObject {
         }
     }
     
-    nonisolated private func sendCDPInvalidateCache(wsURL: URL, completion: @escaping (Bool) -> Void) {
+    nonisolated private func sendCDPInvalidateCache(wsURL: URL, slug: String, completion: @escaping (Bool) -> Void) {
         let webSocketTask = URLSession.shared.webSocketTask(with: wsURL)
         
         webSocketTask.receive { result in
@@ -637,6 +637,16 @@ final class CodpetHybridStore: ObservableObject {
         let expression = """
         (async function() {
             try {
+                // Preload the spritesheet image to browser cache first
+                await new Promise((resolve) => {
+                    const img = new Image();
+                    img.onload = () => resolve("loaded");
+                    img.onerror = () => resolve("error");
+                    img.src = "app://-/pets/\(slug)/spritesheet.webp";
+                    // 600ms timeout fallback
+                    setTimeout(() => resolve("timeout"), 600);
+                });
+                
                 const rootEl = document.getElementById('root') || document.querySelector('[data-avatar-overlay-content-frame]');
                 if (!rootEl) return "no_root";
                 
@@ -772,6 +782,7 @@ final class CodpetHybridStore: ObservableObject {
         DispatchQueue.main.async {
             let configuration = NSWorkspace.OpenConfiguration()
             configuration.activates = true
+            configuration.arguments = ["--remote-debugging-port=9222"]
             NSWorkspace.shared.openApplication(at: codexURL, configuration: configuration) { app, error in
                 success = app != nil && error == nil
                 semaphore.signal()

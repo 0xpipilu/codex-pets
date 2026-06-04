@@ -9,8 +9,6 @@ struct CodpetHybridApp: App {
             HybridContentView()
                 .environmentObject(store)
         }
-        .windowStyle(.hiddenTitleBar)
-        .windowToolbarStyle(.unifiedCompact)
         .windowResizability(.contentSize)
     }
 }

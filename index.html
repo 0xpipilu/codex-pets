@@ -233,7 +233,7 @@ function getRows(p) {
 if (!p) return DEFAULT_ROWS;
 return Array.isArray(p.previewRows) && p.previewRows.length ? p.previewRows : DEFAULT_ROWS;
 }
-const DL_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
+const DL_ICON = `<svg viewBox="0 0 12 12" style="width:12px;height:12px;" shape-rendering="crispEdges"><rect x="5" y="1" width="2" height="3" fill="currentColor"/><rect x="3" y="4" width="2" height="1" fill="currentColor"/><rect x="7" y="4" width="2" height="1" fill="currentColor"/><rect x="4" y="5" width="2" height="1" fill="currentColor"/><rect x="6" y="5" width="2" height="1" fill="currentColor"/><rect x="5" y="6" width="2" height="1" fill="currentColor"/><rect x="2" y="8" width="1" height="2" fill="currentColor"/><rect x="9" y="8" width="1" height="2" fill="currentColor"/><rect x="2" y="9" width="8" height="1" fill="currentColor"/></svg>`;
 function getMockDownloadCount(slug) {
 return parseInt(localStorage.getItem(`dl_${slug}`) || "0", 10);
 }
@@ -585,10 +585,12 @@ tile._spritePlayer = elPlayer;
 tile._isHovered = false;
 tile.addEventListener("mouseenter", () => {
 tile._isHovered = true;
+if (tile._isActivePlay) return;
 startHover(tile);
 });
 tile.addEventListener("mouseleave", () => {
 tile._isHovered = false;
+if (tile._isActivePlay) return;
 stopHover(tile);
 });
 }
@@ -623,6 +625,7 @@ sentinel.style.margin = "0";
 galleryEl.appendChild(sentinel);
 let currentIndex = 12;
 if (typeof IntersectionObserver === "function") {
+const scrollContainer = document.querySelector('.retro-window-content') || null;
 galleryObserver = new IntersectionObserver((entries) => {
 if (entries[0].isIntersecting) {
 const nextChunk = allPets.slice(currentIndex, currentIndex + 20);
@@ -631,12 +634,13 @@ renderChunk(nextChunk, true);
 currentIndex += 20;
 if (currentIndex < allPets.length) {
 galleryEl.appendChild(sentinel);
+galleryObserver.observe(sentinel);
 } else {
 galleryObserver.disconnect();
 galleryObserver = null;
 }
 }
-}, { rootMargin: "300px" }); // Preload next chunk 300px before user scrolls to the bottom
+}, { root: scrollContainer, rootMargin: "300px" }); // Preload next chunk 300px before user scrolls to the bottom
 galleryObserver.observe(sentinel);
 } else {
 setTimeout(() => {
