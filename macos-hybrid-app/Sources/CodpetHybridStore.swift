@@ -56,6 +56,8 @@ final class CodpetHybridStore: ObservableObject {
         }
         
         refreshAll()
+        setupWorkspaceObservers()
+        checkAndRelaunchRunningCodexIfNeeded()
     }
     
     func refreshAll() {
@@ -238,6 +240,88 @@ final class CodpetHybridStore: ObservableObject {
             statusMessage = "已导入本地 Pet：\(slug)。"
         } catch {
             statusMessage = "导入本地 Pet 失败：\(error.localizedDescription)"
+        }
+    }
+    
+    func createNewPetTemplate() {
+        let panel = NSOpenPanel()
+        panel.canChooseDirectories = true
+        panel.canChooseFiles = false
+        panel.allowsMultipleSelection = false
+        panel.prompt = "选择"
+        panel.message = "选择一个保存新建 Pet 模板的父目录（将在此目录下创建 my-custom-pet 文件夹）。"
+        
+        guard panel.runModal() == .OK, let targetDir = panel.url else {
+            return
+        }
+        
+        let newPetDir = targetDir.appendingPathComponent("my-custom-pet")
+        let petJSONURL = newPetDir.appendingPathComponent("pet.json")
+        let spritesheetURL = newPetDir.appendingPathComponent("spritesheet.png")
+        
+        do {
+            if fileManager.fileExists(atPath: newPetDir.path) {
+                statusMessage = "目标文件夹 'my-custom-pet' 已经存在。"
+                return
+            }
+            
+            try fileManager.createDirectory(at: newPetDir, withIntermediateDirectories: true, attributes: nil)
+            
+            // 1. Write pet.json
+            let templateJSON = """
+            {
+              "id": "my-custom-pet",
+              "displayName": "My Custom Pet",
+              "description": "A custom pixel-art pet companion created by me.",
+              "spritesheetPath": "spritesheet.png",
+              "states": {
+                "idle": {
+                  "atlasRow": "idle",
+                  "notes": "Idle animation"
+                },
+                "walk": {
+                  "atlasRows": [
+                    "walk-right",
+                    "walk-left"
+                  ],
+                  "notes": "Walking animation"
+                }
+              },
+              "atlasRowSemantics": {
+                "idle": "idle",
+                "walk-right": "walk-right",
+                "walk-left": "walk-left"
+              },
+              "requestedActionMap": {
+                "idle": {
+                  "atlasRow": "idle",
+                  "status": "implemented"
+                },
+                "walk_right": {
+                  "atlasRow": "walk-right",
+                  "status": "implemented"
+                },
+                "walk_left": {
+                  "atlasRow": "walk-left",
+                  "status": "implemented"
+                }
+              }
+            }
+            """
+            try templateJSON.write(to: petJSONURL, atomically: true, encoding: .utf8)
+            
+            // 2. Write placeholder 1x1 transparent PNG
+            let base64PNG = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+            if let data = Data(base64Encoded: base64PNG) {
+                try data.write(to: spritesheetURL)
+            }
+            
+            statusMessage = "成功新建模板在: \(newPetDir.path)"
+            
+            // Open the new directory in Finder for user convenience
+            NSWorkspace.shared.activateFileViewerSelecting([newPetDir])
+        } catch {
+            statusMessage = "新建模板失败：\(error.localizedDescription)"
         }
     }
     
@@ -428,25 +512,20 @@ final class CodpetHybridStore: ObservableObject {
                     if success {
                         self.statusMessage = "已通过 CDP 即时切换到宠物 \(petName)。"
                     } else {
-                        // Fallback to old AppleScript bridge
-                        switch self.applyPetViaCodexBridge(slug: slug) {
-                        case .success:
-                            self.statusMessage = "已通过 Codex 内部应用接口切换到 \(petName)。"
-                        case .failure(let reason):
-                            if self.reloadCodexWindow() {
-                                self.statusMessage = "已记录 \(petName)，但即时刷新不可用；已通过窗口刷新载入。\(reason)"
-                            } else {
-                                self.statusMessage = "已记录 \(petName)，但即时刷新失败。\(reason)"
-                            }
-                        }
+                        self.statusMessage = "已应用 \(petName)。由于 Codex 的调试端口已关闭，即时热重载不可用。请在设置中通过“打开 Codex”启动它以启用即时切换。"
                     }
                 }
             }
         case .restartCodex:
-            if restartCodexApp() {
-                statusMessage = "已应用 \(petName)，并已重启 Codex。"
-            } else {
-                statusMessage = "已应用 \(petName)，但无法自动重启 Codex。"
+            statusMessage = "正在重启 Codex..."
+            restartCodexApp { success in
+                Task { @MainActor in
+                    if success {
+                        self.statusMessage = "已应用 \(petName)，并已重启 Codex。"
+                    } else {
+                        self.statusMessage = "已应用 \(petName)，但无法自动重启 Codex。"
+                    }
+                }
             }
         case .manual:
             statusMessage = "已应用 \(petName)。请回到 Codex 内手动刷新或重新选择。"
@@ -533,27 +612,44 @@ final class CodpetHybridStore: ObservableObject {
     nonisolated private func sendCDPWriteSetting(wsURL: URL, slug: String, completion: @escaping (Bool) -> Void) {
         let webSocketTask = URLSession.shared.webSocketTask(with: wsURL)
         
-        webSocketTask.receive { result in
-            switch result {
-            case .success(let message):
-                switch message {
-                case .string(let text):
-                    print("CDP Main Window Received: \(text)")
-                    if text.contains("settings-written-and-flushed") || text.contains("event-dispatched") {
-                        completion(true)
-                    } else {
-                        completion(false)
+        func receiveNext() {
+            webSocketTask.receive { result in
+                switch result {
+                case .success(let message):
+                    switch message {
+                    case .string(let text):
+                        print("CDP Main Window Received: \(text)")
+                        if let data = text.data(using: .utf8),
+                           let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                           let responseId = json["id"] as? Int,
+                           responseId == 1 {
+                            if let resultObj = json["result"] as? [String: Any],
+                               let resultVal = resultObj["result"] as? [String: Any],
+                               let value = resultVal["value"] as? String {
+                                if value == "settings-written-and-flushed" || value == "event-dispatched" {
+                                    completion(true)
+                                } else {
+                                    completion(false)
+                                }
+                            } else {
+                                completion(false)
+                            }
+                            webSocketTask.cancel()
+                        } else {
+                            receiveNext()
+                        }
+                    default:
+                        receiveNext()
                     }
-                default:
+                case .failure(let error):
+                    print("CDP Main receive error: \(error)")
                     completion(false)
+                    webSocketTask.cancel()
                 }
-            case .failure(let error):
-                print("CDP Main receive error: \(error)")
-                completion(false)
             }
-            webSocketTask.cancel()
         }
         
+        receiveNext()
         webSocketTask.resume()
         
         let escapedSlug = slug.replacingOccurrences(of: "\"", with: "\\\"")
@@ -611,27 +707,44 @@ final class CodpetHybridStore: ObservableObject {
     nonisolated private func sendCDPInvalidateCache(wsURL: URL, slug: String, completion: @escaping (Bool) -> Void) {
         let webSocketTask = URLSession.shared.webSocketTask(with: wsURL)
         
-        webSocketTask.receive { result in
-            switch result {
-            case .success(let message):
-                switch message {
-                case .string(let text):
-                    print("CDP Invalidate Received: \(text)")
-                    if text.contains("invalidated") {
-                        completion(true)
-                    } else {
-                        completion(false)
+        func receiveNext() {
+            webSocketTask.receive { result in
+                switch result {
+                case .success(let message):
+                    switch message {
+                    case .string(let text):
+                        print("CDP Invalidate Received: \(text)")
+                        if let data = text.data(using: .utf8),
+                           let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                           let responseId = json["id"] as? Int,
+                           responseId == 2 {
+                            if let resultObj = json["result"] as? [String: Any],
+                               let resultVal = resultObj["result"] as? [String: Any],
+                               let value = resultVal["value"] as? String {
+                                if value == "invalidated" {
+                                    completion(true)
+                                } else {
+                                    completion(false)
+                                }
+                            } else {
+                                completion(false)
+                            }
+                            webSocketTask.cancel()
+                        } else {
+                            receiveNext()
+                        }
+                    default:
+                        receiveNext()
                     }
-                default:
+                case .failure(let error):
+                    print("CDP Invalidate receive error: \(error)")
                     completion(false)
+                    webSocketTask.cancel()
                 }
-            case .failure(let error):
-                print("CDP Invalidate receive error: \(error)")
-                completion(false)
             }
-            webSocketTask.cancel()
         }
         
+        receiveNext()
         webSocketTask.resume()
         
         let expression = """
@@ -769,28 +882,44 @@ final class CodpetHybridStore: ObservableObject {
         return error == nil && output.booleanValue
     }
     
-    private func restartCodexApp() -> Bool {
-        let runningApps = NSRunningApplication.runningApplications(withBundleIdentifier: codexBundleIdentifier)
-        for app in runningApps {
-            _ = app.terminate()
-        }
-        
-        let codexURL = URL(fileURLWithPath: "/Applications/Codex.app")
-        let semaphore = DispatchSemaphore(value: 0)
-        var success = false
-        
-        DispatchQueue.main.async {
+    @discardableResult
+    func restartCodexApp(completion: @escaping (Bool) -> Void = { _ in }) -> Bool {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let runningApps = NSRunningApplication.runningApplications(withBundleIdentifier: self.codexBundleIdentifier)
+            for app in runningApps {
+                _ = app.terminate()
+            }
+            
+            // Wait up to 2.0s for the apps to exit
+            let start = Date()
+            while Date().timeIntervalSince(start) < 2.0 {
+                let stillRunning = NSRunningApplication.runningApplications(withBundleIdentifier: self.codexBundleIdentifier)
+                if stillRunning.isEmpty {
+                    break
+                }
+                Thread.sleep(forTimeInterval: 0.1)
+            }
+            
+            // Force terminate any remaining instances
+            let remaining = NSRunningApplication.runningApplications(withBundleIdentifier: self.codexBundleIdentifier)
+            for app in remaining {
+                _ = app.forceTerminate()
+            }
+            
+            // Sleep 0.5s to ensure OS handles port release and resources cleanup
+            Thread.sleep(forTimeInterval: 0.5)
+            
+            let codexURL = URL(fileURLWithPath: "/Applications/Codex.app")
             let configuration = NSWorkspace.OpenConfiguration()
             configuration.activates = true
             configuration.arguments = ["--remote-debugging-port=9222"]
+            
             NSWorkspace.shared.openApplication(at: codexURL, configuration: configuration) { app, error in
-                success = app != nil && error == nil
-                semaphore.signal()
+                let success = app != nil && error == nil
+                completion(success)
             }
         }
-        
-        _ = semaphore.wait(timeout: .now() + 5)
-        return success
+        return true
     }
     
     static func locateRepositoryRoot() -> URL? {
@@ -951,6 +1080,66 @@ final class CodpetHybridStore: ObservableObject {
                 return details
             }
             return "Codex 没有确认这次应用请求。"
+        }
+    }
+    
+    private func setupWorkspaceObservers() {
+        NSWorkspace.shared.notificationCenter.addObserver(
+            self,
+            selector: #selector(handleApplicationLaunch(_:)),
+            name: NSWorkspace.didLaunchApplicationNotification,
+            object: nil
+        )
+    }
+    
+    @objc private func handleApplicationLaunch(_ notification: Notification) {
+        guard let app = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication,
+              app.bundleIdentifier == codexBundleIdentifier else {
+            return
+        }
+        
+        let pid = app.processIdentifier
+        checkAndRelaunchCodexPID(pid)
+    }
+    
+    private func checkAndRelaunchRunningCodexIfNeeded() {
+        let runningApps = NSRunningApplication.runningApplications(withBundleIdentifier: codexBundleIdentifier)
+        for app in runningApps {
+            checkAndRelaunchCodexPID(app.processIdentifier)
+        }
+    }
+    
+    private func checkAndRelaunchCodexPID(_ pid: pid_t) {
+        DispatchQueue.global(qos: .background).async {
+            let process = Process()
+            process.executableURL = URL(fileURLWithPath: "/bin/sh")
+            process.arguments = ["-c", "ps -ww -p \(pid) -o command="]
+            
+            let pipe = Pipe()
+            process.standardOutput = pipe
+            process.standardError = pipe
+            
+            do {
+                try process.run()
+                process.waitUntilExit()
+                
+                let data = pipe.fileHandleForReading.readDataToEndOfFile()
+                if let output = String(data: data, encoding: .utf8) {
+                    if !output.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                        if !output.contains("--remote-debugging-port=") {
+                            print("Codex (PID \(pid)) is running without remote debugging port. Relaunching...")
+                            Task { @MainActor in
+                                self.statusMessage = "检测到 Codex 未开启调试端口，正在自动重新激活即时热重载通道..."
+                                self.restartCodexApp()
+                            }
+                        } else {
+                            print("Codex (PID \(pid)) is already running with remote debugging port. OK.")
+                        }
+                    }
+                }
+            } catch {
+                print("Failed to run ps tool on PID \(pid): \(error)")
+            }
         }
     }
 }

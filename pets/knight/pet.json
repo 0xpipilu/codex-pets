@@ -1,6 +1,6 @@
 {
-  "id": "mechanical-maze-knight",
-  "displayName": "Mechanical Maze Knight",
+  "id": "knight",
+  "displayName": "Knight",
   "description": "A battle-worn scrap knight robot pet with a single glowing eye, asymmetrical arms, and a back-mounted ruined blade.",
   "spritesheetPath": "spritesheet.webp",
   "states": {

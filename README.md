@@ -179,7 +179,7 @@ Here is a visual list of all the **94** interactive pixel pets available in Codp
     <td align="center" valign="middle" width="160" height="160"><img src="pets/blackbird/animated.svg?v=20260601c" width="96" alt="Blackbird" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/redcheek/animated.svg?v=20260601c" width="96" alt="Redcheek" /></td>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/droopy7/animated.svg?v=20260601c" width="96" alt="Droopy-7" /></td>
-    <td align="center" valign="middle" width="160" height="160"><img src="pets/mechanical-maze-knight/animated.svg?v=20260601c" width="96" alt="Mechanical Maze Knight" /></td>
+    <td align="center" valign="middle" width="160" height="160"><img src="pets/knight/animated.svg?v=20260601c" width="96" alt="Knight" /></td>
   </tr>
   <tr>
     <td align="center" valign="middle" width="160" height="160"><img src="pets/butch-dog/animated.svg?v=20260601c" width="96" alt="Butch Dog" /></td>

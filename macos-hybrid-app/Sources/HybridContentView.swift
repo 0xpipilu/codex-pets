@@ -109,6 +109,14 @@ struct HybridSettingsView: View {
                     .font(.caption)
                     .foregroundColor(.secondary)
                 
+                if let status = store.statusMessage {
+                    Text(status)
+                        .font(.callout)
+                        .foregroundColor(.accentColor)
+                        .textSelection(.enabled)
+                        .padding(.vertical, 4)
+                }
+                
                 HStack(spacing: 12) {
                     Button("测试 Codex 应用桥") {
                         store.diagnoseCodexBridge()
@@ -116,13 +124,25 @@ struct HybridSettingsView: View {
                     .buttonStyle(.borderedProminent)
                     
                     Button("打开 Codex") {
-                        let configuration = NSWorkspace.OpenConfiguration()
-                        configuration.activates = true
-                        NSWorkspace.shared.openApplication(
-                            at: URL(fileURLWithPath: "/Applications/Codex.app"),
-                            configuration: configuration,
-                            completionHandler: nil
-                        )
+                        store.restartCodexApp()
+                    }
+                    .buttonStyle(.bordered)
+                }
+            }
+            
+            Section("创作者工具 (UGC)") {
+                Text("导入自定义的 Pet，或为新宠物快速新建动作映射与图像模板文件夹。")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                HStack(spacing: 12) {
+                    Button("导入本地 Pet...") {
+                        store.importPetFromFolder()
+                    }
+                    .buttonStyle(.borderedProminent)
+                    
+                    Button("新建 Pet 模板...") {
+                        store.createNewPetTemplate()
                     }
                     .buttonStyle(.bordered)
                 }
@@ -217,6 +237,14 @@ struct CodpetWebStoreView: NSViewRepresentable {
             @font-face {
               font-family: 'W95F';
               src: url('W95F.otf') format('opentype');
+            }
+            @font-face {
+              font-family: 'Habbo';
+              src: url('Habbo.ttf') format('truetype');
+            }
+            @font-face {
+              font-family: 'battlenet';
+              src: url('battlenet.ttf') format('truetype');
             }
             @font-face {
               font-family: 'dogica';
@@ -410,48 +438,62 @@ struct CodpetWebStoreView: NSViewRepresentable {
             }
             
             .gallery {
-              border-left: none !important;
-              border-top: none !important;
-              border-right: 2px solid #000000 !important;
+              border: none !important;
               min-height: 100% !important;
               grid-template-columns: repeat(6, 1fr) !important;
               background: transparent !important;
               margin-bottom: 0 !important;
               box-sizing: border-box !important;
+              padding: 12px !important;
             }
             
             .tile-dl {
               display: none !important;
             }
             
-            /* Square Tiles with Retro Borders */
+            /* Compact Borderless Desktop Folder Layout */
             .tile {
               border-radius: 0 !important;
-              border-right: 2px solid #000000 !important;
-              border-bottom: 2px solid #000000 !important;
-              background: #ffffff !important;
-              padding: 24px 8px 16px !important;
+              border: none !important;
+              background: transparent !important;
+              padding: 12px 8px 8px !important;
               transition: none !important;
+              display: flex !important;
+              flex-direction: column !important;
+              align-items: center !important;
+              justify-content: center !important;
+              gap: 4px !important;
             }
-            .tile.col-6 {
-              border-right: none !important;
-            }
-            .tile:nth-child(6n of .tile) {
-              border-right: none !important;
+            .tile-stage {
+              width: 80px !important;
+              height: 80px !important;
+              aspect-ratio: auto !important;
+              display: grid !important;
+              place-items: center !important;
+              position: relative !important;
+              transform: scale(0.75) !important;
+              transform-origin: bottom center !important;
+              margin-bottom: -6px !important;
             }
             .tile:hover {
-              background: #fbfbfb !important;
+              background: rgba(0, 0, 0, 0.05) !important;
+              outline: 1px dotted #000000 !important;
+              outline-offset: -2px !important;
             }
             
             /* Action Button replacing Pet Name on hover */
             .tile-name {
               display: block !important;
-              font-family: 'TinyUnicode', 'dogica', 'W95F', 'MS Sans Serif', "Geneva", "Chicago", -apple-system, sans-serif !important;
-              font-size: 24px !important;
+              font-family: 'Habbo', 'battlenet', 'dogica', 'TinyUnicode', 'W95F', 'MS Sans Serif', "Geneva", "Chicago", -apple-system, sans-serif !important;
+              font-size: 16px !important;
               font-weight: normal !important;
               letter-spacing: 0px !important;
               text-align: center !important;
               padding: 2px 4px !important;
+              color: #000000 !important;
+              line-height: 1.2 !important;
+              -webkit-font-smoothing: none !important;
+              font-smoothing: none !important;
             }
             .tile:not(.native-active):hover .tile-name {
               display: none !important;
@@ -478,7 +520,8 @@ struct CodpetWebStoreView: NSViewRepresentable {
               display: inline-flex !important;
             }
             .tile.native-active:hover {
-              background: #ffffff !important;
+              background: transparent !important;
+              outline: none !important;
             }
             .app-action-btn:hover {
               color: #000000 !important;
@@ -511,16 +554,15 @@ struct CodpetWebStoreView: NSViewRepresentable {
               border-radius: 0 !important;
             }
             .tile.native-active .tile-name {
-              background: #000000 !important;
-              color: #ffffff !important;
-              padding: 0px 6px 6px 6px !important;
-              display: inline-flex !important;
-              align-items: center !important;
-              justify-content: center !important;
-              height: 16px !important;
-              line-height: 1 !important;
+              background: transparent !important;
+              color: #000000 !important;
+              padding: 2px 4px !important;
+              display: block !important;
+              text-align: center !important;
+              height: auto !important;
+              line-height: 1.2 !important;
               width: auto !important;
-              max-width: calc(100% - 12px) !important;
+              max-width: 100% !important;
               box-sizing: border-box !important;
             }
 
